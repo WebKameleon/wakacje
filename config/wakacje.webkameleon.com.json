@@ -1,0 +1,7 @@
+{
+	"db.dsn":"mysql:host=localhost;charset=utf8;dbname=pudel",
+	"db.user":"root",
+	"db.pass":null
+	
+	
+}

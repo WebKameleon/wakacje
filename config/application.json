@@ -1,0 +1,18 @@
+{
+    
+    
+    "maxmind.user_id":"96262",
+    "maxmind.license_key":"teNhCashA88D",
+
+    "protocol":"http",
+
+    "square_size": 900,
+    "image_size": 1140,
+    "thumb_size": 250,
+    
+    "merlin.login":"12444",
+    "merlin.pass":"VYOB",
+    
+    
+    "admin.ids": [1]  
+}
