@@ -13,6 +13,8 @@
     "merlin.login":"12444",
     "merlin.pass":"VYOB",
     
+    "merlin.search.limit":10,
+    
     
     "admin.ids": [1]  
 }

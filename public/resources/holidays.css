@@ -1,0 +1,40 @@
+#webkameleon_holidays_form {
+    text-align: center;
+    height: 44px;
+}
+
+
+#webkameleon_holidays_form input {
+    font-family: Tahoma,Geneva,sans-serif;
+    font-size: 14px;
+    line-height: 1.43;
+    color: #565a5c;
+    height: 44px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 50%;
+    padding-left: 1em;
+    display: table-cell;
+    border: 1px solid #ccc;
+}
+
+#webkameleon_holidays_form a {
+    border-color: #e11211;
+    border-bottom-color: #d80d0e;
+    background: #727272;
+    color: #fff;
+    line-height: 44px;
+    text-align: center;
+    height: 44px;
+    font-family: Tahoma,Geneva,sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    display: inline-block;
+    width: 10%;
+}

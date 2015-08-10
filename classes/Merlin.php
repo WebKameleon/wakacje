@@ -234,11 +234,22 @@ class Merlin
 
     public function type_convert($type)
     {
-        $type_convert=array('WS'=>'F','LO'=>'NF,OW','DW'=>'H');
-
-        if (strlen($type_convert[$type])) $type=$type_convert[$type];
-
-        return $type;
+        $type_convert=array('WS'=>'F','LO'=>['NF','OW'],'DW'=>'H');
+        
+        $result=[];
+        foreach (explode(',',$type) AS $t)
+        {
+            if (isset($type_convert[$t]))
+            {
+                if (is_array($type_convert[$t])) $result=array_merge($result,$type_convert[$t]);
+                else $result[]=$type_convert[$t];
+            }
+            else {
+                $result[]=$t;
+            }
+        }
+        
+        return implode(',',$result);
     }
 
     public function getFilters($cond=array(),$what='*')
@@ -443,15 +454,17 @@ class Merlin
 
         }
 
-        $cond['ofr_type']=$this->type_convert($type);
+        
 
         */
+        
+        if (isset($offer['type']) && $offer['type']) $cond['ofr_type']=$this->type_convert($offer['type']);
 
         return $cond;
     }
     
     
-    public function getOffers($offer=[],$type='',$order='',$limit=10,$offset=0,$token='',$search4otherDates=false)
+    public function getOffers($offer=[],$order='',$limit=10,$offset=0,$token='',$search4otherDates=false)
     {
         $cond=$this->offer2cond($offer);
         $cond['calc_found']=1000;
@@ -924,7 +937,7 @@ class Merlin
 
    
     
-    public function getGrouped($params,$type='',$order='',$limit=10,$offset=0)
+    public function getGrouped($params,$order='',$limit=10,$offset=0)
     {
         $cond=$this->offer2cond($params);
         $cond['calc_found']=1000;
