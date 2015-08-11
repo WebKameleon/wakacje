@@ -1,15 +1,31 @@
 <html lang="pl">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
     <title>Szukaj wakacji</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/demo.css"/>
 </head>
 <body>
 
-ala ma kota
+<img src="img/beach-xs.jpg" alt="Wakacje" class="bkgimg hidden-lg hidden-md" style="display: none"/>
+<img src="img/beach-lg.jpg" alt="Wakacje" class="bkgimg hidden-xs hidden-sm" style="display: none"/>
+
 
 <script src="http://wakacje.webkameleon.com/holidays.js"></script>
 
+<span id="scroll-top">
+    <a class="scrollup" style="display: inline;"><i class="icomoon-arrow-up"></i></a>
+</span>
+
+<div class="container-fluid" id="webkameleon_holidays_results"></div>
+
+
+
 </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script>
+    $('.bkgimg').fadeIn(500);
+</script>
 </html>

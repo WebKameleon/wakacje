@@ -1,8 +1,9 @@
 var holidays_script=document.currentScript;
+var holidays_url;
 
 function holidays_jquery_loaded() {
     
-    var holidays_url = holidays_script.src.replace('holidays.js','');
+    holidays_url = holidays_script.src.replace('holidays.js','');
     $('head').prepend('<link rel="stylesheet" href="'+holidays_url+'resources/holidays.css"/>');
     
     var bootstrapFound = $("link[attribute*='bootstrap']");
@@ -12,7 +13,7 @@ function holidays_jquery_loaded() {
     
     var formFound=$('#webkameleon_holidays_form');
     if (formFound.length==0) {
-        var form='<form id="webkameleon_holidays_form"><input/><a>Szukaj</a></form>';
+        var form='<form id="webkameleon_holidays_form"><input name="q"/><a>Szukaj</a></form>';
         $(holidays_script).parent().append(form);
     }
     
@@ -46,7 +47,7 @@ function holidays_jquery_loaded() {
     s.src = holidays_url+'resources/start.js';
     $("head").append(s);
  
-    console.log(0);
+
 }
 
 

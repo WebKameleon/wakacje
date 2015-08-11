@@ -13,7 +13,9 @@ class Merlin
     private $user,$pass;
     private $url='http://mdswsb.merlinx.pl/V3/';
     private $_ver=3;
-
+    
+    private static $months=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','paździrnika','listopada','grudnia'];
+    private static $dows=['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
     private $_section_map=array(
                                 'autosuggestV1'=>'citySearchByName,citySearchByCoords,airportSearchByCoords,airportSearchByCity,airportSearchByIata,airportSearchByName',
                                 'bookingstatusV3'=>'bookingstatus',
@@ -627,8 +629,14 @@ class Merlin
             $rec['obj']['info']=$this->hotelInfo($rec['tourOp'],$rec['obj']['code']);   
             
             $rec['startDate']['YYYYMMDD']=$this->merlinDate($rec['trp']['depDate']);
-            $rec['startDate']['DDMMYYYY']=date('d-m-Y',strtotime($rec['startDate']['YYYYMMDD']));
-            $rec['startDate']['MMDDYYYY']=date('m/d/Y',strtotime($rec['startDate']['YYYYMMDD']));
+            $start=strtotime($rec['startDate']['YYYYMMDD']);
+            $rec['startDate']['DDMMYYYY']=date('d-m-Y',$start);
+            $rec['startDate']['MMDDYYYY']=date('m/d/Y',$start);
+            
+            $rec['startDate']['D']=date('d',$start);
+            $rec['startDate']['MMM']=self::$months[date('m',$start)-1];
+            $rec['startDate']['DDD']=self::$dows[date('w',$start)+0];
+            
             
             $ret['result'][]=$rec;
             

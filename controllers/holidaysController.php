@@ -1,5 +1,5 @@
 <?php
-class indexController extends Controller {
+class holidaysController extends Controller {
     
     protected $merlin;
     
@@ -19,6 +19,7 @@ class indexController extends Controller {
         $cond=['type'=>'F'];
         
         $offers=$this->merlin->getGrouped($cond,'',$opt['limit'],$opt['offset']);
+        $opt['next_offset']=$opt['offset']+$opt['limit'];
         
         //mydie($this->merlin->debug);
         
@@ -40,9 +41,9 @@ class indexController extends Controller {
             }
         }
         
-        mydie($result);
+        //mydie($result);
         
-        return $this->status($offers);
-        return ['aaa'];
+        return array('status'=>true,'options'=>$opt,'data'=>$result);
+  
     }
 }

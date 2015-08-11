@@ -37,67 +37,58 @@ var lazyload_grid_template;
 var lazyload_grid_results;
 var lazyload_grid_ajax='';
 var lazyload_grid_lazyload=false;
-var lazyload_grid_when=0;
 var lazyload_grid_winheight=0;
-var lazyload_grid_pri=0;
 
 
 
-function lazyload_grid_load(pri)
+
+function lazyload_grid_load()
 {
-    if (pri==null) pri=lazyload_grid_pri;
-    
      
     txt=$('#'+lazyload_grid_form).serialize();
-    dbg='loading offset '+lazyload_grid_offset+', when '+lazyload_grid_when+', limit '+lazyload_grid_limit;
+    dbg='loading offset '+lazyload_grid_offset+', limit '+lazyload_grid_limit;
     lazyload_grid_log(dbg);
     lazyload_grid_footerlog(dbg);
     
     var d = new Date();
-    var url=lazyload_grid_ajax+'?now='+d.getHours()+':'+d.getMinutes()+'&limit='+lazyload_grid_limit+'&offset='+lazyload_grid_offset+'&when='+lazyload_grid_when+'&'+txt+'&pri='+pri;
+    var url=lazyload_grid_ajax+'?limit='+lazyload_grid_limit+'&offset='+lazyload_grid_offset+'&'+txt;
     
     $.get(url,function (r) {
         lazyload_grid_log(r);
         $('.lazyload_grid_scroll_to_wait').remove();
         
-        if (lazyload_grid_pri>r.options.pri) {
-            lazyload_grid_log('data with smaller priority');
-            return;
-        }
-        lazyload_grid_pri=r.options.pri;
         
         var html=$('#'+lazyload_grid_template).html();
         
         data=r.data;
-        if (typeof(r.options.when)!='undefined') lazyload_grid_when=r.options.when;
         for(i=0;i<data.length;i++)
         {
             html2=smekta(html,data[i]);
             $(html2).appendTo('#'+lazyload_grid_results).fadeIn(200*(i+1));
-            lazyload_grid_offset++;
+            //lazyload_grid_offset++;
             
         }
+        lazyload_grid_offset=r.options.next_offset;
         
 
-        if (lazyload_grid_lazyload && lazyload_grid_limit==data.length) {
+        if (lazyload_grid_lazyload && data.length>0) {
             $('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
             $(window).scroll(lazyload_grid_scroll); 
             lazyload_grid_log('waiting to scroll');
         }        
         
-        lazyload_grid_log('data loaded ('+data.length+'), offset->'+lazyload_grid_offset+', when->'+lazyload_grid_when);
+        lazyload_grid_log('data loaded ('+data.length+'), offset->'+lazyload_grid_offset);
         
     });   
 }
 
 
-function lazyload_grid_reload(pri)
+function lazyload_grid_reload()
 {
 
     $('#'+lazyload_grid_results).html('');
     lazyload_grid_offset=0;
-    lazyload_grid_when=0;
-    lazyload_grid_load(pri);
+    lazyload_grid_load();
 }
 
 function lazyload_grid_scroll()
@@ -147,19 +138,5 @@ function lazyload_grid(form,template,results,limit,ajax,lazyload,req)
     lazyload_grid_load();
 
 
-}
-
-function grid_start(why,pri)
-{
-    if (lazyload_grid_ajax.length==0) {
-        lazyload_grid_log(why+': grid init');
-        lazyload_grid_pri=pri;
-        lazyload_grid('kiedyMszaForm','lazyload_results_template','lazyload_results',15,'rest/church/search',true);
-    } else {
-        lazyload_grid_log(why+': grid reload');
-        lazyload_grid_reload(pri);
-    }
-    
-    
 }
 
