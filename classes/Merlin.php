@@ -352,8 +352,13 @@ class Merlin
 
         if (isset($offer['dep']) && $offer['dep'])
         {
-            $cond['trp_depName']= $offer['dep'];
+            $cond['trp_depCode']= $offer['dep'];
         }
+        
+        if (isset($offer['dep_name']) && $offer['dep_name'])
+        {
+            $cond['trp_depName']= $offer['dep_name'];
+        }        
         
         if (isset($offer['adt']) && $offer['adt'])
         {
@@ -363,6 +368,9 @@ class Merlin
         {
             $cond['par_chd']= $offer['chd'];
         }
+        
+        if (isset($offer['max_price'])) $cond['maxPrice']=$offer['max_price'];
+        if (isset($offer['min_price'])) $cond['minPrice']=$offer['min_price'];        
         
         /*
         if (isset($offer['o_kod_hotelu'])) $cond['obj_code']= $offer['o_kod_hotelu'];
@@ -386,8 +394,7 @@ class Merlin
             }
         }
 
-        if (isset($offer['o_cena_max'])) $cond['maxPrice']=$offer['o_cena_max'];
-        if (isset($offer['o_cena_min'])) $cond['minPrice']=$offer['o_cena_min'];
+
 
 
         if (isset($offer['o_dni'])) {
@@ -425,9 +432,8 @@ class Merlin
 
         if (isset($offer['dest']) && $offer['dest'])
         {
-
             $cond['trp_destination']=$offer['dest'];
-	    if ($cond['trp_destination'][strlen($cond['trp_destination'])-1]==',') $cond['trp_destination']=substr($cond['trp_destination'],0,strlen($cond['trp_destination'])-1); 
+            if ($cond['trp_destination'][strlen($cond['trp_destination'])-1]==',') $cond['trp_destination']=substr($cond['trp_destination'],0,strlen($cond['trp_destination'])-1); 
         }
         
         /*
@@ -611,9 +617,9 @@ class Merlin
         
         $ret['result']=[];
 
-        if (is_array($offers[$path]) && count($offers[$path]) && !isset($offers[$path][0])) $offers[$path]=array($offers[$path]);
+        if (isset($offers[$path]) && is_array($offers[$path]) && count($offers[$path]) && !isset($offers[$path][0])) $offers[$path]=array($offers[$path]);
         
-        if (is_array($offers[$path])) foreach ($offers[$path] AS $resp)
+        if (isset($offers[$path]) && is_array($offers[$path])) foreach ($offers[$path] AS $resp)
         {
     
             if (isset($resp['ofr'])) $resp=$resp['ofr'];
@@ -643,134 +649,17 @@ class Merlin
         }
         
         return $ret;        
-        
-        $result=array();
 
-        if (is_object($offers->$path)) foreach ($offers->xpath($path) AS $offer)
+        $a=$this->getAttribute($offer->obj,'xAttributes');
+
+        /*
+        for ($e=1;$e<70;$e++)
         {
-            
-            if ($path=='grp') $offer=$offer->ofr;
-            
-
-            $r=array();
-            $r['o_id']=$this->getAttribute($offer,'id');
-            $r['o_kod_katalogu']=$this->getAttribute($offer,'catalog');
-            $r['o_kod_destynacji']=$this->getAttribute($offer->obj,'desCode');
-            $r['o_kod_hotelu']=$this->getAttribute($offer->obj,'code');
-            $r['o_kod_pokoju']=$this->getAttribute($offer->obj,'room');
-            $r['o_nazwa']=$this->getAttribute($offer->obj,'name');
-            $r['o_xnazwa']=$this->getAttribute($offer->obj,'xName');
-            $r['o_dni']=$this->getAttribute($offer->trp,'durationM');
-            $r['o_data']=$this->merlinDate($this->getAttribute($offer->trp,'depDate'));
-	    $r['o_linia_lot'] = preg_replace('/[0-9]/','', $this->getAttribute($offer->trp,'carrierCode'));
-            $r['o_lot']=$this->getAttribute($offer->trp,'carrierCode');
-            $r['o_wylot']=$this->getAttribute($offer->trp,'depCode');
-            $r['o_przylot']=$this->getAttribute($offer->trp,'desCode');
-            $r['o_wylot_pow']=$this->getAttribute($offer->trp,'rDepCode');
-            $r['o_przylot_pow']=$this->getAttribute($offer->trp,'rDesCode');
-            $r['o_data_wylotu']=$this->merlinDate($this->getAttribute($offer->trp,'depDate'));
-            $r['o_godz_wylotu']=substr($this->merlinDate($this->getAttribute($offer->trp,'depTime')), 0, 2).":".substr($this->merlinDate($this->getAttribute($offer->trp,'depTime')), 2, 2).":00";
-            $r['o_data_przylotu']=$this->merlinDate($this->getAttribute($offer->trp,'desDate'));
-            $r['o_godz_przylotu']=substr($this->merlinDate($this->getAttribute($offer->trp,'arrTime')), 0, 2).":".substr($this->merlinDate($this->getAttribute($offer->trp,'arrTime')), 2, 2).":00";
-            $r['o_data_wylotu_pow']=$this->merlinDate($this->getAttribute($offer->trp,'rDepDate'));
-            $r['o_godz_wylotu_pow ']=substr($this->merlinDate($this->getAttribute($offer->trp,'rDepTime')), 0, 2).":".substr($this->merlinDate($this->getAttribute($offer->trp,'rDepTime')), 2, 2).":00";
-            $r['o_data_przylotu_pow']=$this->merlinDate($this->getAttribute($offer->trp,'rDesDate'));
-	    $r['o_godz_przylotu_pow']=substr($this->merlinDate($this->getAttribute($offer->trp,'rArrTime')), 0, 2).":".substr($this->merlinDate($this->getAttribute($offer->trp,'rArrTime')), 2, 2).":00";
-	    $r['o_kategoria']="";
-            $r['o_wyzywienie']=$this->getAttribute($offer->obj,'service');
-            $r['o_osoby']=$this->getAttribute($offer->obj,'maxPax');
-            $r['o_osoby_full']=$this->getAttribute($offer->obj,'minPax');
-            $r['o_min_fam']=$this->getAttribute($offer->obj,'minAdt');
-            $r['o_max_dor']=$this->getAttribute($offer->obj,'maxAdt');
-            $r['o_cena']=$this->getAttribute($offer,'operPrice');
-            $r['o_waluta']=$this->getAttribute($offer,'operCurr');
-            $r['o_token']=$this->getAttribute($offer,'id');
-            $r['o_opis']="";
-            $r['o_kod_oferty']=$this->getAttribute($offer,'type')."-".$this->getAttribute($offer->obj,'code')."-".$this->getAttribute($offer->obj,'room')."-".$r['o_data']."-".$r['o_dni']."-".$r['o_wylot']."-".$r['o_wyzywienie']."-".$r['o_osoby']."-".$r['o_osoby_full']."-".$r['o_min_fam']."-".$r['o_max_dor'];
-            $r['o_data_m']="";
-            $r['o_lot_tam_kod']=$this->getAttribute($offer->trp,'flightCode');
-            $r['o_lot_pow_kod']=$this->getAttribute($offer->trp,'rFlightCode');
-
-            $r['o_kod_miasta']=$this->getAttribute($offer->obj,'city');
-            $r['o_token_lot']=$r['o_data_wylotu']."-".$r['o_wylot']."-".$r['o_przylot']."-".$r['o_lot']."-1";
-            $r['o_token_lot_pow']=$r['o_data_wylotu_pow']."-".$r['o_wylot_pow']."-".$r['o_przylot_pow']."-".$this->getAttribute($offer->trp,'rCarrierCode')."-1";
-            $r['o_token_dni']=$this->getAttribute($offer->obj,'code').".".$this->getAttribute($offer->obj,'room').".".$r['o_data'].".".$r['o_wyzywienie'].".".$r['o_osoby'].".".$r['o_osoby_full'].".".$r['o_min_fam'].".".$r['o_max_dor'];
-            $r['o_lot_pow']=$this->getAttribute($offer->trp,'rCarrierCode');
-            $r['o_online']="1";
-            $r['o_kod_katalogu2']=$this->getAttribute($offer,'catalog');
-            $r['o_atrybuty']=$this->getAttribute($offer->obj,'xCity');
-            if ($r['o_atrybuty'][0]=='|') $r['o_atrybuty']=substr($r['o_atrybuty'],1);
-            if ($r['o_atrybuty'][strlen($r['o_atrybuty'])-1]=='|') $r['o_atrybuty']=substr($r['o_atrybuty'],0,strlen($r['o_atrybuty'])-1);
-            $r['o_atrybuty']=preg_replace('/[|]+/','|',$r['o_atrybuty']);
-            $r['o_atrybuty']=explode('|',$r['o_atrybuty']);
-
-            /*
-            if (!is_array($this->hotels[$r['o_kod_hotelu']]))
-            {
-                $typ=strlen($r['o_wylot'])?'WS':'DW';
-                $this->hotels[$r['o_kod_hotelu']]=$this->operator->rekord('hotel',"h_typ='$typ' AND h_kod_hotelu='".$r['o_kod_hotelu']."'");
-            }
-            */
-            
-            if (is_array($this->hotels[$r['o_kod_hotelu']]) && count($this->hotels[$r['o_kod_hotelu']]) )
-            {
-                $r=array_merge($r,$this->hotels[$r['o_kod_hotelu']]);
-
-                if ($this->hotels[$r['o_kod_hotelu']]['h_merlin_id'] <= 0 )
-                {
-                    $this->hotels[$r['o_kod_hotelu']]['h_merlin_id']=$this->getAttribute($offer->obj,'xCode');
-                    //$this->operator->zapisz('hotel',$this->hotels[$r['o_kod_hotelu']]['h_typ'],$this->hotels[$r['o_kod_hotelu']]);
-                }
-
-
-                if (!$this->hotels[$r['o_kod_hotelu']]['h_google']
-                    && ($xLat=$this->getAttribute($offer->obj,'xLat'))
-                    && ($xLong=$this->getAttribute($offer->obj,'xLong'))
-                )
-                {
-                    $this->hotels[$r['o_kod_hotelu']]['h_google']="$xLat,$xLong,14";
-                    //if ($xLat+0!=200) $this->operator->zapisz('hotel',$this->hotels[$r['o_kod_hotelu']]['h_typ'],$this->hotels[$r['o_kod_hotelu']]);
-                }
-            }
-            $r['x_kod_hotelu']=$this->getAttribute($offer->obj,'xCode');
-
-            $a=$this->getAttribute($offer->obj,'xAttributes');
-
-            /*
-            for ($e=1;$e<70;$e++)
-            {
-                if ( ($a+0) & pow(2,$e-1) ) $r['m_atrybuty'][]=$this->operator->atrybut("m_$e",'M');
-            }
-            */
-
-            if (!strlen($r['h_kod_hotelu'])) $r['h_kod_hotelu']=$this->getAttribute($offer->obj,'code');
-            if (!strlen($r['h_kod_destynacji'])) $r['h_kod_destynacji']=$this->getAttribute($offer->trp,'desCode');
-            if (!strlen($r['h_nazwa'])) $r['h_nazwa']=$this->getAttribute($offer->obj,'name');
-	    if (!strlen($r['h_kraj'])) $r['h_kraj']=$this->getAttribute($offer->obj,'country');
-            if (!strlen($r['h_region'])) $r['h_region']=$this->getAttribute($offer->obj,'region');
-            if (!strlen($r['h_miasto'])) $r['h_miasto']=$this->getAttribute($offer->obj,'city');
-            if (!strlen($r['h_google_latitude'])) $r['h_google_latitude']=$this->getAttribute($offer->obj, 'xLat');
-            if (!strlen($r['h_google_longitude'])) $r['h_google_longitude']=$this->getAttribute($offer->obj, 'xLong');
-            if (!strlen($r['h_token'])) $r['h_token']=$r['h_typ'].".".$r['h_kod_hotelu'];
-
-
-            $r['rodzina']="";
-            $r['razem_ofert']=0+$offers->count;
-            $r['lp']="1";
-            $r['cena_rodzina']="";
-            $r['cena_dziecko']="";
-            $r['rezerwuj']="1";
-
-            
-
-            //$this->operator->label('wyzyw',$this->getAttribute($offer->obj,'xServiceId'),$this->getAttribute($offer->obj,'serviceDesc'));
-            //$this->operator->label('wyzyw',$this->getAttribute($offer->obj,'service'),$this->getAttribute($offer->obj,'serviceDesc'));
-            //$this->operator->label('pokoj',$this->getAttribute($offer->obj,'room'),$this->getAttribute($offer->obj,'roomDesc'));
-            $result[]=$r;
+            if ( ($a+0) & pow(2,$e-1) ) $r['m_atrybuty'][]=$this->operator->atrybut("m_$e",'M');
         }
+        */
+        
 
-
-        return $result;
     }
 
     public function getCatalogs($type='WS')
@@ -826,6 +715,8 @@ class Merlin
 
         $regions=$this->post_xml($xml,'regions');
         
+        
+        
         $rg=__DIR__.'/regions.json';
         
         if ( !file_exists($rg) ||  filemtime($rg)<time()-24*3600)
@@ -852,7 +743,7 @@ class Merlin
                     $rec['country']=$region['region'];
                     $rec['country_code']=$region['num'];
                 }
-                if ($region['country']=='NO' && $id[1]==$region['num'])
+                if ($region['country']=='NO' && $id[1]==$region['num'] && isset($region['region']) )
                 {
                     $rec['region']=$region['region'];
                 }

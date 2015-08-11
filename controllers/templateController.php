@@ -14,22 +14,36 @@ class templateController extends Controller {
                 <div class="trip_desc col-md-6">
                     <h4>
                         <a class="q">[obj_country]</a> &raquo; <a class="q">[obj_region]</a>
-                        [trp_duration] dni
+                        | [trp_duration] dni
                     </h4>
                     <h5>
                         [startDate_D] [startDate_MMM], [startDate_DDD]:
                         <a class="q flight">[trp_depName]</a>
                         <span class="flight" title="[trp_flightOp]"></span>
                         <a class="q flight">[trp_desDesc]</a>
-                        
                     </h5>
+                    <h6>
+                        [obj_serviceDesc], [obj_roomDesc]
+                    </h6>
                 </div>
-                <div class="holiday_price col-md-3">
-                    <h5>[price] [operCurr]/os.</h5>
+                <div class="holiday_price col-md-2">
+                    <h5>
+                        <a href="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]" target="_blank">
+                            [price] [operCurr]/os.
+                            <span>REZERWUJ TERAZ &raquo;</span>
+                        </a>
+                    </h5>
+                    
                 </div>
             </div>
         </div>';
         
         die ($html);
+    }
+    
+    public function get_placeholder()
+    {
+        
+        return $this->status('np. Hiszpania z Poznania we wrześniu');
     }
 }

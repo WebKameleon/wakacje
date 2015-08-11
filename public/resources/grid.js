@@ -75,7 +75,8 @@ function lazyload_grid_load()
             $('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
             $(window).scroll(lazyload_grid_scroll); 
             lazyload_grid_log('waiting to scroll');
-        }        
+        }
+
         
         lazyload_grid_log('data loaded ('+data.length+'), offset->'+lazyload_grid_offset);
         

@@ -1,0 +1,67 @@
+{
+    "dep_from": {
+        "WMI": "z Modlina",
+        "POZ": "z Poznania",
+        "SXF": "z Berlina",
+        "BER": "z Berlina",
+        "BZG": "z Bydgoszczy",
+        "GDN": "z Gdańska",
+        "KTW": "z Katowic",
+        "KRK": "z Krakowa",
+        "LUZ": "z Lublina",
+        "RZE": "z Rzeszowa",
+        "SZZ": "ze Szczecina",
+        "WRO": "z Wrocławia",
+        "IEG": "z Zielonej Góry",
+        "LCJ": "z Łodzi"
+    },
+    
+    "dest_shit": [
+        "niskie","gran","wysokie","dolny","ziemia","wyc.","zatoka","- la mancha",
+        "czeskie","costa de la","piaski","costa del","riwiera","- costa almeria",
+        "porto","warmia i","wyspa","zjednoczone","vary","nowa","costa","brzeg",
+        "kraj","arabskie","kuala","sri","wielka","wysoki"
+    ],
+    "region_shit": [
+        "wnina ka","e andama","tajlandia","udniowochi","pomorze zach","e lizbo",
+        "wyspa p","e malab","zachodnia prow","anglia","las cz","gry p","paty rum",
+        "alpy","nocna",""
+    ],
+    
+    
+    
+    "dep": {
+        "WMI":["wmi","modlin","modlina","warszawa - modlin"],
+        "WAW":["waw","okęcie","okęcia"],
+        "WAW,WMI":["warszawa","warszawy"],
+        "POZ":["poz","poznań","poznan","poznania"],
+        "SXF,BER": ["ber","sxf","berlin","berlina"],
+        "BZG": ["bzg","bydgoszcz","bydgoszczy"],
+        "GDN": ["gdn","gdańsk","gdansk","gdańska","gdanska"],
+        "KTW": ["ktw","katowic","katowice"],
+        "KRK": ["krk","krakow","kraków","krakowa"],
+        "LUZ": ["luz","lublin","lublina"],
+        "RZE": ["rze","rzeszowa","rzeszow","rzeszów"],
+        "SZZ": ["szz","szczecin","szczecina"],
+        "WRO": ["wro","wrocław","wroclaw","wrocławia","wroclawia"],
+        "IEG": ["ieg","zielona góra","zielona","zielonej"],
+        "LCJ": ["lcj","lodzi","łodzi","łódź","lodz","lodź","łodz"]
+        
+    },
+    
+    "month": {
+        "01": ["styczeń","styczen","stycznia","styczniu"],
+        "02": ["luty","lutego","lutym"],
+        "03": ["marzec","marca","marcu"],
+        "04": ["kwiecień","kwiecien","kwietnia","kwietniu"],
+        "05": ["maj","maja","maju"],
+        "06": ["czerwiec","czerwca","czerwcu"],
+        "07": ["lipiec","lipca","lipcu"],
+        "08": ["sierpień","sierpien","sierpnia","sierpniu"],
+        "09": ["wrzesień","wrzesien","września","wrześniu","wrzesnia","wrzesniu"],
+        "10": ["październik","pazdziernik","października","październiku","pazdziernika","pazdzierniku"],
+        "11": ["listopad","listopada","listopadzies"],
+        "12": ["grudzień","grudzien","grudnia","grudniu"]
+    }
+    
+}
