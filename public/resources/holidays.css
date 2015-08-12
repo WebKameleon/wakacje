@@ -1,6 +1,7 @@
 #webkameleon_holidays_form {
     text-align: center;
     height: 44px;
+    margin-bottom: 45px;
 }
 
 
@@ -101,11 +102,13 @@
     
 #webkameleon_holidays_results .row .trip_desc h4 {
     font-size: 24px;
+    margin-top: 10px;
 }
 
 
 #webkameleon_holidays_results .row .trip_desc h5 {
     font-size: 18px;
+    
 }
 
 #webkameleon_holidays_results .row .trip_desc h6 {
@@ -119,6 +122,7 @@
 #webkameleon_holidays_results .row .holiday_price h5 {
     font-size: 24px;
     text-align: right;
+    margin-top: 10px;
 }
 
 #webkameleon_holidays_results .row .holiday_price a:hover {

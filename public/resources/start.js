@@ -7,8 +7,10 @@ $.get(holidays_url+'template/placeholder',function(data) {
     
 });
 
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+var getUrlParameter = function getUrlParameter(sParam,url) {
+    
+    if (typeof(url)=='undefined') url=window.location;
+    var sPageURL = decodeURIComponent(url.search.substring(1)),
         sURLVariables = sPageURL.split('&'),
         sParameterName,
         i;
@@ -25,7 +27,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 var q=getUrlParameter('q');
 if (typeof(q) != 'undefined') {
-    $('#webkameleon_holidays_form input').val(q);
+    $('#webkameleon_holidays_form input').val(q.replace('+',' '));
     lazyload_grid_reload();
 }
 
