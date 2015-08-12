@@ -101,6 +101,16 @@ class holidaysController extends Controller {
             case 'ponizej':                 
             case 'przed':    
                 return ['to'=>1];
+            
+            case 'dzisiaj':
+            case 'dziś':
+                return ['field'=>'date','value'=>date('Y-m-d')];
+
+            case 'jutro':
+                return ['field'=>'date','value'=>date('Y-m-d',time()+24*3600)];
+
+            case 'pojutrze':
+                return ['field'=>'date','value'=>date('Y-m-d',time()+2*24*3600)];
         }
     }
     
@@ -121,6 +131,11 @@ class holidaysController extends Controller {
         if (!$q) return [];
         
         $q=mb_strtolower($q,'utf-8');
+        
+        $q_token='q2cond.'.md5($q);
+        $cond=Tools::memcache($q_token);
+        if($cond) return $cond;
+        
         
         $cond=[];
         $from=$to=$number=0;
@@ -162,6 +177,11 @@ class holidaysController extends Controller {
                 
                 switch ($field) {
                     
+                    case 'date':
+                        $cond['from']=$c['value'];
+                        $cond['fromto']=$c['value'];
+                        break;
+                    
                     case 'month':
                         $month=$c['value'];
                         $year=date('Y');
@@ -173,8 +193,12 @@ class holidaysController extends Controller {
                             if (!$number) $number=$this->lastDayOfMonth($month);
                             $cond['to']=$year.'-'.$month.'-'.$number;
                         } else {
-                            $cond['from']=$year.'-'.$month.'-01';
-                            $cond['to']=$year.'-'.$month.'-'.$this->lastDayOfMonth($month);
+                            if ($number) {
+                                $cond['from']=$cond['fromto']=$year.'-'.$month.'-'.$number;
+                            } else {
+                                $cond['from']=$year.'-'.$month.'-01';
+                                $cond['to']=$year.'-'.$month.'-'.$this->lastDayOfMonth($month);
+                            }
                         }
                         break;
                     
@@ -192,7 +216,7 @@ class holidaysController extends Controller {
             }
         }
         
-        return $cond;
+        return Tools::memcache($q_token,$cond);
         
         $data=$this->merlin->getFilters(['ofr_type'=>'F'],'trp_depName');
         
@@ -221,6 +245,10 @@ class holidaysController extends Controller {
         
         $opt['next_offset']=$opt['offset']+$opt['limit'];
         
+        $opt['results']='Wyniki: ';
+        if ($offers['count']>=1000) $opt['results'].='ponad 1000';
+        else $opt['results'].=$offers['count'];
+        
         //mydie($this->merlin->debug);
         
         $result=[];
@@ -241,6 +269,9 @@ class holidaysController extends Controller {
                 foreach (['trp_depName','trp_desDesc','obj_serviceDesc','obj_roomDesc'] AS $k)
                     if (isset($r[$k]))
                         $r[$k]=mb_strtolower($r[$k],'utf-8');
+                
+                $r['stars']='';
+                for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].='🌠';
                 
                 $result[]=$r;
             }

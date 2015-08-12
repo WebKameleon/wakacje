@@ -7,7 +7,7 @@ class templateController extends Controller {
                 <div class="holiday_photo col-md-3">
                     <div>
                         <img src="[photo]"/>
-                        <h3>[obj_name]</h3>
+                        <h3>[obj_name]<span class="stars">[stars]</span></h3>
                     </div>
                     
                 </div>

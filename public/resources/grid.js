@@ -60,6 +60,11 @@ function lazyload_grid_load()
         
         var html=$('#'+lazyload_grid_template).html();
         
+        if (lazyload_grid_offset==0) {
+            html2=r.options.results+' ('+r.x_system.total_time+' s)';
+            html2='<div class="row lazyload_grid_results">'+html2+'</div>';
+            $(html2).appendTo('#'+lazyload_grid_results).fadeIn(200);
+        }
         data=r.data;
         for(i=0;i<data.length;i++)
         {
@@ -119,7 +124,7 @@ function lazyload_grid_scroll()
 
 
 
-function lazyload_grid(form,template,results,limit,ajax,lazyload,req)
+function lazyload_grid(form,template,results,limit,ajax,lazyload,start)
 {
     lazyload_grid_limit = limit;
     lazyload_grid_ajax = ajax;
@@ -139,7 +144,7 @@ function lazyload_grid(form,template,results,limit,ajax,lazyload,req)
     
     
 
-    lazyload_grid_load();
+    if (start) lazyload_grid_load();
 
 
 }

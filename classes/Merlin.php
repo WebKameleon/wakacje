@@ -709,7 +709,7 @@ class Merlin
         $token='reg.'.md5(serialize($cond));
         
         $r=$this->session($token);
-        //if ($r) return $r;
+        if ($r) return $r;
         
         $xml=$this->request('regions',$cond);
 
