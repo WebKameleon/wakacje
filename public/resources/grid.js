@@ -75,10 +75,13 @@ function lazyload_grid_load()
             $('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
             $(window).scroll(lazyload_grid_scroll); 
             lazyload_grid_log('waiting to scroll');
+            
+            img_crop();
         }
 
         
         lazyload_grid_log('data loaded ('+data.length+'), offset->'+lazyload_grid_offset);
+        
         
     });   
 }
@@ -87,7 +90,7 @@ function lazyload_grid_load()
 function lazyload_grid_reload()
 {
 
-    $('#'+lazyload_grid_results).html('');
+    $('#'+lazyload_grid_results).html('').append('<div class="lazyload_grid_scroll_to_wait"></div>');
     lazyload_grid_offset=0;
     lazyload_grid_load();
 }

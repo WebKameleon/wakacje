@@ -17,17 +17,25 @@
     },
     
     "dest_shit": [
-        "niskie","gran","wysokie","dolny","ziemia","wyc.","zatoka","- la mancha",
-        "czeskie","costa de la","piaski","costa del","riwiera","- costa almeria",
-        "porto","warmia i","wyspa","zjednoczone","vary","nowa","costa","brzeg",
-        "kraj","arabskie","kuala","sri","wielka","wysoki"
+        "niskie","gran","wysokie","dolny","ziemia","wyc.","zatoka","- la mancha","wybrzeże morza",
+        "czeskie","costa de la","piaski","costa del","riwiera","- costa almeria","i nowa",
+        "porto","warmia i","wyspa","zjednoczone","vary","nowa","costa de","brzeg",
+        "kraj","arabskie","kuala","sri","wielka","wysoki","- fethiye","napa","el sheikh",
+        "południowa","grecka","północny","marsa","południowy","wybrzeże","la ",
+        "bośnia i","travel","francuskie","dolina","ras al","abu","sankt","morze",
+        "tel","nizina","al","koh","punta","santo"," ne","costa"," an",
+        "płn. - zach. prowincja","prowincja","atol","city","republika południowej",
+        "riviera","puerto","de janeiro","ocho","sierra","bay","półwysep","cieśnina",
+        "ciego de","brazylia -","st.","caye","wyspy","terytorium północne","wyżyna",
+        "karaiby","północna","main","republika ludowa","francuska","ameryka","viti",
+        "bora","północne","papua","faso","tobago","austria",
+        
+        "i "," i"
     ],
-    "region_shit": [
-        "wnina ka","e andama","tajlandia","udniowochi","pomorze zach","e lizbo",
-        "wyspa p","e malab","zachodnia prow","anglia","las cz","gry p","paty rum",
-        "alpy","nocna",""
-    ],
-    
+  
+    "dest": {
+        "2598_3075":["rpa"]
+    },
     
     
     "dep": {

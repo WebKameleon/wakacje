@@ -22,32 +22,57 @@ class holidaysController extends Controller {
             }
         }
         
-        $reg=$this->merlin->getRegions();
+        $reg=$this->merlin->getRegions('F');
         //dest
         $dest=[];
         $i=0;
+   
+       
         foreach ($reg AS $r)
         {
             if (!isset($r['region'])) $r['region']='';
             
-            $country=trim(mb_strtolower($r['country']));
-            $region=trim(mb_strtolower($r['region']));
-            
-            foreach($config['region_shit'] AS $shit) {
-                if (strstr($region,$shit)) $region='';
-            }
+            $country=trim(mb_strtolower($r['country'],'utf-8'));
+            $region=trim(mb_strtolower($r['region'],'utf-8'));
             
             
             foreach($config['dest_shit'] AS $shit) {
-                if (strstr($country,' ') && strstr($country,$shit)) $country=trim(str_replace($shit,'',$country));
-                if (strstr($region,' ') && strstr($region,$shit)) $region=trim(str_replace($shit,'',$region));
-                
+                for($ii=0;$ii<2;$ii++) {
+                    if (strstr($country,' ') && strstr($country,$shit)) $country=trim(str_replace($shit,'',$country));
+                    if (strstr($region,' ') && strstr($region,$shit)) $region=trim(str_replace($shit,'',$region));
+                }
             }
             $i++;
-            if ( strstr($country,' ') || strstr($region,' ')) mydie($r,"$country:$region:$i/".count($reg));   
+            if ( strstr($country,' ') || strstr($region,' ')) {
+                continue;
+                mydie($r,"$country:$region:$i/".count($reg));
+            }
+            foreach ([$country,$region] AS $w)
+            {
+                if (!$w) continue;
+                if (!isset($dest[$w])) {
+                    $dest[$w]=['field'=>'dest','value'=>$r['id']];
+                } else {
+                    $dest[$w]['value'].=','.$r['id'];
+                }
+            }
         }
         
-        mydie($reg);
+        foreach (['dest'] AS $field) {
+            foreach ($config[$field] AS $code=>$dep)
+            {
+                foreach($dep AS $d) {
+                    if (isset($dest[$d])) $dest[$d]['value'].=','.$code;
+                    else $dest[$d]=['field'=>'dest','value'=>$code];
+                }
+            }
+        }        
+        
+        foreach($dest AS $w=>$r)
+        {
+            if (!isset($config['words'][$w])) $config['words'][$w]=$r;
+        }
+    
         
         return $config;
     }
@@ -183,14 +208,17 @@ class holidaysController extends Controller {
     public function get()
     {
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
-              
-        
         
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
         
-        $cond['type']='F';
+        if (count($cond)) {
+            $cond['type']='F';
+            $offers=$this->merlin->getGrouped($cond,'',$opt['limit'],$opt['offset']);
+        } else {
+            $offers=['result'=>[],'count'=>0];
+        }
         
-        $offers=$this->merlin->getGrouped($cond,'',$opt['limit'],$opt['offset']);
+        
         $opt['next_offset']=$opt['offset']+$opt['limit'];
         
         //mydie($this->merlin->debug);
@@ -218,8 +246,10 @@ class holidaysController extends Controller {
             }
         }
         
-        if ($this->data('debug')) mydie([$cond,$result]);
-        
+        if ($this->data('debug')) {
+            if (!count($result)) $result=$this->merlin->debug;
+            mydie([$cond,$result]);
+        }
         
         return array('status'=>true,'options'=>$opt,'data'=>$result);
   

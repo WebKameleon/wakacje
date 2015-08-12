@@ -589,7 +589,7 @@ class Merlin
         $url='http://data2.merlinx.pl/index.php?login='.$this->user.'&password='.$this->pass.'&tourOp='.$op.'&htlCode='.$htlCode;
         $response=file_get_contents($url);
         $hotel=$this->_xml2arr($response);
-        
+
         $this->debug($hotel,'Hotel info: '.$htlCode);
         
         $ret=[];
@@ -702,14 +702,14 @@ class Merlin
 
         $cond=array();
         $cond['par_adt']=2;
-        //$cond['ofr_type']=$this->type_convert($type);
+        if ($type) $cond['ofr_type']=$this->type_convert($type);
 
         if (is_array($limits)) $cond=array_merge($cond,$limits);
 
         $token='reg.'.md5(serialize($cond));
         
         $r=$this->session($token);
-        if ($r) return $r;
+        //if ($r) return $r;
         
         $xml=$this->request('regions',$cond);
 
