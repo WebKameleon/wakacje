@@ -396,18 +396,13 @@ class Merlin
 
 
 
-
-        if (isset($offer['o_dni'])) {
-            if (is_array($offer['o_dni']))
-            {
-                $cond['trp_duration']=implode(':',$offer['o_dni']);
-                $offer['o_dni']=$offer['o_dni'][0]+0;
-            }
-    	    elseif ($offer['o_dni']<>0) $cond['trp_duration']= $offer['o_dni'];
-    	}
        
 
         */
+        
+        if (isset($offer['duration']) && $offer['duration']) {
+            $cond['trp_duration']=$offer['duration'];
+        }
        
         $zarok=$this->time2str(date('Y-m-d',time()+365*24*3600));
         if (isset($offer['from']) && $offer['from'])
@@ -542,19 +537,20 @@ class Merlin
     }
     
     public function orderOnArray($order) {
-        $cond['order_by']='';
+        $cond=['order_by'=>''];
         
-        if (is_array($order)) foreach ($order AS $o)
+        foreach (explode(',',$order) AS $o)
         {
             $order_by='';
 
-            if (strstr($o,'cena')) $order_by='ofr_price';
-            if (strstr($o,'kraj')) $order_by='obj_country';
-            if (strstr($o,'data')) $order_by='trp_depDate';
-            if (strstr($o,'wylo')) $order_by='trp_depName';
+            if (strstr($o,'price')) $order_by='ofr_price';
+            if (strstr($o,'country')) $order_by='obj_country';
+            if (strstr($o,'date')) $order_by='trp_depDate';
+            if (strstr($o,'dep')) $order_by='trp_depName';
             if (strstr($o,'region')) $order_by='obj_region';
-            if (strstr($o,'miasto')) $order_by='obj_city';
-            if (strstr($o,'nazwa')) $order_by='obj_name';
+            if (strstr($o,'city')) $order_by='obj_city';
+            if (strstr($o,'name')) $order_by='obj_name';
+            if (strstr($o,'duration')) $order_by='trp_duration';
             
 
             if (strstr(strtolower($o),'desc'))
@@ -612,7 +608,9 @@ class Merlin
         if (isset($offers['count']))
         {
             $ret['count']=$offers['count'];
-            if ($ret['count']==1 && !isset($offers[$path][0])) $offers[$path]=array($offers[$path]);
+            if ($ret['count']==1 && !isset($offers[$path][0]) && isset($offers[$path])) {
+                $offers[$path]=array($offers[$path]);
+            }
         }
         
         $ret['result']=[];

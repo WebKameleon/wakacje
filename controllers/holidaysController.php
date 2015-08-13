@@ -80,8 +80,13 @@ class holidaysController extends Controller {
     protected function word2cond($word)
     {
         $config=$this->getConfig();
+        
+        if (substr($word,0,6)=='hotel:') {
+            return ['field'=>'hotel','value'=>substr($word,6)];
+        }  
+        
         if (isset($config['words'][$word])) return $config['words'][$word];
-        if (preg_match('/[0-9]+/',$word)) return ['number'=>$word+0];
+        if (preg_match('/[0-9\-]+/',$word)) return ['number'=>$word];
         
         switch ($word)
         {
@@ -111,7 +116,25 @@ class holidaysController extends Controller {
 
             case 'pojutrze':
                 return ['field'=>'date','value'=>date('Y-m-d',time()+2*24*3600)];
+            
+            case 'dni':
+            case 'dzień':
+                return ['field'=>'duration'];
+            
+            case 'osoby':
+            case 'osób':
+            case 'osob':
+            case 'osoba':
+                return ['field'=>'adt'];
+
+            case 'dziecko':
+            case 'dzieci':
+                return ['field'=>'chd'];
+                
         }
+        
+ 
+
     }
     
     protected function lastDayOfMonth($m)
@@ -125,22 +148,40 @@ class holidaysController extends Controller {
         return '28';
     }
     
+    private function update_cond(Array &$cond,$field,$value,Array &$phraze,Array &$phrazes)
+    {
+        if (isset($cond[$field])) {
+            $cond[$field].=','.$value;
+        } else {
+            $cond[$field]=$value;
+        }
+        
+        if (!isset($phrazes[$field])) $phrazes[$field]=[];
+        $phrazes[$field][$value]=implode(' ',$phraze);
+        $phraze=[];
+    }
+    
     protected function q2cond($q)
     {
         $q=preg_replace('/\s+/',' ',trim($q));
         if (!$q) return [];
-        
+        $userq=explode(' ',$q);
         $q=mb_strtolower($q,'utf-8');
         
         $q_token='q2cond.'.md5($q);
         $cond=Tools::memcache($q_token);
-        if($cond) return $cond;
+        //if($cond) return $cond;
         
         
         $cond=[];
-        $from=$to=$number=0;
-        foreach(explode(' ',$q) AS $w)
+        $from=$to=$number=$number1=0;
+        $phraze_responsible=[];
+        $phrazes_responsible=[];
+    
+        foreach(explode(' ',$q) AS $word_index=>$w)
         {
+            $phraze_responsible[]=$userq[$word_index];
+            
             $c=$this->word2cond($w);
             
             if (isset($c['from'])) {
@@ -154,28 +195,66 @@ class holidaysController extends Controller {
             }
             
             if (isset($c['number'])) {
-                if ($c['number']>31 && ($from || $to) )
+                
+                $c['number']=explode('-',$c['number']);
+                if (!isset($c['number'][1])) $c['number'][1]=0;
+                if ($c['number'][1]<$c['number'][0]) $c['number'][1]=0;
+                
+                if ($c['number'][0]>31 && ($from || $to) )
                 {
-                    if ($from) $cond['min_price']=$c['number'];
-                    else $cond['max_price']=$c['number'];
+                    if ($from) {
+                        $cond['min_price']=$c['number'][0];
+                    }
+                    else {
+                        $cond['max_price']=$c['number'][0];
+                    }
+                    if ($c['number'][1]) {
+                        $cond['min_price']=$c['number'][0];
+                        $cond['max_price']=$c['number'][1];
+                    }
                 }
-                if ($c['number']>=1000 && !$from && !$to )
+                
+                if ($c['number'][0]>=1000 && !$from && !$to )
                 {
-                    $cond['max_price']=$c['number'];
+                    if (!$c['number'][1]) {
+                        $cond['max_price']=$c['number'];
+                    }
+                    else {
+                        $cond['min_price']=$c['number'][0];
+                        $cond['max_price']=$c['number'][1];
+                    }
                 }                
                 
-                if ($c['number']<=31) {
-                    $number=$c['number'];
+                if ($c['number'][0]<=31) {
+                    $number=$c['number'][0];
+                    $number1=$c['number'][1];
                     continue;
                 }
+                
                 if (!$number) $from=$to=0;
             }
             
-            if (isset($c['field'])) {
+            if (isset($c['field']) && strlen($c['field'])) {
                 
                 $field=$c['field'];
                 
                 switch ($field) {
+                    
+                    case 'duration':
+                    case 'adt':
+                    case 'chd':
+                        if ($number) {
+                            $val=$number;
+                            if ($number1) $val.=':'.$number1;
+                            $this->update_cond($cond,$field,$val,$phraze_responsible,$phrazes_responsible);
+                        }
+                        break;
+                    
+                    case 'hotel':
+                        $val=explode(':',$c['value']);
+                        $this->update_cond($cond,$field,$val[1],$phraze_responsible,$phrazes_responsible);    
+                        $cond['op']=strtoupper($val[0]);
+                        break;
                     
                     case 'date':
                         $cond['from']=$c['value'];
@@ -188,45 +267,46 @@ class holidaysController extends Controller {
                         if ($month<date('m')) $year++;
                         if ($from) {
                             if (!$number) $number='01';
-                            $cond['from']=$year.'-'.$month.'-'.$number;
+                            $tmp=$phraze_responsible;
+                            $this->update_cond($cond,'from',$year.'-'.$month.'-'.$number,$phraze_responsible,$phrazes_responsible);
+                            if ($number1) $this->update_cond($cond,'fromto',$year.'-'.$month.'-'.$number1,$tmp,$phrazes_responsible);
+                            
                         } elseif ($to) {
                             if (!$number) $number=$this->lastDayOfMonth($month);
-                            $cond['to']=$year.'-'.$month.'-'.$number;
+                            $this->update_cond($cond,'to',$year.'-'.$month.'-'.$number,$phraze_responsible,$phrazes_responsible);
                         } else {
                             if ($number) {
-                                $cond['from']=$cond['fromto']=$year.'-'.$month.'-'.$number;
+                                $val=$cond['fromto']=$year.'-'.$month.'-'.$number;
+                                if ($number1) $val=$year.'-'.$month.'-'.$number1;
+                                $this->update_cond($cond,'from',$val,$phraze_responsible,$phrazes_responsible);
+         
                             } else {
-                                $cond['from']=$year.'-'.$month.'-01';
-                                $cond['to']=$year.'-'.$month.'-'.$this->lastDayOfMonth($month);
+                                $tmp=$phraze_responsible;
+                                
+                                $this->update_cond($cond,'from',$year.'-'.$month.'-01',$phraze_responsible,$phrazes_responsible);
+                                $this->update_cond($cond,'to',$year.'-'.$month.'-'.$this->lastDayOfMonth($month),$tmp,$phrazes_responsible);
+
                             }
                         }
                         break;
                     
                     
                     default:
-                        if (isset($cond[$field])) {
-                            $cond[$field].=','.$c['value'];
-                        } else {
-                            $cond[$field]=$c['value'];
-                        }
+                        $this->update_cond($cond,$field,$c['value'],$phraze_responsible,$phrazes_responsible);
+                        
                         break;
                 }
                 
-                $from=$to=$number=0;
+                $from=$to=$number=$number1=0;
             }
         }
         
-        return Tools::memcache($q_token,$cond);
+        return Tools::memcache($q_token,[$cond,$phrazes_responsible]);
         
         $data=$this->merlin->getFilters(['ofr_type'=>'F'],'trp_depName');
         
      
-        //mydie($data);  
-  
-    
-        //return ['dep'=>'TXL'];
-    
-        return ['dep_name'=>'Łódź'];
+
     }
     
     public function get()
@@ -236,8 +316,11 @@ class holidaysController extends Controller {
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
         
         if (count($cond)) {
-            $cond['type']='F';
-            $offers=$this->merlin->getGrouped($cond,'',$opt['limit'],$opt['offset']);
+            $cond[0]['type']='F';
+            $offers=isset($cond[0]['hotel']) ?
+                $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
+                :
+                $this->merlin->getGrouped($cond[0],'',$opt['limit'],$opt['offset']);
         } else {
             $offers=['result'=>[],'count'=>0];
         }
@@ -278,11 +361,56 @@ class holidaysController extends Controller {
         }
         
         if ($this->data('debug')) {
-            if (!count($result)) $result=$this->merlin->debug;
-            mydie([$cond,$result]);
+            $ret=['conditions'=>$cond,'result'=>$result];
+            if($this->data('debug')==2)  $ret['merlin']=$this->merlin->debug;
+            mydie($ret);
         }
         
         return array('status'=>true,'options'=>$opt,'data'=>$result);
   
     }
+    
+    public function get_query()
+    {
+        $config=$this->getConfig();
+        
+        $q=trim($this->data('q'));
+        $qlen=strlen($q);
+        $cond=$this->q2cond($q);
+        
+        if ($this->data('alter')) {
+            $wcond=$this->q2cond($this->data('alter'));
+            
+            if (count($wcond)){
+                foreach ($wcond[1] AS $what=>$filters)
+                {
+                    if (isset($cond[1][$what])) {
+                        foreach ($filters AS $code=>$name)
+                        {
+                           if (isset($cond[1][$what][$code]))
+                           {
+                                $q=str_replace($cond[1][$what][$code],'',$q);
+                                $q=str_replace('  ',' ',trim($q));
+                                continue 2;
+                           }
+                        }
+                    }
+                    
+                    foreach ($filters AS $code=>$name) {
+                        if ($what=='dep' && isset($config['dep_from'][$code])) {
+                            $q.=' '.$config['dep_from'][$code];
+                        } else {
+                            $q.=' '.$name;
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        if (strlen($q)!=$qlen) return $this->status($q,true,'q');
+        
+        return $this->status('',true,'q');
+    }
+    
 }

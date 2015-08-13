@@ -27,5 +27,23 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script>
     $('.bkgimg').fadeIn(500);
+    
+    function bkgimg_animation()
+    {
+        var top=parseInt($('#webkameleon_holidays_form').css('top'));
+        var newTop=30;
+        if (top!=newTop) {
+            var m=top-newTop;
+            $('#webkameleon_holidays_form').css('top',newTop+'px');
+            $('.bkgimg').css('margin-top','-'+m+'px');
+            
+        }
+        return false;        
+    }
+    
+    setTimeout(function() {
+        $('#webkameleon_holidays_form').submit(bkgimg_animation);
+        $('#webkameleon_holidays_form a').click(bkgimg_animation);
+    },1000);
 </script>
 </html>

@@ -13,7 +13,9 @@
         "SZZ": "ze Szczecina",
         "WRO": "z Wrocławia",
         "IEG": "z Zielonej Góry",
-        "LCJ": "z Łodzi"
+        "LCJ": "z Łodzi",
+        "WAW,WMI": "z Warszawy",
+        "WAW":"z Warszawy"
     },
     
     "dest_shit": [
@@ -69,7 +71,7 @@
         "08": ["sierpień","sierpien","sierpnia","sierpniu"],
         "09": ["wrzesień","wrzesien","września","wrześniu","wrzesnia","wrzesniu"],
         "10": ["październik","pazdziernik","października","październiku","pazdziernika","pazdzierniku"],
-        "11": ["listopad","listopada","listopadzies"],
+        "11": ["listopad","listopada","listopadzie"],
         "12": ["grudzień","grudzien","grudnia","grudniu"]
     }
     

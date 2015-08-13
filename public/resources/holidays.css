@@ -133,6 +133,7 @@
 
 #webkameleon_holidays_results .row .trip_desc a.flight {
     text-transform: capitalize;
+    color: #404040;
 }
 
 #webkameleon_holidays_results .row .holiday_price h5 {

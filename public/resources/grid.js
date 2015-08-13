@@ -81,7 +81,7 @@ function lazyload_grid_load()
             $(window).scroll(lazyload_grid_scroll); 
             lazyload_grid_log('waiting to scroll');
             
-            img_crop();
+            post_lazyload();
         }
 
         
