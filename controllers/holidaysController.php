@@ -1,81 +1,7 @@
 <?php
-class holidaysController extends Controller {
+class holidaysController extends merlinController {
     
-    protected $merlin;
     
-    public function init()
-    {
-        $config=Bootstrap::$main->getConfig();
-        $this->merlin=new Merlin($config['merlin.login'],$config['merlin.pass']);
-    }
-    
-    protected function getConfig()
-    {
-        $config=json_config(__DIR__.'/../config/merlin.json',false,false);
-        
-        $config['words']=[];
-        
-        foreach (['dep','month'] AS $field) {
-            foreach ($config[$field] AS $code=>$dep)
-            {
-                foreach($dep AS $d) $config['words'][$d]=['field'=>$field,'value'=>$code];
-            }
-        }
-        
-        $reg=$this->merlin->getRegions('F');
-        //dest
-        $dest=[];
-        $i=0;
-   
-       
-        foreach ($reg AS $r)
-        {
-            if (!isset($r['region'])) $r['region']='';
-            
-            $country=trim(mb_strtolower($r['country'],'utf-8'));
-            $region=trim(mb_strtolower($r['region'],'utf-8'));
-            
-            
-            foreach($config['dest_shit'] AS $shit) {
-                for($ii=0;$ii<2;$ii++) {
-                    if (strstr($country,' ') && strstr($country,$shit)) $country=trim(str_replace($shit,'',$country));
-                    if (strstr($region,' ') && strstr($region,$shit)) $region=trim(str_replace($shit,'',$region));
-                }
-            }
-            $i++;
-            if ( strstr($country,' ') || strstr($region,' ')) {
-                continue;
-                mydie($r,"$country:$region:$i/".count($reg));
-            }
-            foreach ([$country,$region] AS $w)
-            {
-                if (!$w) continue;
-                if (!isset($dest[$w])) {
-                    $dest[$w]=['field'=>'dest','value'=>$r['id']];
-                } else {
-                    $dest[$w]['value'].=','.$r['id'];
-                }
-            }
-        }
-        
-        foreach (['dest'] AS $field) {
-            foreach ($config[$field] AS $code=>$dep)
-            {
-                foreach($dep AS $d) {
-                    if (isset($dest[$d])) $dest[$d]['value'].=','.$code;
-                    else $dest[$d]=['field'=>'dest','value'=>$code];
-                }
-            }
-        }        
-        
-        foreach($dest AS $w=>$r)
-        {
-            if (!isset($config['words'][$w])) $config['words'][$w]=$r;
-        }
-    
-        
-        return $config;
-    }
     
     protected function word2cond($word)
     {
@@ -339,7 +265,15 @@ class holidaysController extends Controller {
         {
             if (isset($ofr['obj']['info']['photos']) || isset($ofr['obj']['info']['thumb'])) {
                 $r=[];
-                $r['photo']=isset($ofr['obj']['info']['photos']) && count($ofr['obj']['info']['photos']) ? $ofr['obj']['info']['photos'][0] : $ofr['obj']['info']['thumb'];  
+                
+                $r['photo']=$ofr['obj']['info']['thumb'];
+                
+                if (isset($ofr['obj']['info']['photos']) && count($ofr['obj']['info']['photos']))
+                {
+                    $r['photo'] = $ofr['obj']['info']['photos'][0];
+                    if (isset($cond[0]['hotel'])) $r['photo'] = $ofr['obj']['info']['photos'][(count($result)+$opt['offset'])%count($ofr['obj']['info']['photos'])];
+                }
+                
                 foreach($ofr AS $k=>$v)
                 {
                     if (!is_array($v)) $r[$k]=$v;
@@ -355,6 +289,10 @@ class holidaysController extends Controller {
                 
                 $r['stars']='';
                 for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].='🌠';
+                
+                $r['adt'] = isset($cond[0]['adt']) ? $cond[0]['adt'] : 2;
+                $r['chd'] = isset($cond[0]['chd']) ? $cond[0]['chd'] : 0;
+                
                 
                 $result[]=$r;
             }

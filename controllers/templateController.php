@@ -1,5 +1,5 @@
 <?php
-class templateController extends Controller {
+class templateController extends merlinController {
     public function get() {
         $html='
         <div id="webkameleon_holidays_template" style="display:none">
@@ -30,7 +30,7 @@ class templateController extends Controller {
                 </div>
                 <div class="holiday_price col-md-2">
                     <h5>
-                        <a href="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]" target="_blank">
+                        <a href="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt][if:chd]&reservation%5Bchildren%5D=[chd][endif:chd]" target="_blank">
                             [price] [operCurr]/os.
                             <span>REZERWUJ TERAZ &raquo;</span>
                         </a>
@@ -56,23 +56,42 @@ class templateController extends Controller {
     public function get_placeholder()
     {
         
-        return $this->status('np. Hiszpania z Poznania '.$this->next_month());
+        return $this->status('np. Hiszpania '.$this->airport().' '.$this->next_month());
     }
     
     public function get_inputtitle()
     {
         return $this->status('Zadaj pytanie, przykłady:
                              
-   Hiszpania z Warszawy lub Lublina
+   Hiszpania '.$this->airport(0).' lub '.$this->airport(1).'
    Egipt '.$this->next_month().' 3-5 dni
-   jutro z Poznania 2 osoby i 2 dzieci
-   z Gdańska od 1500 do 2000 7 dni
+   jutro '.$this->airport(2).' 2 osoby i 2 dzieci
+   '.$this->airport(3).' od 1500 do 2000 7 dni
    Wyspy Kanaryjskie 15-17 '.$this->next_month(1,3).'
    Majorka lub Fuerteventura od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'
    Chorwacja od lipca do sierpnia 1 osoba 2 dzieci
    
-
 lub różne kombinacje powyższych');
     
+    }
+    
+    protected function airport($i=0)
+    {
+        $config=$this->getConfig();
+        $geo=Tools::geoip();
+        
+        $airports=[];
+        foreach($config['dep_latlng'] AS $ap=>$latlng)
+        {
+            $airports[$ap]=$this->distance($latlng,[$geo['location']['latitude'],$geo['location']['longitude']]);            
+        }
+        asort($airports);
+        $ak=array_keys($airports);
+        
+        $code=$ak[$i];
+        
+        return $config['dep_from'][$code];
+        
+
     }
 }
