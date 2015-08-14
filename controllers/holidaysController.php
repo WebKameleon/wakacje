@@ -89,6 +89,7 @@ class holidaysController extends merlinController {
     
     protected function q2cond($q)
     {
+        $q=str_replace(['+',',',';'],' ',$q);
         $q=preg_replace('/\s+/',' ',trim($q));
         if (!$q) return [];
         $userq=explode(' ',$q);
