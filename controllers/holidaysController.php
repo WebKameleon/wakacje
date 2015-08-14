@@ -97,7 +97,7 @@ class holidaysController extends merlinController {
         
         $q_token='q2cond.'.md5($q);
         $cond=Tools::memcache($q_token);
-        //if($cond) return $cond;
+        if($cond) return $cond;
         
         
         $cond=[];
