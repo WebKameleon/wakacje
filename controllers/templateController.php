@@ -7,7 +7,7 @@ class templateController extends merlinController {
                 <div class="holiday_photo col-md-3">
                     <div>
                         <a class="q" rel="hotel:[tourOp]:[obj_code]" xname="[obj_name]">
-                        <img src="[photo]"/>
+                        <img src="[photo]" class="img-responsive"/>
                         <h3>[obj_name]<span class="stars">[stars]</span></h3>
                         </a>
                     </div>
@@ -28,7 +28,7 @@ class templateController extends merlinController {
                         [obj_serviceDesc], [obj_roomDesc]
                     </h6>
                 </div>
-                <div class="holiday_price col-md-2">
+                <div class="holiday_price col-md-3">
                     <h5>
                         <a href="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt][if:chd]&reservation%5Bchildren%5D=[chd][endif:chd]" target="_blank">
                             [price] [operCurr]/os.
