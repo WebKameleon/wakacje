@@ -24,6 +24,10 @@ body {
     width:100%;
 }
 
+#webkameleon_holidays_form .glyphicon {
+  top:32px;
+}
+
 #webkameleon_holidays_results {
     margin-top: 20px;
 }

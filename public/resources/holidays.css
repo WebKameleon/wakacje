@@ -2,8 +2,17 @@
     text-align: center;
     height: 44px;
     margin-bottom: 45px;
+    position: relative;
 }
 
+#webkameleon_holidays_form .glyphicon {
+    position: absolute;
+    top: 12px;
+    vertical-align: baseline;
+    font-size: 18px;
+    left: 67%;
+    cursor: pointer;
+}
 
 #webkameleon_holidays_form input {
     font-family: Tahoma,Geneva,sans-serif;
@@ -17,6 +26,7 @@
     border-bottom-right-radius: 0;
     width: 50%;
     padding-left: 1em;
+    padding-right: 1.3em
     display: table-cell;
     border: 1px solid #ccc;
 }

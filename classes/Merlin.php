@@ -714,8 +714,7 @@ class Merlin
         $regions=$this->post_xml($xml,'regions');
         
         
-        
-        $rg=__DIR__.'/regions.json';
+        $rg=Tools::saveRoot('merlin/regions.json');
         
         if ( !file_exists($rg) ||  filemtime($rg)<time()-24*3600)
         {

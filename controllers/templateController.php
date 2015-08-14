@@ -43,6 +43,40 @@ class templateController extends merlinController {
         die ($html);
     }
     
+    public function get_help()
+    {
+        $html='
+            <div id="webkameleon_holidays_helpmodal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Jak zadawać pytania - przykłady</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Hiszpania '.$this->airport(0).' lub '.$this->airport(1).'</p>
+                            <p>Egipt '.$this->next_month().' 3-5 dni</p>
+                            <p>jutro '.$this->airport(2).' 2 osoby i 2 dzieci</p>
+                            <p>'.$this->airport(3).' od 1500 do 2000 na 7 dni</p>
+                            <p>Wyspy Kanaryjskie 15-17 '.$this->next_month(1,3).'</p>
+                            <p>Majorka lub Fuerteventura od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
+                            <p>Chorwacja od lipca do sierpnia 1 osoba 2 dzieci</p>
+                            
+                            <p class="text-warning"><small>lub różne kombinacje powyższych</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-default" data-dismiss="modal">zamknij i znajdź udane wakacje</button>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        ';
+        
+        die($html);
+    }
+    
+    
     protected function next_month($day=0,$plus=1)
     {
         $months=[
@@ -59,21 +93,6 @@ class templateController extends merlinController {
         return $this->status('np. Hiszpania '.$this->airport().' '.$this->next_month());
     }
     
-    public function get_inputtitle()
-    {
-        return $this->status('Zadaj pytanie, przykłady:
-                             
-   Hiszpania '.$this->airport(0).' lub '.$this->airport(1).'
-   Egipt '.$this->next_month().' 3-5 dni
-   jutro '.$this->airport(2).' 2 osoby i 2 dzieci
-   '.$this->airport(3).' od 1500 do 2000 7 dni
-   Wyspy Kanaryjskie 15-17 '.$this->next_month(1,3).'
-   Majorka lub Fuerteventura od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'
-   Chorwacja od lipca do sierpnia 1 osoba 2 dzieci
-   
-lub różne kombinacje powyższych');
-    
-    }
     
     protected function airport($i=0)
     {

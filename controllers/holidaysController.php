@@ -235,6 +235,7 @@ class holidaysController extends merlinController {
 
     }
     
+
     public function get()
     {
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
@@ -247,6 +248,7 @@ class holidaysController extends merlinController {
                 $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
                 :
                 $this->merlin->getGrouped($cond[0],'',$opt['limit'],$opt['offset']);
+            Tools::log('query',['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
         } else {
             $offers=['result'=>[],'count'=>0];
         }

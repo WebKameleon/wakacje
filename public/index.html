@@ -3,17 +3,21 @@
     <meta charset="utf-8"/>
     <title>Szukaj wakacji</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="resources/demo.css"/>
 </head>
 <body>
 
+<div style="overflow: hidden" id="webkameleon-top-demo">
 <img src="img/beach-xs.jpg" alt="Wakacje" class="bkgimg hidden-lg hidden-md" style="display: none"/>
-<img src="img/beach-lg.jpg" alt="Wakacje" class="bkgimg hidden-xs hidden-sm" style="display: none"/>
+<video class="bkgimg hidden-xs hidden-sm" autoplay loop video-list style="display: none" src="img/beach-loop.mp4">
+</video>
+</div>
 
 <div style="text-align: right"><a style="color: #909090; font-size: 12px" href="http://www.webkameleon.com/pl/wakacje/">Zobacz też wersję osadzoną na Twojej stronie</a></div>
 
-<script src="http://wakacje.webkameleon.com/holidays.js"></script>
+<script async src="http://wakacje.webkameleon.com/holidays.js"></script>
 
 <span id="scroll-top">
     <a class="scrollup" style="display: inline;"><i class="icomoon-arrow-up"></i></a>
@@ -25,7 +29,7 @@
 
 </body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
     $('.bkgimg').fadeIn(500);
     
@@ -37,7 +41,7 @@
             var m=top-newTop;
             $('#webkameleon_holidays_form').css('top',newTop+'px');
             $('.bkgimg').css('margin-top','-'+m+'px');
-            
+            $('#webkameleon-top-demo').height('140px');
         }
         return false;        
     }

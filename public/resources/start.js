@@ -6,8 +6,9 @@ $.get(holidays_url+'template/placeholder',function(data) {
     $('#webkameleon_holidays_form input').attr('placeholder',data.template).focus();
 });
 
-$.get(holidays_url+'template/inputtitle',function(data) {
-    $('#webkameleon_holidays_form input').attr('title',data.template);
+
+$.get(holidays_url+'template/help',function(html) {
+    $('#webkameleon_holidays_form').append(html);
 });
 
 var getUrlParameter = function getUrlParameter(sParam,url) {
@@ -85,4 +86,9 @@ function post_lazyload() {
 $('#webkameleon_holidays_form').submit(function() {
     lazyload_grid_reload();
     return false;
+});
+
+$('#webkameleon_holidays_form .glyphicon').click (function() {
+    $("#webkameleon_holidays_helpmodal").modal('show');
+
 });
