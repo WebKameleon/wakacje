@@ -97,8 +97,10 @@ class holidaysController extends merlinController {
         
         $q_token='q2cond.'.md5($q);
         $cond=Tools::memcache($q_token);
-        if($cond) return $cond;
-        
+        if($cond && !$this->data('debug')) {
+            $cond['memcache']=true;
+            return $cond;
+        }
         
         $cond=[];
         $from=$to=$number=$number1=0;
@@ -192,6 +194,7 @@ class holidaysController extends merlinController {
                         $month=$c['value'];
                         $year=date('Y');
                         if ($month<date('m')) $year++;
+                        
                         if ($from) {
                             if (!$number) $number='01';
                             $tmp=$phraze_responsible;
@@ -203,8 +206,10 @@ class holidaysController extends merlinController {
                             $this->update_cond($cond,'to',$year.'-'.$month.'-'.$number,$phraze_responsible,$phrazes_responsible);
                         } else {
                             if ($number) {
+
                                 $val=$cond['fromto']=$year.'-'.$month.'-'.$number;
-                                if ($number1) $val=$year.'-'.$month.'-'.$number1;
+                                if ($number1) $cond['fromto']=$year.'-'.$month.'-'.$number1;
+                                
                                 $this->update_cond($cond,'from',$val,$phraze_responsible,$phrazes_responsible);
          
                             } else {

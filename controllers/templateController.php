@@ -54,13 +54,13 @@ class templateController extends merlinController {
                             <h4 class="modal-title">Jak zadawać pytania - przykłady</h4>
                         </div>
                         <div class="modal-body">
-                            <p>Hiszpania '.$this->airport(0).' lub '.$this->airport(1).'</p>
-                            <p>Egipt '.$this->next_month().' 3-5 dni</p>
-                            <p>jutro '.$this->airport(2).' 2 osoby i 2 dzieci</p>
-                            <p>'.$this->airport(3).' od 1500 do 2000 na 7 dni</p>
-                            <p>Wyspy Kanaryjskie 15-17 '.$this->next_month(1,3).'</p>
-                            <p>Majorka lub Fuerteventura od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
-                            <p>Chorwacja od lipca do sierpnia 1 osoba 2 dzieci</p>
+                            <p class="example">Hiszpania '.$this->airport(0).' lub '.$this->airport(1).'</p>
+                            <p class="example">Egipt '.$this->next_month().' 3-5 dni</p>
+                            <p class="example">jutro '.$this->airport(2).' 2 osoby i 2 dzieci</p>
+                            <p class="example">'.$this->airport(3).' od 1500 do 2000 na 7 dni</p>
+                            <p class="example">Wyspy Kanaryjskie 15-18 '.$this->next_month(1,3).'</p>
+                            <p class="example">Majorka lub Fuerteventura od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
+                            <p class="example">Chorwacja od '.$this->next_month(1,0).' do '.$this->next_month(1,1).' 1 osoba 2 dzieci</p>
                             
                             <p class="text-warning"><small>lub różne kombinacje powyższych</small></p>
                         </div>

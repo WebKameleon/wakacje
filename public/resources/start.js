@@ -9,6 +9,12 @@ $.get(holidays_url+'template/placeholder',function(data) {
 
 $.get(holidays_url+'template/help',function(html) {
     $('#webkameleon_holidays_form').append(html);
+    
+    $('#webkameleon_holidays_helpmodal .modal-body .example').click(function() {
+        $('#webkameleon_holidays_form input[name="q"]').val($(this).text());
+        $("#webkameleon_holidays_helpmodal").modal('hide');
+        $('#webkameleon_holidays_form a').trigger('click');
+    });
 });
 
 var getUrlParameter = function getUrlParameter(sParam,url) {

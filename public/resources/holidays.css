@@ -186,9 +186,18 @@
 }
 
 
+#webkameleon_holidays_helpmodal .modal-body .example {
+    cursor: pointer
+}
+
+
 @media (max-width:480px) {
     #webkameleon_holidays_form input {
         width: 75%;
+    }
+    
+    #webkameleon_holidays_form input {
+        font-size: 12px;
     }
 
 }
