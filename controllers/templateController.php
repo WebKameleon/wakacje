@@ -91,7 +91,7 @@ class templateController extends merlinController {
             $indicators.='
                 <li data-target="#webkameleon_holidays_hotel_carousel" data-slide-to="'.$i.'" class="inactive"></li>';
             $slides.='
-                <div class="item inactive">
+                <div class="item item-tpl inactive">
                     <img src="http://placehold.it/1280x500" alt="" class="img-responsive"/>
                     <div class="carousel-caption">
                         <h3>Tytuł</h3>

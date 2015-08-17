@@ -93,7 +93,7 @@ function post_lazyload() {
             console.log(data);
             
             if (typeof(data.holidays.obj.info.photos)!='undefined') {
-                var inners=$("#webkameleon_holidays_hotelmodal .carousel-inner div.item");
+                var inners=$("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl");
                 var indicators=$("#webkameleon_holidays_hotelmodal .carousel-indicators li");
                 var desc=data.holidays.obj.info.desc;
                 var photos=data.holidays.obj.info.photos;
@@ -105,14 +105,19 @@ function post_lazyload() {
                 for (i=0;i<min;i++)
                 {
                     $(indicators[i]).css('display','inline-block');
+                    $(inners[i]).removeAttr('style');
                     $(inners[i]).find('img').attr('src',photos[i%photos.length]);
                     $(inners[i]).find('h3').text(desc[i].subject);
                     $(inners[i]).find('p').html(desc[i].content);
+                    $(inners[i]).addClass('item');
                     
                 }
                 for (i=min;i<inners.length;i++)
                 {
                     $(indicators[i]).css('display','none');
+                    $(inners[i]).removeClass('item');
+                    $(inners[i]).css('display','none');
+                    
                 }                
                 
                 $('#webkameleon_holidays_hotelmodal h4.modal-title').html(data.holidays.obj.name+' '+data.holidays.stars);
@@ -130,7 +135,9 @@ function post_lazyload() {
                 
                 $("#webkameleon_holidays_hotelmodal").modal('show');
                 
-                
+                $('#webkameleon_holidays_hotel_carousel').carousel({
+                    interval: 3500
+                });
             }
 
             
