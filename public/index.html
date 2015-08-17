@@ -46,9 +46,18 @@
         return false;        
     }
     
-    setTimeout(function() {
-        $('#webkameleon_holidays_form').submit(bkgimg_animation);
-        $('#webkameleon_holidays_form a').click(bkgimg_animation);
-    },1000);
+    function webkameleon_demo_form()
+    {
+        var helpFound=$('#webkameleon_holidays_form');
+        if (helpFound.length==0) {
+            setTimeout(webkameleon_demo_form,200);
+        } else {
+            $('#webkameleon_holidays_form').submit(bkgimg_animation);
+            $('#webkameleon_holidays_form a').click(bkgimg_animation);      
+        }
+    }
+    webkameleon_demo_form();
+    
+
 </script>
 </html>

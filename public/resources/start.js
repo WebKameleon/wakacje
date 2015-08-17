@@ -7,15 +7,7 @@ $.get(holidays_url+'template/placeholder',function(data) {
 });
 
 
-$.get(holidays_url+'template/help',function(html) {
-    $('#webkameleon_holidays_form').append(html);
-    
-    $('#webkameleon_holidays_helpmodal .modal-body .example').click(function() {
-        $('#webkameleon_holidays_form input[name="q"]').val($(this).text());
-        $("#webkameleon_holidays_helpmodal").modal('hide');
-        $('#webkameleon_holidays_form a').trigger('click');
-    });
-});
+
 
 var getUrlParameter = function getUrlParameter(sParam,url) {
     
@@ -38,7 +30,10 @@ var getUrlParameter = function getUrlParameter(sParam,url) {
 var q=getUrlParameter('q');
 if (typeof(q) != 'undefined') {
     $('#webkameleon_holidays_form input').val(q.replace(/\+/g,' '));
-    lazyload_grid_reload();
+    setTimeout(function() {
+        $('#webkameleon_holidays_form a').trigger('click');
+    },500);
+    
 } else {
     //console.log(document.referrer);
 }
@@ -98,3 +93,20 @@ $('#webkameleon_holidays_form .glyphicon').click (function() {
     $("#webkameleon_holidays_helpmodal").modal('show');
 
 });
+
+function webkameleon_holidays_helpmodal_click()
+{
+    var helpFound=$('#webkameleon_holidays_helpmodal');
+    if (helpFound.length==0) {
+        setTimeout(webkameleon_holidays_helpmodal_click,200);
+    } else {
+        $('#webkameleon_holidays_helpmodal .modal-body .example').click(function() {
+            $('#webkameleon_holidays_form input[name="q"]').val($(this).text());
+            $("#webkameleon_holidays_helpmodal").modal('hide');
+            $('#webkameleon_holidays_form a').trigger('click');
+        });        
+    }
+}
+
+webkameleon_holidays_helpmodal_click();
+

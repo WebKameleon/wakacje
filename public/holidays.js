@@ -37,6 +37,14 @@ function holidays_jquery_loaded() {
         });
         
     }
+
+    var helpFound=$('#webkameleon_holidays_helpmodal');
+    if (helpFound.length==0) {
+        $.get(holidays_url+'template/help',function(html) {
+            $(holidays_script).parent().append(html);
+        });
+    }
+
     
     $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
       if ( options.dataType == 'script' || originalOptions.dataType == 'script' ) {
