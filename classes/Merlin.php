@@ -319,8 +319,13 @@ class Merlin
     
     protected function time2str($d)
     {
-        $t=strtotime($d);
+        $d=explode(':',$d);
+        $t=strtotime($d[0]);
         if (!$t) return '';
+        if (isset($d[1])) {
+            $t1=strtotime($d[1]);
+            if ($t1) return date('Ymd',$t).':'.date('Ymd',$t1);
+        }
         return date('Ymd',$t);
     }
 
@@ -407,10 +412,11 @@ class Merlin
         $zarok=$this->time2str(date('Y-m-d',time()+365*24*3600));
         if (isset($offer['from']) && $offer['from'])
         {
-            $cond['trp_depDate']=$this->time2str($offer['from']).':'.$zarok;
+            $cond['trp_depDate']=$this->time2str($offer['from']);
+            if (!strstr($offer['from'],':')) $cond['trp_depDate'].':'.$zarok;
         }
         
-        if (isset($offer['from']) && isset($offer['fromto']) && $offer['fromto'] && $offer['from'])
+        if (isset($offer['from']) && isset($offer['fromto']) && $offer['fromto'] && $offer['from'] && !strstr($offer['from'],':'))
         {
             $cond['trp_depDate']=$this->time2str($offer['from']).':'.$this->time2str($offer['fromto']);
         }

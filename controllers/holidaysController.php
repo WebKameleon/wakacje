@@ -37,6 +37,12 @@ class holidaysController extends merlinController {
             case 'dziś':
                 return ['field'=>'date','value'=>date('Y-m-d')];
 
+            case 'last':
+            case 'minute':
+            case 'lastminute':
+                $conf=Bootstrap::$main->getConfig();
+                return ['field'=>'date','value'=>date('Y-m-d').':'.date('Y-m-d',time()+$conf['lastminute.days']*24*3600)];
+                
             case 'jutro':
                 return ['field'=>'date','value'=>date('Y-m-d',time()+24*3600)];
 
@@ -186,7 +192,7 @@ class holidaysController extends merlinController {
                         break;
                     
                     case 'date':
-                        $cond['from']=$c['value'];
+                        $this->update_cond($cond,'from',$c['value'],$phraze_responsible,$phrazes_responsible);
                         $cond['fromto']=$c['value'];
                         break;
                     
@@ -375,7 +381,7 @@ class holidaysController extends merlinController {
             $desc=$offer['obj']['info']['desc'];
             $desc2=[];
             foreach($desc AS $d) {
-                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kategoria lokalna']) && !is_array($d['content']))
+                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kategoria lokalna','kraj']) && !is_array($d['content']))
                 {
                     $pm=[];
                     if (preg_match_all('~<b>([^<]+)</b>([^<]+)~i',$d['content'],$pm)) {

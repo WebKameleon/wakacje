@@ -18,6 +18,8 @@
     
     "merlin.search.limit":10,
     
+    "lastminute.days":21,
+    
     
     "admin.ids": [1]  
 }
