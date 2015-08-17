@@ -8,7 +8,11 @@ class templateController extends merlinController {
                     <div>
                         <a class="q" rel="hotel:[tourOp]:[obj_code]" xname="[obj_name]">
                         <img src="[photo]" class="img-responsive"/>
-                        <h3>[obj_name]<span class="stars">[stars]</span></h3>
+                        <h3>
+                            <b title="[obj_name]">[obj_name]</b>
+                            <span class="stars" title="kategoria">[stars]</span>
+                            <i rel="[id]" title="informacje o wakacjach" class="glyphicon glyphicon-question-sign"></i>
+                        </h3>
                         </a>
                     </div>
                     
@@ -76,6 +80,67 @@ class templateController extends merlinController {
         die($html);
     }
     
+    public function get_hotel()
+    {
+        $items=15;
+        
+        $indicators='';
+        $slides='';
+        
+        for ($i=0;$i<$items;$i++) {
+            $indicators.='
+                <li data-target="#webkameleon_holidays_hotel_carousel" data-slide-to="'.$i.'" class="inactive"></li>';
+            $slides.='
+                <div class="item inactive">
+                    <img src="http://placehold.it/1280x500" alt="" class="img-responsive"/>
+                    <div class="carousel-caption">
+                        <h3>Tytuł</h3>
+                        <p>opis</p>
+                    </div>
+                </div>  ';
+                
+            if (!$i) {
+                $indicators=str_replace('inactive','active',$indicators);
+                $slides=str_replace('inactive','active',$slides);
+            }
+        }
+        
+        $html='
+            <div id="webkameleon_holidays_hotelmodal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Nazwa hotelu</h4>
+                            <h5 class="modal-country">Kraj</h5>
+                        </div>
+                        <div class="modal-body">
+                        
+                            <div id="webkameleon_holidays_hotel_carousel" class="carousel slide">
+                            
+                                <ol class="carousel-indicators">
+                                    '.$indicators.'
+                                </ol>                            
+                                <div class="carousel-inner">
+                                    '.$slides.'
+                                </div>
+                            </div>                        
+                        
+                         </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-default" data-dismiss="modal">zamknij</button>
+                            <button type="button" class="btn btn-primary" text="rezerwuj " rel="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt]&reservation%5Bchildren%5D=[chd]">rezerwuj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        ';
+        
+        die($html);
+    }
+
+
     
     protected function next_month($day=0,$plus=1)
     {

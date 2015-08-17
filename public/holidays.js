@@ -45,6 +45,12 @@ function holidays_jquery_loaded() {
         });
     }
 
+    var hotelFound=$('#webkameleon_holidays_hotelmodal');
+    if (hotelFound.length==0) {
+        $.get(holidays_url+'template/hotel',function(html) {
+            $(holidays_script).parent().append(html);
+        });
+    }    
     
     $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
       if ( options.dataType == 'script' || originalOptions.dataType == 'script' ) {

@@ -326,7 +326,7 @@ class Merlin
 
     public function getOfferOnToken($token)
     {
-        $o=$this->getOffers(null,null,null,null,null,$token);
+        $o=$this->getOffers(null,null,null,null,$token);
         if (isset($o['result'][0])) return $o['result'][0];
         return null;
     }
@@ -484,13 +484,13 @@ class Merlin
             $cond=array('ofr_id'=>$token);
             $type='details';
         }
-        
+       
 
         $xml2=$this->request($type,$cond);
 
         $xml_response = $this->post_xml($xml2,$type);
 
-        if ($xml_response['count']==0 && !strlen($token) && $limit>5 && $search4otherDates)
+        if (!strlen($token) && $xml_response['count']==0 && !strlen($token) && $limit>5 && $search4otherDates)
         {
             $cond2=$cond;
             unset($cond2['trp_depDate']);

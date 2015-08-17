@@ -296,10 +296,14 @@ class holidaysController extends merlinController {
                         $r[$k]=mb_strtolower($r[$k],'utf-8');
                 
                 $r['stars']='';
-                for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].='🌠';
+                for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].=$this->star;
                 
                 $r['adt'] = isset($cond[0]['adt']) ? $cond[0]['adt'] : 2;
                 $r['chd'] = isset($cond[0]['chd']) ? $cond[0]['chd'] : 0;
+                
+                
+                Bootstrap::$main->session('adt',$r['adt']);
+                Bootstrap::$main->session('chd',$r['chd']);
                 
                 
                 $result[]=$r;
@@ -357,6 +361,54 @@ class holidaysController extends merlinController {
         if (strlen($q)!=$qlen) return $this->status($q,true,'q');
         
         return $this->status('',true,'q');
+    }
+    
+    public function get_offer()
+    {
+        $config=$this->getConfig();
+        $offer=$this->merlin->getOfferOnToken($this->id);
+        
+        $offer['stars']='';
+        if (isset($offer['obj']['category'])) for($i=0;$i<$offer['obj']['category'];$i+=10) $offer['stars'].=$this->star;
+        
+        if (isset($offer['obj']['info']['desc'])) {
+            $desc=$offer['obj']['info']['desc'];
+            $desc2=[];
+            foreach($desc AS $d) {
+                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kategoria lokalna']) && !is_array($d['content']))
+                {
+                    $pm=[];
+                    if (preg_match_all('~<b>([^<]+)</b>([^<]+)~i',$d['content'],$pm)) {
+                    
+                        for ($i=0;$i<count($pm[1]);$i++)
+                        {
+                            $desc2[]=[
+                                'subject'=>str_replace(':','',$pm[1][$i]),
+                                'content'=>trim($pm[2][$i])
+                            ];
+                            
+                        }
+                    } else {
+                        $desc2[]=$d;
+                    }
+                }
+            }
+            $offer['obj']['info']['desc']=$desc2;
+            
+            $offer['dep_from']=$config['dep_from'][$offer['trp']['depCode']];
+            $offer['adt']=Bootstrap::$main->session('adt');
+            $offer['chd']=Bootstrap::$main->session('chd');
+            
+            //mydie($offer['obj']['info']);
+        }
+        
+        if ($this->data('debug'))
+        {
+            $ret=[$offer];
+            if ($this->data('debug')==2) $ret[1]=$this->merlin->debug; 
+            mydie($ret);
+        }
+        return $this->status($offer);
     }
     
 }

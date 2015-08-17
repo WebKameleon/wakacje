@@ -77,12 +77,12 @@
 #webkameleon_holidays_results .row .holiday_photo div {
     height: 150px;
     overflow: hidden;
-    margin: 10px 10px 0 10px;
+    margin: 10px;
 }
 
 #webkameleon_holidays_results .row .holiday_photo h3 {
     position: absolute;
-    bottom: 15px;
+    bottom: 20px;
     background-image: url(../img/dark.png);
     background-color: transparent;
     background-repeat: repeat;
@@ -92,6 +92,21 @@
     right: 10px;
     font-size: 16px;
 }
+
+#webkameleon_holidays_results .row .holiday_photo h3 b {
+    font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 60%;
+    display: inline-block;
+}
+
+#webkameleon_holidays_results .row .holiday_photo h3 i {
+    float: right;
+    margin-right: 3px;
+}
+
 
 #webkameleon_holidays_results .row:hover {
     background-color: #f0d0d0;
@@ -188,6 +203,46 @@
 
 #webkameleon_holidays_helpmodal .modal-body .example {
     cursor: pointer
+}
+
+#webkameleon_holidays_hotelmodal h5.modal-country {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#webkameleon_holidays_hotel_carousel .carousel-indicators {
+    bottom: auto;
+    left: auto;
+    right: auto;
+    top: 10px;
+    width: 100%;
+    background-color:rgba(0,0,0,0.5);
+    margin: 0;
+}
+#webkameleon_holidays_hotel_carousel .carousel-caption {
+    bottom: auto;
+    left: auto;
+    right: auto;
+    top: 37px;
+    width: 100%;
+    background-color:rgba(0,0,0,0.5);
+    margin: 0;
+    padding: 2px 5px 0 5px;
+    text-align: left;
+}
+
+#webkameleon_holidays_hotel_carousel .carousel-caption h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#webkameleon_holidays_hotel_carousel .carousel-caption p {
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+#webkameleon_holidays_hotel_carousel .item img {
+    width: 100%;
 }
 
 
