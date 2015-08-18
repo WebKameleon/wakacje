@@ -83,7 +83,7 @@ class holidaysController extends merlinController {
     private function update_cond(Array &$cond,$field,$value,Array &$phraze,Array &$phrazes)
     {
         if (isset($cond[$field])) {
-            $cond[$field].=','.$value;
+            if (!strstr($cond[$field],$value)) $cond[$field].=','.$value;
         } else {
             $cond[$field]=$value;
         }
