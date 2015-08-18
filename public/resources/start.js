@@ -29,13 +29,16 @@ var getUrlParameter = function getUrlParameter(sParam,url) {
 
 var q=getUrlParameter('q');
 if (typeof(q) != 'undefined') {
-    $('#webkameleon_holidays_form input').val(q.replace(/\+/g,' '));
+    $('#webkameleon_holidays_form input[name="q"]').val(q.replace(/\+/g,' '));
     setTimeout(function() {
         $('#webkameleon_holidays_form a').trigger('click');
     },500);
     
 } else {
-    //console.log(document.referrer);
+    $.get(holidays_url+'holidays/q',function(data){
+        $('#webkameleon_holidays_form input[name="q"]').val(data.q);
+        $('#webkameleon_holidays_form a').trigger('click');
+    });
 }
 
 
@@ -90,7 +93,7 @@ function post_lazyload() {
         var rel=$(this).attr('rel');
         
         $.get(holidays_url+'holidays/offer/'+rel,function(data) {
-            console.log(data);
+            //console.log(data);
             
             if (typeof(data.holidays.obj.info.photos)!='undefined') {
                 var inners=$("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl");
@@ -135,9 +138,7 @@ function post_lazyload() {
                 
                 $("#webkameleon_holidays_hotelmodal").modal('show');
                 
-                $('#webkameleon_holidays_hotel_carousel').carousel({
-                    interval: 3500
-                });
+                
             }
 
             

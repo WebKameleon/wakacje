@@ -247,13 +247,17 @@ class holidaysController extends merlinController {
 
     }
     
+    public function get_q()
+    {
+        return $this->status(Bootstrap::$main->session('q'),true,'q');
+    }
 
     public function get()
     {
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
         
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
-        
+        Bootstrap::$main->session('q',$this->data('q'));
         if (count($cond)) {
             $cond[0]['type']='F';
             $offers=isset($cond[0]['hotel']) ?
@@ -261,6 +265,7 @@ class holidaysController extends merlinController {
                 :
                 $this->merlin->getGrouped($cond[0],'',$opt['limit'],$opt['offset']);
             Tools::log('query',['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
+            
         } else {
             $offers=['result'=>[],'count'=>0];
         }
@@ -381,7 +386,7 @@ class holidaysController extends merlinController {
             $desc=$offer['obj']['info']['desc'];
             $desc2=[];
             foreach($desc AS $d) {
-                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kategoria lokalna','kraj']) && !is_array($d['content']))
+                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kraj','kategoria lokalna']) && !is_array($d['content']))
                 {
                     $pm=[];
                     if (preg_match_all('~<b>([^<]+)</b>([^<]+)~i',$d['content'],$pm)) {

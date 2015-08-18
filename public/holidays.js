@@ -49,6 +49,22 @@ function holidays_jquery_loaded() {
     if (hotelFound.length==0) {
         $.get(holidays_url+'template/hotel',function(html) {
             $(holidays_script).parent().append(html);
+            setTimeout(function() {
+                $('#webkameleon_holidays_hotel_carousel').carousel({
+                    interval: 3500
+                });
+                $('#webkameleon_holidays_hotel_carousel').carousel('pause');
+                
+                $('#webkameleon_holidays_hotelmodal').on('shown.bs.modal', function() {
+                    $('#webkameleon_holidays_hotel_carousel').carousel('cycle');
+                }).on('hidden.bs.modal', function() {
+                    $('#webkameleon_holidays_hotel_carousel').carousel('pause');
+                    $("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl").removeClass('active');
+                    $("#webkameleon_holidays_hotelmodal .carousel-indicators li").removeClass('active');
+                    $("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl").first().addClass('active');
+                    $("#webkameleon_holidays_hotelmodal .carousel-indicators li").first().addClass('active');
+                });
+            },1000);
         });
     }    
     
