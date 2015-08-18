@@ -260,6 +260,8 @@ class holidaysController extends merlinController {
         Bootstrap::$main->session('q',$this->data('q'));
         if (count($cond)) {
             $cond[0]['type']='F';
+            if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
+            
             $offers=isset($cond[0]['hotel']) ?
                 $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
                 :
