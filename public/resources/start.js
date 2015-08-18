@@ -37,7 +37,7 @@ if (typeof(q) != 'undefined') {
 } else {
     $.get(holidays_url+'holidays/q',function(data){
         $('#webkameleon_holidays_form input[name="q"]').val(data.q);
-        $('#webkameleon_holidays_form a').trigger('click');
+        if (typeof(data.q)=='string' && data.q.length) $('#webkameleon_holidays_form a').trigger('click');
     });
 }
 
