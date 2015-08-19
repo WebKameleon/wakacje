@@ -388,7 +388,9 @@ class holidaysController extends merlinController {
             $desc=$offer['obj']['info']['desc'];
             $desc2=[];
             foreach($desc AS $d) {
-                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kraj','kategoria lokalna']) && !is_array($d['content']))
+                if (is_array($d['subject'])) continue;
+                if (is_array($d['content'])) continue;
+                if (!in_array(strtolower(trim($d['subject'])),['category','kategoria','region','kraj','kategoria lokalna']) )
                 {
                     $pm=[];
                     if (preg_match_all('~<b>([^<]+)</b>([^<]+)~i',$d['content'],$pm)) {
