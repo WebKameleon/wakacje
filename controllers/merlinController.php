@@ -36,7 +36,9 @@ class merlinController extends Controller {
         foreach ($reg AS $r)
         {
             if (!isset($r['region'])) $r['region']='';
+            if (!isset($r['country'])) continue;
             
+        
             $country=trim(mb_strtolower($r['country'],'utf-8'));
             $region=trim(mb_strtolower($r['region'],'utf-8'));
             
