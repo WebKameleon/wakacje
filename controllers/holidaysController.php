@@ -57,6 +57,10 @@ class holidaysController extends merlinController {
             case 'osób':
             case 'osob':
             case 'osoba':
+            case 'dorośli':
+            case 'dorosłych':
+            case 'doroslych':
+            case 'dorosli':
                 return ['field'=>'adt'];
 
             case 'dziecko':
