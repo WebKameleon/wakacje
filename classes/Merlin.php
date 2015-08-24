@@ -413,7 +413,7 @@ class Merlin
         if (isset($offer['from']) && $offer['from'])
         {
             $cond['trp_depDate']=$this->time2str($offer['from']);
-            if (!strstr($offer['from'],':')) $cond['trp_depDate'].':'.$zarok;
+            if (!strstr($offer['from'],':')) $cond['trp_depDate'].=':'.$zarok;
         }
         
         if (isset($offer['from']) && isset($offer['fromto']) && $offer['fromto'] && $offer['from'] && !strstr($offer['from'],':'))
@@ -423,12 +423,12 @@ class Merlin
         
         if (isset($offer['to']) && $offer['to'])
         {
-            $cond['trp_retDate']=$this->time2str($offer['to']);
+            $cond['trp_retDate']=$this->time2str(date('Y-m-d')).':'.$this->time2str($offer['to']);
         } 
  
-        if (isset($cond['trp_depDate']) && !isset($cond['trp_retDate']))
+        if (isset($offer['to']) && $offer['to'] && isset($offer['from']) && $offer['from'])
         {
-            $cond['trp_retDate']=$this->time2str($offer['from']).':'.$zarok;
+            $cond['trp_retDate']=$this->time2str($offer['from']).':'.$this->time2str($offer['to']);
         }
 
         if (isset($offer['dest']) && $offer['dest'])
