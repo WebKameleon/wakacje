@@ -60,9 +60,14 @@ class holidaysController extends merlinController {
                 return ['field'=>'adt'];
 
             case 'dziecko':
-            case 'dzieci':
-                return ['field'=>'chd'];
+            case 'dzieckiem':
+                return ['field'=>'chd','number'=>1];
                 
+            case 'dzieci':
+            case 'dziećmi':
+            case 'dziecmi':
+                return ['field'=>'chd','number'=>2];
+
         }
         
  
@@ -129,7 +134,7 @@ class holidaysController extends merlinController {
                 continue;
             }
             
-            if (isset($c['number'])) {
+            if (isset($c['number']) && !isset($c['field'])) {
                 
                 $c['number']=explode('-',$c['number']);
                 if (!isset($c['number'][1])) $c['number'][1]=0;
@@ -169,15 +174,17 @@ class holidaysController extends merlinController {
                 if (!$number) $from=$to=0;
             }
             
+            
             if (isset($c['field']) && strlen($c['field'])) {
                 
                 $field=$c['field'];
                 
                 switch ($field) {
                     
+                    case 'chd':
                     case 'duration':
                     case 'adt':
-                    case 'chd':
+                        if (!$number && isset($c['number'])) $number=$c['number'];
                         if ($number) {
                             $val=$number;
                             if ($number1) $val.=':'.$number1;
