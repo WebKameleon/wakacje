@@ -27,7 +27,7 @@ class merlinController extends Controller {
             }
         }
         
-        $reg=$this->merlin->getRegions('F',null,$this->data('debug')?false:true);
+        $reg=$this->merlin->getRegions('F',null,$this->data('debug')?false:true,true);
         //dest
         $dest=[];
         $i=0;

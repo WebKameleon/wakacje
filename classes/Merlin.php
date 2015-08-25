@@ -702,12 +702,13 @@ class Merlin
         return $result;
     }
     
-    public function getRegions($type=null,$limits=null,$cache=true)
+    public function getRegions($type=null,$limits=null,$cache=true,$all=false)
     {
         $result=array();
 
         $cond=array();
         $cond['par_adt']=2;
+        if ($all) $cond['ofr_tourOp']='';
         if ($type) $cond['ofr_type']=$this->type_convert($type);
 
         if (is_array($limits)) $cond=array_merge($cond,$limits);
