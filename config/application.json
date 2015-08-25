@@ -27,6 +27,7 @@
     
     "lastminute.days":21,
     
+    "site":"all",
     
     "admin.ids": [1]  
 }

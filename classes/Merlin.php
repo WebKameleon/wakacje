@@ -586,6 +586,7 @@ class Merlin
         $token='hotel-'.$op.'-'.$htlCode;
         
         if ($op=='ECC1') $op='ECCO';
+        if ($op=='ECT1') $op='ECTR';
         
         $ret=$this->session($token);
         if ($ret) return $ret;
