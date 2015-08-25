@@ -5,7 +5,7 @@ function lazyload_grid_log(txt)
 
 function lazyload_grid_footerlog(txt)
 {
-    //$('.footer-menu a').html(txt);
+    //jQueryTrv('.footer-menu a').html(txt);
 }
 
 function smekta(pattern,vars) {
@@ -45,7 +45,7 @@ var lazyload_grid_winheight=0;
 function lazyload_grid_load()
 {
      
-    txt=$('#'+lazyload_grid_form).serialize();
+    txt=jQueryTrv('#'+lazyload_grid_form).serialize();
     dbg='loading offset '+lazyload_grid_offset+', limit '+lazyload_grid_limit;
     lazyload_grid_log(dbg);
     lazyload_grid_footerlog(dbg);
@@ -53,23 +53,23 @@ function lazyload_grid_load()
     var d = new Date();
     var url=lazyload_grid_ajax+'?limit='+lazyload_grid_limit+'&offset='+lazyload_grid_offset+'&'+txt;
     
-    $.get(url,function (r) {
+    jQueryTrv.get(url,function (r) {
         lazyload_grid_log(r);
-        $('.lazyload_grid_scroll_to_wait').remove();
+        jQueryTrv('.lazyload_grid_scroll_to_wait').remove();
         
         
-        var html=$('#'+lazyload_grid_template).html();
+        var html=jQueryTrv('#'+lazyload_grid_template).html();
         
         if (lazyload_grid_offset==0) {
             html2=r.options.results+' ('+r.x_system.total_time+' s)';
             html2='<div class="row lazyload_grid_results">'+html2+'</div>';
-            $(html2).appendTo('#'+lazyload_grid_results).fadeIn(200);
+            jQueryTrv(html2).appendTo('#'+lazyload_grid_results).fadeIn(200);
         }
         data=r.data;
         for(i=0;i<data.length;i++)
         {
             html2=smekta(html,data[i]);
-            $(html2).appendTo('#'+lazyload_grid_results).fadeIn(200*(i+1));
+            jQueryTrv(html2).appendTo('#'+lazyload_grid_results).fadeIn(200*(i+1));
             //lazyload_grid_offset++;
             
         }
@@ -77,8 +77,8 @@ function lazyload_grid_load()
         
 
         if (lazyload_grid_lazyload && data.length>0) {
-            $('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
-            $(window).scroll(lazyload_grid_scroll); 
+            jQueryTrv('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
+            jQueryTrv(window).scroll(lazyload_grid_scroll); 
             lazyload_grid_log('waiting to scroll');
             
             post_lazyload();
@@ -95,21 +95,21 @@ function lazyload_grid_load()
 function lazyload_grid_reload()
 {
 
-    $('#'+lazyload_grid_results).html('').append('<div class="lazyload_grid_scroll_to_wait"></div>');
+    jQueryTrv('#'+lazyload_grid_results).html('').append('<div class="lazyload_grid_scroll_to_wait"></div>');
     lazyload_grid_offset=0;
     lazyload_grid_load();
 }
 
 function lazyload_grid_scroll()
 {
-    var scroll_to = $('.lazyload_grid_scroll_to');
+    var scroll_to = jQueryTrv('.lazyload_grid_scroll_to');
 
     if (typeof(scroll_to.get(0))=='undefined') return; 
     
     var hT = scroll_to.offset().top,
         hH = scroll_to.outerHeight(),
         wH = lazyload_grid_winheight,
-        wS = $(window).scrollTop();
+        wS = jQueryTrv(window).scrollTop();
         
     
     var h3=hT+hH-wH;
@@ -117,7 +117,7 @@ function lazyload_grid_scroll()
       
     if (1.3*wS > h3){
         lazyload_grid_log('scroller reached');
-        $('.lazyload_grid_scroll_to').addClass('lazyload_grid_scroll_to_wait').removeClass('lazyload_grid_scroll_to');
+        jQueryTrv('.lazyload_grid_scroll_to').addClass('lazyload_grid_scroll_to_wait').removeClass('lazyload_grid_scroll_to');
         lazyload_grid_load();
     }
 }
@@ -132,14 +132,14 @@ function lazyload_grid(form,template,results,limit,ajax,lazyload,start)
     lazyload_grid_template = template;
     lazyload_grid_results = results;
     lazyload_grid_lazyload = lazyload;
-    lazyload_grid_winheight=$(window).height();
+    lazyload_grid_winheight=jQueryTrv(window).height();
     
     
-    $('#'+lazyload_grid_results).html('');
+    jQueryTrv('#'+lazyload_grid_results).html('');
     
     if (lazyload) {
         
-        $(window).scroll(lazyload_grid_scroll);      
+        jQueryTrv(window).scroll(lazyload_grid_scroll);      
     }
     
     

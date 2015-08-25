@@ -1,6 +1,8 @@
 <?php
 class templateController extends merlinController {
     public function get() {
+        $config=Bootstrap::$main->getConfig();
+        
         $html='
         <div id="webkameleon_holidays_template" style="display:none">
             <div style="display:none" class="row">
@@ -34,7 +36,7 @@ class templateController extends merlinController {
                 </div>
                 <div class="holiday_price col-md-3">
                     <h5>
-                        <a href="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt][if:chd]&reservation%5Bchildren%5D=[chd][endif:chd]" target="_blank">
+                        <a href="'.$config['merlin.reservation'].'" target="'.$config['merlin.reservation_target'].'">
                             [price] [operCurr]/os.
                             <span>REZERWUJ TERAZ &raquo;</span>
                         </a>
@@ -82,6 +84,8 @@ class templateController extends merlinController {
     
     public function get_hotel()
     {
+        $config=Bootstrap::$main->getConfig();
+        
         $items=15;
         
         $indicators='';
@@ -130,7 +134,7 @@ class templateController extends merlinController {
                         <div class="modal-footer">
                             
                             <button type="button" class="btn btn-default" data-dismiss="modal">zamknij</button>
-                            <button type="button" class="btn btn-primary" text="rezerwuj " rel="https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt]&reservation%5Bchildren%5D=[chd]">rezerwuj</button>
+                            <button type="button" class="btn btn-primary" text="rezerwuj " rel="'.$config['merlin.reservation'].'">rezerwuj</button>
                         </div>
                     </div>
                 </div>

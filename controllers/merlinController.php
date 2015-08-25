@@ -10,7 +10,7 @@ class merlinController extends Controller {
     public function init()
     {
         $config=Bootstrap::$main->getConfig();
-        $this->merlin=new Merlin($config['merlin.login'],$config['merlin.pass']);
+        $this->merlin=new Merlin($config['merlin.login'],$config['merlin.pass'],$config['merlin.tourOp']);
     }
     
     
@@ -27,7 +27,7 @@ class merlinController extends Controller {
             }
         }
         
-        $reg=$this->merlin->getRegions('F');
+        $reg=$this->merlin->getRegions('F',null,$this->data('debug')?false:true);
         //dest
         $dest=[];
         $i=0;

@@ -6,6 +6,7 @@ class holidaysController extends merlinController {
     protected function word2cond($word)
     {
         $config=$this->getConfig();
+        $conf=Bootstrap::$main->getConfig();
         
         if (substr($word,0,6)=='hotel:') {
             return ['field'=>'hotel','value'=>substr($word,6)];
@@ -72,6 +73,11 @@ class holidaysController extends merlinController {
             case 'dziecmi':
                 return ['field'=>'chd','number'=>2];
 
+        
+            case 'tanie':
+            case 'tanio':
+            case 'taniego':    
+                return ['number'=>$conf['merlin.cheap']];
         }
         
  
@@ -158,10 +164,10 @@ class holidaysController extends merlinController {
                     }
                 }
                 
-                if ($c['number'][0]>=1000 && !$from && !$to )
+                if ($c['number'][0]>=500 && !$from && !$to )
                 {
                     if (!$c['number'][1]) {
-                        $cond['max_price']=$c['number'];
+                        $cond['max_price']=$c['number'][0];
                     }
                     else {
                         $cond['min_price']=$c['number'][0];
@@ -277,7 +283,7 @@ class holidaysController extends merlinController {
                 $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
                 :
                 $this->merlin->getGrouped($cond[0],'',$opt['limit'],$opt['offset']);
-            Tools::log('query',['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
+            @Tools::log('query',['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
             
         } else {
             $offers=['result'=>[],'count'=>0];
@@ -287,9 +293,10 @@ class holidaysController extends merlinController {
         $opt['next_offset']=$opt['offset']+$opt['limit'];
         
         $opt['results']='Wyniki: ';
-        if ($offers['count']>=1000) $opt['results'].='ponad 1000';
-        else $opt['results'].=$offers['count'];
-        
+        if (isset($offers['count'])) {
+            if ($offers['count']>=1000) $opt['results'].='ponad 1000';
+            else $opt['results'].=$offers['count'];
+        }
         //mydie($this->merlin->debug);
         
         $result=[];

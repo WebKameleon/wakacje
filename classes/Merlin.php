@@ -585,6 +585,8 @@ class Merlin
     {
         $token='hotel-'.$op.'-'.$htlCode;
         
+        if ($op=='ECC1') $op='ECCO';
+        
         $ret=$this->session($token);
         if ($ret) return $ret;
         
@@ -700,7 +702,7 @@ class Merlin
         return $result;
     }
     
-    public function getRegions($type=null,$limits=null)
+    public function getRegions($type=null,$limits=null,$cache=true)
     {
         $result=array();
 
@@ -713,7 +715,7 @@ class Merlin
         $token='reg.'.md5(serialize($cond));
         
         $r=$this->session($token);
-        if ($r) return $r;
+        if ($r && $cache) return $r;
         
         $xml=$this->request('regions',$cond);
 
@@ -734,7 +736,7 @@ class Merlin
 
         $result=(array)$regions;
         $wynik=array();
-        foreach ($result['reg'] AS $r)
+        if (isset($result['reg'])) foreach ($result['reg'] AS $r)
         {
             $rec=$r['@attributes'];
             $id=explode('_',$rec['id']);

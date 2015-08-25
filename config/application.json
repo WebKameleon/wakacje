@@ -10,13 +10,20 @@
     "image_size": 1140,
     "thumb_size": 250,
     
-    "merlin.login":"12444",
-    "merlin.pass":"VYOB",
+    "merlin.login3":"12444",
+    "merlin.pass3":"VYOB",
  
-    "merlin.login2":"9762",
-    "merlin.pass2":"ECCO",
+    "merlin.login":"9762",
+    "merlin.pass":"eCCo",
+    
+    "merlin.tourOp": "",
+    
+    "merlin.reservation": "https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt]&reservation%5Bchildren%5D=[chd]",
+    "merlin.reservation_target": "_blank",
     
     "merlin.search.limit":10,
+    
+    "merlin.cheap": 1200,
     
     "lastminute.days":21,
     

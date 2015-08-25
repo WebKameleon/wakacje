@@ -1,9 +1,9 @@
 
 lazyload_grid('webkameleon_holidays_form','webkameleon_holidays_template','webkameleon_holidays_results',15,holidays_url+'holidays',true,false);
-$('#webkameleon_holidays_form a').click(lazyload_grid_reload);
+jQueryTrv('#webkameleon_holidays_form a').click(lazyload_grid_reload);
 
-$.get(holidays_url+'template/placeholder',function(data) {
-    $('#webkameleon_holidays_form input').attr('placeholder',data.template).focus();
+jQueryTrv.get(holidays_url+'template/placeholder',function(data) {
+    jQueryTrv('#webkameleon_holidays_form input').attr('placeholder',data.template).focus();
 });
 
 
@@ -29,15 +29,15 @@ var getUrlParameter = function getUrlParameter(sParam,url) {
 
 var q=getUrlParameter('q');
 if (typeof(q) != 'undefined') {
-    $('#webkameleon_holidays_form input[name="q"]').val(q.replace(/\+/g,' '));
+    jQueryTrv('#webkameleon_holidays_form input[name="q"]').val(q.replace(/\+/g,' '));
     setTimeout(function() {
-        $('#webkameleon_holidays_form a').trigger('click');
+        jQueryTrv('#webkameleon_holidays_form a').trigger('click');
     },500);
     
 } else {
-    $.get(holidays_url+'holidays/q',function(data){
-        $('#webkameleon_holidays_form input[name="q"]').val(data.q);
-        if (typeof(data.q)=='string' && data.q.length) $('#webkameleon_holidays_form a').trigger('click');
+    jQueryTrv.get(holidays_url+'holidays/q',function(data){
+        jQueryTrv('#webkameleon_holidays_form input[name="q"]').val(data.q);
+        if (typeof(data.q)=='string' && data.q.length) jQueryTrv('#webkameleon_holidays_form a').trigger('click');
     });
 }
 
@@ -45,8 +45,8 @@ if (typeof(q) != 'undefined') {
 
 function post_lazyload() {
     var img_height=150;
-    $('#webkameleon_holidays_results .holiday_photo img').each (function() {
-        var img=$(this);
+    jQueryTrv('#webkameleon_holidays_results .holiday_photo img').each (function() {
+        var img=jQueryTrv(this);
         img.load(function(){
             if(img.height()>img_height) {
                 var margin=Math.round((img.height()-img_height)/2);
@@ -55,33 +55,33 @@ function post_lazyload() {
         });
     });
     
-    $('#webkameleon_holidays_results a.q').each(function(){
-        var title=$(this).attr('xname');
+    jQueryTrv('#webkameleon_holidays_results a.q').each(function(){
+        var title=jQueryTrv(this).attr('xname');
         if (typeof(title)=='undefined') {
-            title=value=$(this).text();
+            title=value=jQueryTrv(this).text();
         }
-        $(this).prop('title','Zawęź lub usuń zawężenie: '+title);        
+        jQueryTrv(this).prop('title','Zawęź lub usuń zawężenie: '+title);        
         
     });
 
 
 
     
-    $('#webkameleon_holidays_results a.q').click(function(){
+    jQueryTrv('#webkameleon_holidays_results a.q').click(function(){
         
         
-        var txt=$('#webkameleon_holidays_form').serialize();
-        var value=$(this).text();
-        var rel=$(this).attr('rel');
+        var txt=jQueryTrv('#webkameleon_holidays_form').serialize();
+        var value=jQueryTrv(this).text();
+        var rel=jQueryTrv(this).attr('rel');
         if (typeof(rel)=='string' && rel.length) {
             value=rel;
         }
         txt+='&alter='+encodeURIComponent(value);
         
 
-        $.get(holidays_url+'holidays/query?'+txt,function(data){
+        jQueryTrv.get(holidays_url+'holidays/query?'+txt,function(data){
             if (typeof(data.q)=='string' && data.q.length) {
-                $('#webkameleon_holidays_form input[name="q"]').val(data.q);
+                jQueryTrv('#webkameleon_holidays_form input[name="q"]').val(data.q);
                 lazyload_grid_reload();
             }
         });
@@ -89,15 +89,15 @@ function post_lazyload() {
     
     });
 
-    $('#webkameleon_holidays_results .holiday_photo h3 i').click(function(){
-        var rel=$(this).attr('rel');
+    jQueryTrv('#webkameleon_holidays_results .holiday_photo h3 i').click(function(){
+        var rel=jQueryTrv(this).attr('rel');
         
-        $.get(holidays_url+'holidays/offer/'+rel,function(data) {
+        jQueryTrv.get(holidays_url+'holidays/offer/'+rel,function(data) {
             //console.log(data);
             
             if (typeof(data.holidays.obj.info.photos)!='undefined') {
-                var inners=$("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl");
-                var indicators=$("#webkameleon_holidays_hotelmodal .carousel-indicators li");
+                var inners=jQueryTrv("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl");
+                var indicators=jQueryTrv("#webkameleon_holidays_hotelmodal .carousel-indicators li");
                 var desc=data.holidays.obj.info.desc;
                 var photos=data.holidays.obj.info.photos;
             
@@ -107,28 +107,28 @@ function post_lazyload() {
                 
                 for (i=0;i<min;i++)
                 {
-                    $(indicators[i]).css('display','inline-block');
-                    $(inners[i]).removeAttr('style');
-                    $(inners[i]).find('img').attr('src',photos[i%photos.length]);
-                    $(inners[i]).find('h3').text(desc[i].subject);
-                    $(inners[i]).find('p').html(desc[i].content);
-                    $(inners[i]).addClass('item');
+                    jQueryTrv(indicators[i]).css('display','inline-block');
+                    jQueryTrv(inners[i]).removeAttr('style');
+                    jQueryTrv(inners[i]).find('img').attr('src',photos[i%photos.length]);
+                    jQueryTrv(inners[i]).find('h3').text(desc[i].subject);
+                    jQueryTrv(inners[i]).find('p').html(desc[i].content);
+                    jQueryTrv(inners[i]).addClass('item');
                     
                 }
                 for (i=min;i<inners.length;i++)
                 {
-                    $(indicators[i]).css('display','none');
-                    $(inners[i]).removeClass('item');
-                    $(inners[i]).css('display','none');
+                    jQueryTrv(indicators[i]).css('display','none');
+                    jQueryTrv(inners[i]).removeClass('item');
+                    jQueryTrv(inners[i]).css('display','none');
                     
                 }                
                 
-                $('#webkameleon_holidays_hotelmodal h4.modal-title').html(data.holidays.obj.name+' '+data.holidays.stars);
-                $('#webkameleon_holidays_hotelmodal h5.modal-country').html(data.holidays.obj.country+', '+data.holidays.obj.region);
+                jQueryTrv('#webkameleon_holidays_hotelmodal h4.modal-title').html(data.holidays.obj.name+' '+data.holidays.stars);
+                jQueryTrv('#webkameleon_holidays_hotelmodal h5.modal-country').html(data.holidays.obj.country+', '+data.holidays.obj.region);
                 
-                var text=$('#webkameleon_holidays_hotelmodal .btn-primary').attr('text')+data.holidays.dep_from+', '+data.holidays.startDate.DDD+' '+data.holidays.startDate.D+' '+data.holidays.startDate.MMM;
-                $('#webkameleon_holidays_hotelmodal .btn-primary').text(text).click(function() {
-                    var url=$(this).attr('rel');
+                var text=jQueryTrv('#webkameleon_holidays_hotelmodal .btn-primary').attr('text')+data.holidays.dep_from+', '+data.holidays.startDate.DDD+' '+data.holidays.startDate.D+' '+data.holidays.startDate.MMM;
+                jQueryTrv('#webkameleon_holidays_hotelmodal .btn-primary').text(text).click(function() {
+                    var url=jQueryTrv(this).attr('rel');
                     url=url.replace('[adt]',data.holidays.adt);
                     url=url.replace('[chd]',data.holidays.chd);
                     url=url.replace('[id]',data.holidays.id);
@@ -136,7 +136,7 @@ function post_lazyload() {
                     location.href=url;
                 });
                 
-                $("#webkameleon_holidays_hotelmodal").modal('show');
+                jQueryTrv("#webkameleon_holidays_hotelmodal").modal('show');
                 
                 
             }
@@ -152,26 +152,26 @@ function post_lazyload() {
 
 };
 
-$('#webkameleon_holidays_form').submit(function() {
+jQueryTrv('#webkameleon_holidays_form').submit(function() {
     lazyload_grid_reload();
     return false;
 });
 
-$('#webkameleon_holidays_form .glyphicon').click (function() {
-    $("#webkameleon_holidays_helpmodal").modal('show');
+jQueryTrv('#webkameleon_holidays_form .glyphicon').click (function() {
+    jQueryTrv("#webkameleon_holidays_helpmodal").modal('show');
 
 });
 
 function webkameleon_holidays_helpmodal_click()
 {
-    var helpFound=$('#webkameleon_holidays_helpmodal');
+    var helpFound=jQueryTrv('#webkameleon_holidays_helpmodal');
     if (helpFound.length==0) {
         setTimeout(webkameleon_holidays_helpmodal_click,200);
     } else {
-        $('#webkameleon_holidays_helpmodal .modal-body .example').click(function() {
-            $('#webkameleon_holidays_form input[name="q"]').val($(this).text());
-            $("#webkameleon_holidays_helpmodal").modal('hide');
-            $('#webkameleon_holidays_form a').trigger('click');
+        jQueryTrv('#webkameleon_holidays_helpmodal .modal-body .example').click(function() {
+            jQueryTrv('#webkameleon_holidays_form input[name="q"]').val(jQueryTrv(this).text());
+            jQueryTrv("#webkameleon_holidays_helpmodal").modal('hide');
+            jQueryTrv('#webkameleon_holidays_form a').trigger('click');
         });        
     }
 }
