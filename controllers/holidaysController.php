@@ -17,6 +17,9 @@ class holidaysController extends merlinController {
         
         switch ($word)
         {
+            case 'jeden':
+                return ['number'=>1];
+            
             case 'dwa':
                 return ['number'=>2];
             
@@ -55,6 +58,12 @@ class holidaysController extends merlinController {
 
             case 'pojutrze':
                 return ['field'=>'date','value'=>date('Y-m-d',time()+2*24*3600)];
+            
+            case 'tydzień':
+            case 'tydzien':
+            case 'tygodnie':
+            case 'tygodni':
+                return ['field'=>'weeks'];
             
             case 'dni':
             case 'dzień':
@@ -254,6 +263,13 @@ class holidaysController extends merlinController {
                         }
                         break;
                     
+                    case 'weeks':
+                        if (!$number) $number=1;
+                        $number*=7;
+                        $val=($number-1).':'.($number+1);
+                        $this->update_cond($cond,'duration',$val,$phraze_responsible,$phrazes_responsible);
+                        
+                        break;
                     
                     default:
                         $this->update_cond($cond,$field,$c['value'],$phraze_responsible,$phrazes_responsible);
@@ -262,6 +278,8 @@ class holidaysController extends merlinController {
                 }
                 
                 $from=$to=$number=$number1=0;
+                
+                
             } elseif (strlen($w)>3) {
                 if (!in_array($w,$config['dest_shit'])) $unknown[]=$w;
             }
