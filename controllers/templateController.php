@@ -56,7 +56,7 @@ class templateController extends merlinController {
         $countries=[];
         foreach($regions AS $r)
         {
-            $country=ucwords(mb_strtolower($r['country'],'utf-8'));
+            $country=mb_convert_case(mb_strtolower($r['country'],'utf-8'), MB_CASE_TITLE, 'utf-8');
             if (!in_array($country,$countries)) $countries[]=$country;
         }
 
@@ -171,7 +171,7 @@ class templateController extends merlinController {
     public function get_placeholder()
     {
         $regions=$this->merlin->getRegions('F');
-        $country=ucwords(mb_strtolower($regions[0]['country'],'utf-8'));
+        $country=mb_convert_case(mb_strtolower($regions[0]['country'],'utf-8'), MB_CASE_TITLE, 'utf-8');
         
         return $this->status('np. '.$country.' '.$this->airport().' '.$this->next_month());
     }
