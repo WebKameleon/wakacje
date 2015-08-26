@@ -28,9 +28,10 @@ class merlinController extends Controller {
         }
         
         $reg=$this->merlin->getRegions('F',null,$this->data('debug')?false:true,true);
-        //dest
+   
         $dest=[];
         $i=0;
+        $far=[];
    
        
         foreach ($reg AS $r)
@@ -42,6 +43,12 @@ class merlinController extends Controller {
             $country=trim(mb_strtolower($r['country'],'utf-8'));
             $region=trim(mb_strtolower($r['region'],'utf-8'));
             
+            if ($r['price']>=Bootstrap::$main->getConfig('merlin.far.price')
+                && !in_array($country,['bułgaria','portugalia','hiszpania','włochy','grecja','francja','niemcy','cypr','chorwacja']) ) {
+                
+                $far[]=$r['id'];
+            }
+                
             
             foreach($config['dest_shit'] AS $shit) {
                 for($ii=0;$ii<2;$ii++) {
@@ -80,6 +87,7 @@ class merlinController extends Controller {
             if (!isset($config['words'][$w])) $config['words'][$w]=$r;
         }
     
+        $config['far']=$far;
         
         return $config;
     }

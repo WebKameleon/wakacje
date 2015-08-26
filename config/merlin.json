@@ -50,13 +50,15 @@
         "ciego de","brazylia -","st.","caye","wyspy","terytorium północne","wyżyna",
         "karaiby","północna","main","republika ludowa","francuska","ameryka","viti",
         "bora","północne","papua","faso","tobago","austria","góry","wakacje","janeiro",
+        "kraje",
         
         "i "," i"
     ],
   
     "dest": {
         "2598_3075":["rpa"],
-        "15_55,15_176,15_50,15_93":["kanary","kanaryjskie"]
+        "15_55,15_176,15_50,15_93":["kanary","kanaryjskie"],
+        "3629_2731,3629_3075,3629_2732,3629_7276": ["usa"]
     },
     
     

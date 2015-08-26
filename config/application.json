@@ -24,6 +24,7 @@
     "merlin.search.limit":10,
     
     "merlin.cheap": 1200,
+    "merlin.far.price": 2500,
     
     "lastminute.days":21,
     

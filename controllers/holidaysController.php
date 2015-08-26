@@ -26,6 +26,13 @@ class holidaysController extends merlinController {
             case 'trzy':
                 return ['number'=>3];            
             
+            case 'za':
+            case 'przyszłym':
+            case 'przyszły':
+            case 'przyszlym':
+            case 'przyszly':                
+                return ['in'=>1];
+            
             case 'od':
             case 'min':
             case 'minimium':
@@ -63,6 +70,7 @@ class holidaysController extends merlinController {
             case 'tydzien':
             case 'tygodnie':
             case 'tygodni':
+            case 'tygodniu':
                 return ['field'=>'weeks'];
             
             case 'dni':
@@ -93,6 +101,14 @@ class holidaysController extends merlinController {
             case 'tanio':
             case 'taniego':    
                 return ['number'=>$conf['merlin.cheap']];
+            
+            case 'daleko':
+            case 'dalekie':
+            case 'dalekia':
+            case 'egzotyka':
+            case 'egzotyczne':
+            case 'egzotycznie':
+                return ['field'=>'dest', 'value'=>implode(',',$config['far'])];
         }
         
  
@@ -141,7 +157,7 @@ class holidaysController extends merlinController {
         }
         
         $cond=[];
-        $from=$to=$number=$number1=0;
+        $in=$from=$to=$number=$number1=0;
         $phraze_responsible=[];
         $phrazes_responsible=[];
         $unknown=[];
@@ -151,6 +167,11 @@ class holidaysController extends merlinController {
             $phraze_responsible[]=$userq[$word_index];
             
             $c=$this->word2cond($w);
+            
+            if (isset($c['in'])) {
+                $in=1;
+                continue;
+            }            
             
             if (isset($c['from'])) {
                 $from=1;
@@ -199,7 +220,7 @@ class holidaysController extends merlinController {
                     continue;
                 }
                 
-                if (!$number) $from=$to=0;
+                if (!$number) $from=$to=$in=0;
             }
             
             
@@ -265,10 +286,20 @@ class holidaysController extends merlinController {
                     
                     case 'weeks':
                         if (!$number) $number=1;
-                        $number*=7;
-                        $val=($number-1).':'.($number+1);
-                        $this->update_cond($cond,'duration',$val,$phraze_responsible,$phrazes_responsible);
-                        
+                        if ($in) {
+                            $tmp=$phraze_responsible;
+                            $dow=date('w');
+                            $minus=abs($dow-1);
+                            $plus=7-$minus;
+                            $this->update_cond($cond,'from',date('Y-m-d',time()+(7*$number-$minus)*24*3600),$phraze_responsible,$phrazes_responsible);
+                            $this->update_cond($cond,'fromto',date('Y-m-d',time()+(7*$number+$plus)*24*3600),$tmp,$phrazes_responsible);
+
+                        } else {
+                            
+                            $number*=7;
+                            $val=($number-1).':'.($number+1);
+                            $this->update_cond($cond,'duration',$val,$phraze_responsible,$phrazes_responsible);
+                        }
                         break;
                     
                     default:
@@ -277,7 +308,7 @@ class holidaysController extends merlinController {
                         break;
                 }
                 
-                $from=$to=$number=$number1=0;
+                $in=$from=$to=$number=$number1=0;
                 
                 
             } elseif (strlen($w)>3) {
