@@ -210,8 +210,8 @@ class Merlin
         $mds['auth']['pass']=$this->pass;
         $mds['request']['type']=$type;
 
-        if ($this->operator_code && !isset($conditions['ofr_tourOp']) ) $conditions['ofr_tourOp']=$this->operator_code;
-
+        if ($this->operator_code && !isset($conditions['ofr_tourOp']) ) $conditions['ofr_tourOp']=$this->operator_code;     
+        
         if (isset($conditions['obj_xCityFts']))
         {
             // OR:
@@ -714,7 +714,7 @@ class Merlin
 
         if (is_array($limits)) $cond=array_merge($cond,$limits);
 
-        $token='reg.'.md5(serialize($cond));
+        $token='reg.'.($all?'1':'0').'.'.md5(serialize($cond));
         
         $r=$this->session($token);
         if ($r && $cache) return $r;
@@ -745,6 +745,8 @@ class Merlin
 
             foreach ($rgns AS $region)
             {
+                if (!isset($region['region'])) $region['region']='';
+                
                 if ($region['country']=='YES' && $id[0]==$region['num'])
                 {
                     $rec['country']=$region['region'];

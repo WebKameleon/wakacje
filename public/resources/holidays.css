@@ -245,6 +245,9 @@
     width: 100%;
 }
 
+#webkameleon_holidays_helpmodal {
+    z-index: 100000;
+}
 
 @media (max-width:480px) {
     #webkameleon_holidays_form input {

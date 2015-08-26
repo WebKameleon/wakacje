@@ -51,6 +51,18 @@ class templateController extends merlinController {
     
     public function get_help()
     {
+        $regions=$this->merlin->getRegions('F');
+        
+        $countries=[];
+        foreach($regions AS $r)
+        {
+            $country=ucwords(mb_strtolower($r['country'],'utf-8'));
+            if (!in_array($country,$countries)) $countries[]=$country;
+        }
+
+        $cc=count($countries);
+        
+        
         $html='
             <div id="webkameleon_holidays_helpmodal" class="modal fade">
                 <div class="modal-dialog">
@@ -60,13 +72,13 @@ class templateController extends merlinController {
                             <h4 class="modal-title">Jak zadawać pytania - przykłady</h4>
                         </div>
                         <div class="modal-body">
-                            <p class="example">Hiszpania '.$this->airport(0).' lub '.$this->airport(1).'</p>
-                            <p class="example">Egipt '.$this->next_month().' 4-8 dni</p>
+                            <p class="example">'.$countries[0].' '.$this->airport(0).' lub '.$this->airport(1).'</p>
+                            <p class="example">'.$countries[1%$cc].' '.$this->next_month().' 4-8 dni</p>
                             <p class="example">jutro '.$this->airport(2).'</p>
                             <p class="example">'.$this->airport(3).' od 1500 do 2000 na 7 dni 2 osoby i 2 dzieci</p>
-                            <p class="example">Wyspy Kanaryjskie 15-18 '.$this->next_month(1,3).'</p>
-                            <p class="example">Majorka lub Fuerteventura od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
-                            <p class="example">Chorwacja od '.$this->next_month(1,0).' do '.$this->next_month(1,1).' 1 osoba 2 dzieci</p>
+                            <p class="example">'.$countries[2%$cc].' 15-18 '.$this->next_month(1,3).'</p>
+                            <p class="example">'.$countries[3%$cc].' lub '.$countries[4%$cc].' od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
+                            <p class="example">'.$countries[5%$cc].' od '.$this->next_month(1,0).' do '.$this->next_month(1,1).' 1 osoba 2 dzieci</p>
                             
                             <p class="text-warning"><small>lub różne kombinacje powyższych</small></p>
                         </div>
@@ -158,8 +170,10 @@ class templateController extends merlinController {
     
     public function get_placeholder()
     {
+        $regions=$this->merlin->getRegions('F');
+        $country=ucwords(mb_strtolower($regions[0]['country'],'utf-8'));
         
-        return $this->status('np. Hiszpania '.$this->airport().' '.$this->next_month());
+        return $this->status('np. '.$country.' '.$this->airport().' '.$this->next_month());
     }
     
     
