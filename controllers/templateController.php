@@ -61,7 +61,9 @@ class templateController extends merlinController {
         }
 
         $cc=count($countries);
+        $i=0;
         
+        if (Bootstrap::$main->getConfig("merlin.tourOp")=='ECT1') $i=10;
         
         $html='
             <div id="webkameleon_holidays_helpmodal" class="modal fade">
@@ -72,13 +74,13 @@ class templateController extends merlinController {
                             <h4 class="modal-title">Jak zadawać pytania - przykłady</h4>
                         </div>
                         <div class="modal-body">
-                            <p class="example">'.$countries[0].' '.$this->airport(0).' lub '.$this->airport(1).'</p>
-                            <p class="example">'.$countries[1%$cc].' '.$this->next_month().' 4-8 dni</p>
+                            <p class="example">'.$countries[$i++%$cc].' '.$this->airport(0).' lub '.$this->airport(1).'</p>
+                            <p class="example">'.$countries[$i++%$cc].' '.$this->next_month().' 4-8 dni</p>
                             <p class="example">jutro '.$this->airport(2).'</p>
                             <p class="example">'.$this->airport(3).' od 1500 do 2000 na 7 dni 2 osoby i 2 dzieci</p>
-                            <p class="example">'.$countries[2%$cc].' 15-18 '.$this->next_month(1,3).'</p>
-                            <p class="example">'.$countries[3%$cc].' lub '.$countries[4%$cc].' od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
-                            <p class="example">'.$countries[5%$cc].' od '.$this->next_month(1,0).' do '.$this->next_month(1,1).' 1 osoba 2 dzieci</p>
+                            <p class="example">'.$countries[$i++%$cc].' 15-18 '.$this->next_month(1,3).'</p>
+                            <p class="example">'.$countries[$i++%$cc].' lub '.$countries[$i++%$cc].' od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
+                            <p class="example">'.$countries[$i++%$cc].' od '.$this->next_month(1,0).' do '.$this->next_month(1,1).' 1 osoba 2 dzieci</p>
                             
                             <p class="text-warning"><small>lub różne kombinacje powyższych</small></p>
                         </div>
