@@ -17,6 +17,12 @@ class holidaysController extends merlinController {
         
         switch ($word)
         {
+            case 'dwa':
+                return ['number'=>2];
+            
+            case 'trzy':
+                return ['number'=>3];            
+            
             case 'od':
             case 'min':
             case 'minimium':
@@ -110,13 +116,15 @@ class holidaysController extends merlinController {
     
     protected function q2cond($q)
     {
+        $config=$this->getConfig();
+        
         $q=str_replace(['+',',',';'],' ',$q);
         $q=preg_replace('/\s+/',' ',trim($q));
         if (!$q) return [];
         $userq=explode(' ',$q);
         $q=mb_strtolower($q,'utf-8');
         
-        $q_token='q2cond.'.md5($q);
+        $q_token='q2cond.'.Bootstrap::$main->getConfig('site').'.'.md5($q);
         $cond=Tools::memcache($q_token);
         if($cond && !$this->data('debug')) {
             $cond['memcache']=true;
@@ -127,6 +135,7 @@ class holidaysController extends merlinController {
         $from=$to=$number=$number1=0;
         $phraze_responsible=[];
         $phrazes_responsible=[];
+        $unknown=[];
     
         foreach(explode(' ',$q) AS $word_index=>$w)
         {
@@ -253,14 +262,13 @@ class holidaysController extends merlinController {
                 }
                 
                 $from=$to=$number=$number1=0;
+            } elseif (strlen($w)>3) {
+                if (!in_array($w,$config['dest_shit'])) $unknown[]=$w;
             }
         }
         
-        return Tools::memcache($q_token,[$cond,$phrazes_responsible]);
-        
-        $data=$this->merlin->getFilters(['ofr_type'=>'F'],'trp_depName');
-        
-     
+        return Tools::memcache($q_token,[$cond,$phrazes_responsible,$unknown]);
+            
 
     }
     
@@ -272,18 +280,20 @@ class holidaysController extends merlinController {
     public function get()
     {
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
+        $site=Bootstrap::$main->getConfig('site');
         
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
         Bootstrap::$main->session('q',$this->data('q'));
         if (count($cond)) {
-            $cond[0]['type']='F';
+            if (!isset($cond[0]['type'])) $cond[0]['type']='F';
             if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
             
             $offers=isset($cond[0]['hotel']) ?
                 $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
                 :
                 $this->merlin->getGrouped($cond[0],'',$opt['limit'],$opt['offset']);
-            @Tools::log('query',['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
+            
+            if (!isset($cond['memcache'])) @Tools::log('query-'.$site,['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
             
         } else {
             $offers=['result'=>[],'count'=>0];
