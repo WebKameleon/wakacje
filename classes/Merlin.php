@@ -437,16 +437,18 @@ class Merlin
             if ($cond['trp_destination'][strlen($cond['trp_destination'])-1]==',') $cond['trp_destination']=substr($cond['trp_destination'],0,strlen($cond['trp_destination'])-1); 
         }
         
+        if (isset($offer['attr']))
+        {
+            $cond=array_merge($cond,$this->getCondOnAttributeArray($offer['attr']));
+        }        
+        
         /*
         if (isset($offer['o_kod_miasta']))
         {
             $cond['trp_destination']=$offer['o_kod_miasta'];
         }
 
-        if (isset($offer['o_atrybuty']))
-        {
-            $cond=array_merge($cond,$this->getCondOnAttributeArray($offer['o_atrybuty']));
-        }
+
 
         if (isset($offer['o_kategoria']))
         {
@@ -876,15 +878,18 @@ class Merlin
 
         $xAttr=0;
         $xCity=array();
+        
+        if (!is_array($a)) $a=explode(',',$a);
+        
         foreach ($a AS $at)
         {
-            //$at=$this->operator->konwertujAtrybut($at);
-            if (is_integer($at)) $xAttr+=$at;
-            elseif (strlen($at)) $xCity[]=$at;
+            //if (is_integer($at))
+            $xAttr+=pow(2,$at);
+            //elseif (strlen($at)) $xCity[]=$at;
         }
 
         if ($xAttr) $cond['obj_xAttributes']=sprintf('0x%x',$xAttr);
-        if (count($xCity)) $cond['obj_xCityFts']=implode('|',$xCity);
+        //if (count($xCity)) $cond['obj_xCityFts']=implode('|',$xCity);
 
         return $cond;
     }

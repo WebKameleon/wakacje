@@ -94,6 +94,49 @@
         "10": ["październik","pazdziernik","października","październiku","pazdziernika","pazdzierniku"],
         "11": ["listopad","listopada","listopadzie"],
         "12": ["grudzień","grudzien","grudnia","grudniu"]
+    },
+    
+    "attr": {
+        "1,2": ["zimowe","zima","wypożyczalnia"],
+        "3": ["centrum"],
+        "4": ["noc","nocne","nocny","nocna"],
+        "5": ["klima","klimatyzacja","klimatyzowany","klimatyzowane"],
+        "6,50": ["internet","wifi"],
+        "8": ["żagle","zagle","żeglarstwo","zeglarstwo","żeglowanie","zeglowanie"],
+        "9": ["niepełnosprawni","niepełnosprawnych","niepelnosprawni","niepelnosprawnych"],
+        "10":["windsurfing","surfing","kite","kitesurfing"],
+        "11":["nordic","walking"],
+        "12":["jeździectwo","jezdziectwo","konie","kon","koń"],
+        "13":["nurek","nurkowanie"],
+        "14":["wodny","wodne"],
+        "15":["minigolf"],
+        "16":["golf"],
+        "17":["tenis"],
+        "18":["sport","sportowy"],
+        "20":["lotnisko","lotniska"],
+        "21":["zjeżdżalnie","zjeżdżalnia","zjezdzalnie","zjezdzalnia"],
+        "23":["rowery","rower"],
+        "26":["plaża","plaży"],
+        "27":["fitness","gimastyczna","siłownia","silownia"],
+        "28":["klub"],
+        "29":["rodzin","rodzina","rodziny"],
+        "30":["miasto","miasta"],
+        "31":["morze","morzem","morza"],
+        "32":["narty"],
+        "36":["paszport","paszportu"],
+        "38":["stok","stoku"],
+        "39":["parking"],
+        "40":["kominek"],
+        "41":["kuchnia"],
+        "42":["grill"],
+        "43":["basen","baseny"],
+        "44":["gej","gejów","gejow","gay","gays","geje","homo","homoseksualiści","homoseksualisci"],
+        "46":["wellness"],
+        "47":["pielgrzymka","pielgrzymki"],
+        "64":["sienior","seniorzy","seniora","seniorów","seniorow"]
+        
     }
+    
+
     
 }

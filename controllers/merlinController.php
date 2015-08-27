@@ -20,7 +20,7 @@ class merlinController extends Controller {
         
         $config['words']=[];
         
-        foreach (['dep','month'] AS $field) {
+        foreach (['dep','month','attr'] AS $field) {
             foreach ($config[$field] AS $code=>$dep)
             {
                 foreach($dep AS $d) $config['words'][$d]=['field'=>$field,'value'=>$code];
