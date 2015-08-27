@@ -97,6 +97,12 @@ class holidaysController extends merlinController {
                 return ['field'=>'chd','number'=>2];
 
         
+            case 'singli':
+            case 'single':
+            case 'singiel':
+                return ['field'=>'adt','number'=>1];
+                
+        
             case 'tanie':
             case 'tanio':
             case 'taniego':    

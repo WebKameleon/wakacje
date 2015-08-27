@@ -69,6 +69,17 @@ class merlinController extends Controller {
                 } else {
                     $dest[$w]['value'].=','.$r['id'];
                 }
+                $w2=Tools::str_to_url($w);
+                if ($w2==$w) continue;
+                $w=$w2;
+                
+                if (!isset($dest[$w])) {
+                    $dest[$w]=['field'=>'dest','value'=>$r['id']];
+                } else {
+                    $dest[$w]['value'].=','.$r['id'];
+                }
+                
+                
             }
         }
         

@@ -14,7 +14,7 @@ class Merlin
     private $url='http://mdswsb.merlinx.pl/V3/';
     private $_ver=3;
     
-    private static $months=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','paździrnika','listopada','grudnia'];
+    private static $months=['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
     private static $dows=['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
     private $_section_map=array(
                                 'autosuggestV1'=>'citySearchByName,citySearchByCoords,airportSearchByCoords,airportSearchByCity,airportSearchByIata,airportSearchByName',
