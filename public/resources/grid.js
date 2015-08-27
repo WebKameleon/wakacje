@@ -5,14 +5,38 @@ function lazyload_grid_log(txt)
 
 function lazyload_grid_footerlog(txt)
 {
-    //jQueryTrv('.footer-menu a').html(txt);
+    //$$('.footer-menu a').html(txt);
 }
 
 function smekta(pattern,vars) {
+    var key,re;
     
     for (key in vars)
     {
         if (vars[key]==null)  vars[key]='';
+        
+        if (typeof(vars[key])=='object') {
+            re=new RegExp('\\[loop:'+key+'\\](.|[\r\n])+\\[endloop:'+key+'\\]',"g");
+            var loop=pattern.match(re);
+            if (loop!=null) {
+                
+                for (var l=0;l<loop.length && l<7;l++)
+                {
+                    var loopstring=loop[l];
+                    var loopcontents=loop[l].substr(7+key.length);
+                    loopcontents=loopcontents.substr(0,loopcontents.length-10-key.length);
+                    var loopresult='';
+                    for (var k=0;k<vars[key].length;k++)
+                    {
+                        loopresult+=smekta(loopcontents,vars[key][k]);
+                    }
+                    pattern=pattern.replace(loopstring,loopresult);
+                }
+                
+            }
+                
+        }
+        
         
         re=new RegExp('\\[if:'+key+'\\](.|[\r\n])+\\[endif:'+key+'\\]',"g");
         if (vars[key].length==0 || vars[key]==null || vars[key]=='0') pattern=pattern.replace(re,'');
@@ -45,7 +69,7 @@ var lazyload_grid_winheight=0;
 function lazyload_grid_load()
 {
      
-    txt=jQueryTrv('#'+lazyload_grid_form).serialize();
+    txt=$$('#'+lazyload_grid_form).serialize();
     dbg='loading offset '+lazyload_grid_offset+', limit '+lazyload_grid_limit;
     lazyload_grid_log(dbg);
     lazyload_grid_footerlog(dbg);
@@ -53,23 +77,23 @@ function lazyload_grid_load()
     var d = new Date();
     var url=lazyload_grid_ajax+'?limit='+lazyload_grid_limit+'&offset='+lazyload_grid_offset+'&'+txt;
     
-    jQueryTrv.get(url,function (r) {
+    $$.get(url,function (r) {
         lazyload_grid_log(r);
-        jQueryTrv('.lazyload_grid_scroll_to_wait').remove();
+        $$('.lazyload_grid_scroll_to_wait').remove();
         
         
-        var html=jQueryTrv('#'+lazyload_grid_template).html();
+        var html=$$('#'+lazyload_grid_template).html();
         
         if (lazyload_grid_offset==0) {
             html2=r.options.results+' ('+r.x_system.total_time+' s)';
             html2='<div class="row lazyload_grid_results">'+html2+'</div>';
-            jQueryTrv(html2).appendTo('#'+lazyload_grid_results).fadeIn(200);
+            $$(html2).appendTo('#'+lazyload_grid_results).fadeIn(200);
         }
         data=r.data;
         for(i=0;i<data.length;i++)
         {
             html2=smekta(html,data[i]);
-            jQueryTrv(html2).appendTo('#'+lazyload_grid_results).fadeIn(200*(i+1));
+            $$(html2).appendTo('#'+lazyload_grid_results).fadeIn(200*(i+1));
             //lazyload_grid_offset++;
             
         }
@@ -77,8 +101,8 @@ function lazyload_grid_load()
         
 
         if (lazyload_grid_lazyload && data.length>0) {
-            jQueryTrv('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
-            jQueryTrv(window).scroll(lazyload_grid_scroll); 
+            $$('#'+lazyload_grid_results).append('<div class="lazyload_grid_scroll_to"></div>');
+            $$(window).scroll(lazyload_grid_scroll); 
             lazyload_grid_log('waiting to scroll');
             
             post_lazyload();
@@ -95,21 +119,21 @@ function lazyload_grid_load()
 function lazyload_grid_reload()
 {
 
-    jQueryTrv('#'+lazyload_grid_results).html('').append('<div class="lazyload_grid_scroll_to_wait"></div>');
+    $$('#'+lazyload_grid_results).html('').append('<div class="lazyload_grid_scroll_to_wait"></div>');
     lazyload_grid_offset=0;
     lazyload_grid_load();
 }
 
 function lazyload_grid_scroll()
 {
-    var scroll_to = jQueryTrv('.lazyload_grid_scroll_to');
+    var scroll_to = $$('.lazyload_grid_scroll_to');
 
     if (typeof(scroll_to.get(0))=='undefined') return; 
     
     var hT = scroll_to.offset().top,
         hH = scroll_to.outerHeight(),
         wH = lazyload_grid_winheight,
-        wS = jQueryTrv(window).scrollTop();
+        wS = $$(window).scrollTop();
         
     
     var h3=hT+hH-wH;
@@ -117,7 +141,7 @@ function lazyload_grid_scroll()
       
     if (1.3*wS > h3){
         lazyload_grid_log('scroller reached');
-        jQueryTrv('.lazyload_grid_scroll_to').addClass('lazyload_grid_scroll_to_wait').removeClass('lazyload_grid_scroll_to');
+        $$('.lazyload_grid_scroll_to').addClass('lazyload_grid_scroll_to_wait').removeClass('lazyload_grid_scroll_to');
         lazyload_grid_load();
     }
 }
@@ -132,14 +156,14 @@ function lazyload_grid(form,template,results,limit,ajax,lazyload,start)
     lazyload_grid_template = template;
     lazyload_grid_results = results;
     lazyload_grid_lazyload = lazyload;
-    lazyload_grid_winheight=jQueryTrv(window).height();
+    lazyload_grid_winheight=$$(window).height();
     
     
-    jQueryTrv('#'+lazyload_grid_results).html('');
+    $$('#'+lazyload_grid_results).html('');
     
     if (lazyload) {
         
-        jQueryTrv(window).scroll(lazyload_grid_scroll);      
+        $$(window).scroll(lazyload_grid_scroll);      
     }
     
     

@@ -336,6 +336,7 @@ class holidaysController extends merlinController {
     {
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
         $site=Bootstrap::$main->getConfig('site');
+        $config=$this->getConfig();
         
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
         Bootstrap::$main->session('q',$this->data('q'));
@@ -400,6 +401,13 @@ class holidaysController extends merlinController {
                 
                 Bootstrap::$main->session('adt',$r['adt']);
                 Bootstrap::$main->session('chd',$r['chd']);
+                
+                
+                $r['attr']=[];
+                $attr=$r['obj_xAttributes']+0;
+                for ($x=0;$x<65;$x++) {
+                    if (pow(2,$x) & $attr) $r['attr'][]=['x'=>$x+1,'name'=>$config['attr_name'][$x+1]];
+                }
                 
                 
                 $result[]=$r;

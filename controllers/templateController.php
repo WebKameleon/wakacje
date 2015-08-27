@@ -33,6 +33,7 @@ class templateController extends merlinController {
                     <h6>
                         [obj_serviceDesc], [obj_roomDesc]
                     </h6>
+                    <ul class="attr">[loop:attr][if:name]<li class="hotel_attr_[x]"><a class="q" rel="[name]" xname="[name]">&nbsp;</a></li>[endif:name][endloop:attr]</ul>
                 </div>
                 <div class="holiday_price col-md-3">
                     <h5>

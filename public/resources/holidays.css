@@ -249,6 +249,72 @@
     z-index: 100000;
 }
 
+.trip_desc .attr {
+    list-style: none;
+    padding: 0;
+}
+
+.trip_desc .attr li{
+    display: inline-block;
+    background-image: url('../img/attr.png');
+    background-position: 0 -1180px;
+    width: 20px;
+    height: 20px;
+    margin-right: 3px;
+    
+}
+.trip_desc .attr li a {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+.trip_desc .attr li.hotel_attr_1 { background-position: 0 -464px }
+.trip_desc .attr li.hotel_attr_2 { background-position: 0 -618px }
+.trip_desc .attr li.hotel_attr_3 { background-position: 0 -398px }
+.trip_desc .attr li.hotel_attr_4 { background-position: 0 -354px }
+.trip_desc .attr li.hotel_attr_5 { background-position: 0 -2px }
+.trip_desc .attr li.hotel_attr_6 { background-position: 0 -266px }
+.trip_desc .attr li.hotel_attr_7 { background-position: 0 -420px }
+.trip_desc .attr li.hotel_attr_8 { background-position: 0 -442px }
+.trip_desc .attr li.hotel_attr_9 { background-position: 0 -200px }
+.trip_desc .attr li.hotel_attr_10 { background-position: 0 -508px }
+.trip_desc .attr li.hotel_attr_11 { background-position: 0 -552px }
+.trip_desc .attr li.hotel_attr_12 { background-position: 0 -222px }
+.trip_desc .attr li.hotel_attr_13 { background-position: 0 -134px }
+.trip_desc .attr li.hotel_attr_14 { background-position: 0 -596px }
+.trip_desc .attr li.hotel_attr_15 { background-position: 0 -332px }
+.trip_desc .attr li.hotel_attr_16 { background-position: 0 -178px }
+.trip_desc .attr li.hotel_attr_17 { background-position: 0 -530px }
+.trip_desc .attr li.hotel_attr_18 { background-position: 0 -486px }
+.trip_desc .attr li.hotel_attr_19 { background-position: 0 -24px }
+.trip_desc .attr li.hotel_attr_20 { background-position: 0 -46px }
+.trip_desc .attr li.hotel_attr_21 { background-position: 0 -574px }
+.trip_desc .attr li.hotel_attr_22 { background-position: 0 -310px }
+.trip_desc .attr li.hotel_attr_23 { background-position: 0 -90px }
+.trip_desc .attr li.hotel_attr_24 { background-position: 0 -244px }
+.trip_desc .attr li.hotel_attr_25 { background-position: 0 -376px }
+.trip_desc .attr li.hotel_attr_26 { background-position: 0 -68px }
+.trip_desc .attr li.hotel_attr_27 { background-position: 0 -156px }
+.trip_desc .attr li.hotel_attr_28 { background-position: 0 -112px }
+.trip_desc .attr li.hotel_attr_29 { background-position: 0 -288px }
+.trip_desc .attr li.hotel_attr_30 { background-position: 0 -640px }
+.trip_desc .attr li.hotel_attr_31 { background-position: 0 -662px }
+.trip_desc .attr li.hotel_attr_32 { background-position: 0 -684px }
+.trip_desc .attr li.hotel_attr_33 { background-position: 0 0px }
+.trip_desc .attr li.hotel_attr_35 { background-position: 0 -706px }
+.trip_desc .attr li.hotel_attr_36 { background-position: 0 -750px }
+.trip_desc .attr li.hotel_attr_38 { background-position: 0 -794px }
+.trip_desc .attr li.hotel_attr_39 { background-position: 0 -816px }
+.trip_desc .attr li.hotel_attr_40 { background-position: 0 -926px }
+.trip_desc .attr li.hotel_attr_41 { background-position: 0 -882px }
+.trip_desc .attr li.hotel_attr_42 { background-position: 0 -926px }
+.trip_desc .attr li.hotel_attr_43 { background-position: 0 -244px }
+.trip_desc .attr li.hotel_attr_44 { background-position: 0 -948px }
+.trip_desc .attr li.hotel_attr_46 { background-position: 0 -1036px }
+.trip_desc .attr li.hotel_attr_64 { background-position: -21px -552px }
+
+
 @media (max-width:480px) {
     #webkameleon_holidays_form input {
         width: 75%;

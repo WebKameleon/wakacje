@@ -884,7 +884,7 @@ class Merlin
         foreach ($a AS $at)
         {
             //if (is_integer($at))
-            $xAttr+=pow(2,$at);
+            $xAttr+=pow(2,$at-1);
             //elseif (strlen($at)) $xCity[]=$at;
         }
 
