@@ -888,9 +888,12 @@ class Merlin
             //elseif (strlen($at)) $xCity[]=$at;
         }
 
-        if ($xAttr) $cond['obj_xAttributes']=sprintf('0x%x',$xAttr);
-        //if (count($xCity)) $cond['obj_xCityFts']=implode('|',$xCity);
+        //if ($xAttr) $cond['obj_xAttributes']=sprintf('0x%x',$xAttr);
+        if ($xAttr) $cond['obj_xAttributes']=$xAttr;
+        
+        if (count($xCity)) $cond['obj_xCityFts']=implode('|',$xCity);
 
+        $cond['obj_xAttributesCount']=count($a);
         return $cond;
     }
 
