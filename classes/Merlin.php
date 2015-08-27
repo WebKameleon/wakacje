@@ -258,7 +258,7 @@ class Merlin
     {
         if ($this->operator_code) $cond['ofr_tourOp']=$this->operator_code;
     
-        $cond['filters']='obj_xServiceId,trp_depName,trp_durationM,ofr_catalog,obj_category,ofr_catalog,ofr_type,obj_xAttributes,trp_depDate,obj_city,obj_xCode,ofr_tourOp';
+        $cond['filters']='obj_xServiceId,trp_depName,trp_durationM,ofr_catalog,obj_category,ofr_catalog,ofr_type,obj_xAttributes,trp_depDate,obj_city,obj_xCode,ofr_tourOp,trp_depCode';
 
         if (!isset($cond['trp_retDate'])) $cond['trp_retDate']=date('Ymd',time()+365*24*3600);
 

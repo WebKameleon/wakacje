@@ -49,7 +49,7 @@ class templateController extends merlinController {
         die ($html);
     }
     
-    public function get_help()
+    protected function countries()
     {
         $regions=$this->merlin->getRegions('F');
         
@@ -59,6 +59,13 @@ class templateController extends merlinController {
             $country=mb_convert_case(mb_strtolower($r['country'],'utf-8'), MB_CASE_TITLE, 'utf-8');
             if (!in_array($country,$countries)) $countries[]=$country;
         }
+        
+        return $countries;
+    }
+    
+    public function get_help()
+    {
+        $countries=$this->countries();
 
         $cc=count($countries);
         $i=0;
@@ -173,7 +180,8 @@ class templateController extends merlinController {
     public function get_placeholder()
     {
         $regions=$this->merlin->getRegions('F');
-        $country=mb_convert_case(mb_strtolower($regions[0]['country'],'utf-8'), MB_CASE_TITLE, 'utf-8');
+        $country=$this->countries()[0];
+        
         
         return $this->status('np. '.$country.' '.$this->airport().' '.$this->next_month());
     }
@@ -181,18 +189,22 @@ class templateController extends merlinController {
     
     protected function airport($i=0)
     {
+        
+        $codes=$this->merlin->getFilters([],'trp_depCode');
+        
         $config=$this->getConfig();
         $geo=Tools::geoip();
         
         $airports=[];
         foreach($config['dep_latlng'] AS $ap=>$latlng)
         {
+            if (!in_array($ap,$codes)) continue;
             $airports[$ap]=$this->distance($latlng,[$geo['location']['latitude'],$geo['location']['longitude']]);            
         }
         asort($airports);
         $ak=array_keys($airports);
         
-        $code=$ak[$i];
+        $code=$ak[$i%count($ak)];
         
         return $config['dep_from'][$code];
         
