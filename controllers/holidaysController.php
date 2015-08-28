@@ -197,16 +197,21 @@ class holidaysController extends merlinController {
                 
                 if ($c['number'][0]>31 && ($from || $to) )
                 {
+                    
                     if ($from) {
-                        $cond['min_price']=$c['number'][0];
+                        $field='min_price';
                     }
                     else {
-                        $cond['max_price']=$c['number'][0];
+                        $field='max_price';
                     }
+                    
                     if ($c['number'][1]) {
-                        $cond['min_price']=$c['number'][0];
+                        $field='min_price';
+            
                         $cond['max_price']=$c['number'][1];
                     }
+                    
+                    $this->update_cond($cond,$field,$c['number'][0],$phraze_responsible,$phrazes_responsible);
                 }
                 
                 if ($c['number'][0]>=500 && !$from && !$to )
@@ -420,6 +425,7 @@ class holidaysController extends merlinController {
                 $result[]=$r;
             }
         }
+        
         
         if ($this->data('debug')) {
             $ret=['conditions'=>$cond,'result'=>$result];

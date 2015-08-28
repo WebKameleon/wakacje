@@ -55,6 +55,16 @@
         "i "," i"
     ],
   
+    "service": {
+        "4,7": ["wyżywienia","wyzywienia"],
+        "3": ["śniadanie","śniadania","sniadanie","sniadania"],
+        "1": ["inclusive","incluziw","incl"],
+        "6": ["pełne","posiłki"],
+        "2": ["obiadokolacje"],
+        "5": ["żarcie","zarcie"],
+        "8": ["lunch"]
+    },
+  
     "dest": {
         "2598_3075":["rpa"],
         "15_55,15_176,15_50,15_93":["kanary","kanaryjskie"],

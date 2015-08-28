@@ -258,7 +258,7 @@ class Merlin
     {
         if ($this->operator_code) $cond['ofr_tourOp']=$this->operator_code;
     
-        $cond['filters']='obj_xServiceId,trp_depName,trp_durationM,ofr_catalog,obj_category,ofr_catalog,ofr_type,obj_xAttributes,trp_depDate,obj_city,obj_xCode,ofr_tourOp,trp_depCode';
+        $cond['filters']='obj_xServiceId,trp_depName,trp_durationM,ofr_type,ofr_tourOp,trp_depCode';
 
         if (!isset($cond['trp_retDate'])) $cond['trp_retDate']=date('Ymd',time()+365*24*3600);
 
@@ -375,16 +375,15 @@ class Merlin
         }
         
         if (isset($offer['max_price'])) $cond['maxPrice']=$offer['max_price'];
-        if (isset($offer['min_price'])) $cond['minPrice']=$offer['min_price'];        
+        if (isset($offer['min_price'])) $cond['minPrice']=$offer['min_price'];
+        
+        if (isset($offer['service']) ) $cond['obj_xServiceId']= $offer['service'];
+        
         
         /*
         if (isset($offer['o_kod_hotelu'])) $cond['obj_code']= $offer['o_kod_hotelu'];
         if (isset($offer['o_kod_pokoju'])) $cond['obj_room']= $offer['o_kod_pokoju'];
-        if (isset($offer['o_wyzywienie']))
-        {
-            if ($offer['o_wyzywienie']+0==0) $cond['obj_service']= $offer['o_wyzywienie'];
-            else $cond['obj_xServiceId']= $offer['o_wyzywienie'];
-        }
+
 
         $cond['par_adt']= $offer['rodzinka'][0];
         $rodzinka=$offer['rodzinka'];
@@ -399,9 +398,6 @@ class Merlin
             }
         }
 
-
-
-       
 
         */
         
