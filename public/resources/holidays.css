@@ -309,7 +309,6 @@
 .trip_desc .attr li.hotel_attr_30 { background-position: 0 -640px }
 .trip_desc .attr li.hotel_attr_31 { background-position: 0 -662px }
 .trip_desc .attr li.hotel_attr_32 { background-position: 0 -684px }
-.trip_desc .attr li.hotel_attr_33 { background-position: 0 0px }
 .trip_desc .attr li.hotel_attr_35 { background-position: 0 -706px }
 .trip_desc .attr li.hotel_attr_36 { background-position: 0 -750px }
 .trip_desc .attr li.hotel_attr_38 { background-position: 0 -794px }
@@ -320,7 +319,7 @@
 .trip_desc .attr li.hotel_attr_43 { background-position: 0 -244px }
 .trip_desc .attr li.hotel_attr_44 { background-position: 0 -948px }
 .trip_desc .attr li.hotel_attr_46 { background-position: 0 -1036px }
-.trip_desc .attr li.hotel_attr_64 { background-position: -21px -552px }
+.trip_desc .attr li.hotel_attr_64 { background-position: 0 -552px }
 
 
 @media (max-width:480px) {
