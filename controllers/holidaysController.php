@@ -405,15 +405,18 @@ class holidaysController extends merlinController {
                 
                 $r['attr']=[];
                 $attr=$r['obj_xAttributes']+0;
-                for ($x=0;$x<65;$x++) {
-                    if (pow(2,$x) & $attr) $r['attr'][]=[
+                for ($x=0;$x<64;$x++) {
+                    $pow=pow(2,$x);
+                    if ($x==63) $pow=-9223372036854775808;
+                    if ($pow & $attr) $r['attr'][]=[
                                             'x'=>$x+1,
                                             'name'=>$config['attr_name'][$x+1],
                                             'active'=>isset($cond[1]['attr'][$x+1])
                                             ];
                 }
                 
-                
+                //0x68 00 08 08 45 02 20 60
+                //0x78 00 21 00 55 b7 20 38
                 $result[]=$r;
             }
         }

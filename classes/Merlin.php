@@ -884,12 +884,15 @@ class Merlin
         foreach ($a AS $at)
         {
             //if (is_integer($at))
-            $xAttr+=pow(2,$at-1);
+            $pow=$at==64?-9223372036854775808:pow(2,$at-1);
+            
+            $xAttr+=$pow;
             //elseif (strlen($at)) $xCity[]=$at;
         }
 
-        //if ($xAttr) $cond['obj_xAttributes']=sprintf('0x%x',$xAttr);
-        if ($xAttr) $cond['obj_xAttributes']=$xAttr;
+        if ($xAttr>0) $cond['obj_xAttributes']=$xAttr;
+        else $cond['obj_xAttributes']=sprintf('0x%x',$xAttr);
+        
         
         if (count($xCity)) $cond['obj_xCityFts']=implode('|',$xCity);
 
