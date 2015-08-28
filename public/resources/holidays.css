@@ -254,7 +254,7 @@
     padding: 0;
 }
 
-.trip_desc .attr li{
+.trip_desc .attr li {
     display: inline-block;
     background-image: url('../img/attr.png');
     background-position: 0 -1180px;
@@ -267,6 +267,14 @@
     width: 20px;
     height: 20px;
     display: inline-block;
+}
+
+#webkameleon_holidays_results .trip_desc .attr li.active {
+    background-position-x: -22px;
+}
+
+#webkameleon_holidays_results .trip_desc .attr li:hover {
+    background-position-x: -44px; 
 }
 
 .trip_desc .attr li.hotel_attr_1 { background-position: 0 -464px }

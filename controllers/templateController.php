@@ -33,7 +33,8 @@ class templateController extends merlinController {
                     <h6>
                         [obj_serviceDesc], [obj_roomDesc]
                     </h6>
-                    <ul class="attr">[loop:attr][if:name]<li class="hotel_attr_[x]"><a class="q" rel="[name]" xname="[name]">&nbsp;</a></li>[endif:name][endloop:attr]</ul>
+                    <ul class="attr">[loop:attr][if:name]<li
+                        class="[if:active]active [endif:active]hotel_attr_[x]"><a class="q" rel="[name]" xname="[name]">&nbsp;</a></li>[endif:name][endloop:attr]</ul>
                 </div>
                 <div class="holiday_price col-md-3">
                     <h5>
@@ -94,7 +95,6 @@ class templateController extends merlinController {
                             <p class="text-warning"><small>lub różne kombinacje powyższych</small></p>
                         </div>
                         <div class="modal-footer">
-                            
                             <button type="button" class="btn btn-default" data-dismiss="modal">zamknij i znajdź udane wakacje</button>
                         </div>
                     </div>
