@@ -100,6 +100,7 @@ function post_lazyload() {
         var x=event.pageX;
         var y=event.pageY - 32;
 
+        console.log(x+' x '+y);
         $$.get(holidays_url+'holidays/query?'+txt,function(data){
             if (typeof(data.q.q)=='string' && data.q.q.length) {
                 
