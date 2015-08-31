@@ -117,7 +117,7 @@ function post_lazyload() {
                 }
                 
                 x-=alter.length*8;
-                var style='left: '+x+'; top: '+y+';';
+                var style='left: '+x+'px; top: '+y+'px;';
                 if (alter.length>0)
                 {
                     $$("body").append('<div style="'+style+'" class="'+clas+'">'+alter+'</div>');
@@ -143,7 +143,7 @@ function post_lazyload() {
                         $('html, body').animate({
                             scrollTop: 0
                         }, animationTime);
-                    },500);
+                    },50000);
                 }
                 else
                 {
