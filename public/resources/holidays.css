@@ -26,21 +26,20 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     width: 50%;
-    padding-left: 1em;
-    padding-right: 1.3em
+    padding: 5px 20px 5px 10px;
     display: table-cell;
     border: 1px solid #ccc;
 }
 
-.webkameleon_holidays_form_input_courtine {
+.webkameleon_holidays_form_input_curtain {
     font-family: Tahoma,Geneva,sans-serif;
     font-size: 14px;    
     position: absolute;
     background-color: #fff;
-    padding: 0.5em 1.5em 0.5em 1em;
-    margin-left: 1px;
+    padding: 12px 30px 5px 10px;
     height: 30px;
     overflow: hidden;
+    color: #565a5c;
 }
 
 #webkameleon_holidays_form a {

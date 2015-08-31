@@ -6,12 +6,15 @@ function replace_input_value(val)
     
     var position=$$(serachPattern).offset();
     var width=$$(serachPattern).width();
-    $$('body').append('<div style="width: '+(width-30)+'; top:'+(position.top+35)+' ; left:'+position.left+'" class="webkameleon_holidays_form_input_courtine">'+$$(serachPattern).val()+'</div>');
+    
+    if ($$(serachPattern).val().length)
+        $$('body').append('<div style="width: '+(width-30)+'px; top:'+(position.top)+'px ; left:'+(position.left+2)+'px;" class="webkameleon_holidays_form_input_curtain">'+$$(serachPattern).val()+'</div>');
     
     $$(serachPattern).val(val);
     
-    $$('.webkameleon_holidays_form_input_courtine').fadeOut(1500,function() {
-        $$('.webkameleon_holidays_form_input_courtine').remove();
+    //return;
+    $$('.webkameleon_holidays_form_input_curtain').fadeOut(1500,function() {
+        $$('.webkameleon_holidays_form_input_curtain').remove();
     });
     
 }
