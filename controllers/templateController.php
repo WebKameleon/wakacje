@@ -6,14 +6,13 @@ class templateController extends merlinController {
         $html='
         <div id="webkameleon_holidays_template" style="display:none">
             <div style="display:none" class="row">
-                <div class="holiday_photo col-md-3">
+                <div class="holiday_photo col-md-3" rel="[id]">
                     <div>
-                        <a class="q" rel="hotel:[tourOp]:[obj_code]" xname="[obj_name]">
+                        <a title="[obj_name]">
                         <img src="[photo]" class="img-responsive"/>
                         <h3>
                             <b title="[obj_name]">[obj_name]</b>
                             <span class="stars" title="kategoria">[stars]</span>
-                            <i rel="[id]" title="informacje o wakacjach" class="glyphicon glyphicon-question-sign"></i>
                         </h3>
                         </a>
                     </div>
@@ -35,6 +34,13 @@ class templateController extends merlinController {
                     </h6>
                     <ul class="attr">[loop:attr][if:name]<li
                         class="[if:active]active [endif:active]hotel_attr_[x]"><a class="q" rel="[name]" xname="[name]">&nbsp;</a></li>[endif:name][endloop:attr]</ul>
+                
+                    <h7><a class="q" rel="hotel:[tourOp]:[obj_code]" xname="[obj_name]">
+                        [if:hotel_selected]Nie ograniczaj ofert[endif:hotel_selected]
+                        [if:!hotel_selected]Ogranicz oferty tylko[endif:!hotel_selected]
+                        
+                        do <b>[obj_name]</b>
+                    </a></h7>
                 </div>
                 <div class="holiday_price col-md-3">
                     <h5>

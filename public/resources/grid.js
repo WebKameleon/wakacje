@@ -41,12 +41,18 @@ function smekta(pattern,vars) {
         re=new RegExp('\\[if:'+key+'\\](.|[\r\n])+\\[endif:'+key+'\\]',"g");
         if (vars[key].length==0 || vars[key]==null || vars[key]=='0') pattern=pattern.replace(re,'');
         
+        re=new RegExp('\\[if:!'+key+'\\](.|[\r\n])+\\[endif:!'+key+'\\]',"g");
+        if (vars[key].length>0 || vars[key]) pattern=pattern.replace(re,'');
+        
+        
         re=new RegExp('\\['+key+'\\]',"g");
         pattern=pattern.replace(re,vars[key]);
         
         
         pattern=pattern.replace('[if:'+key+']','');
         pattern=pattern.replace('[endif:'+key+']','');
+        pattern=pattern.replace('[if:!'+key+']','');
+        pattern=pattern.replace('[endif:!'+key+']','');        
         
     }
     

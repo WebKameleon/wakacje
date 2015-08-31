@@ -116,6 +116,10 @@
     background-color: transparent;
 }
 
+#webkameleon_holidays_results .holiday_photo {
+    cursor: pointer;
+}
+
 #webkameleon_holidays_results .holiday_photo img {
     width: 100%;
 }
@@ -151,12 +155,15 @@
 
 
 #webkameleon_holidays_results .row .trip_desc h5 {
-    font-size: 18px;
-    
+    font-size: 18px;   
 }
 
 #webkameleon_holidays_results .row .trip_desc h6 {
     font-size: 16px;
+}
+
+#webkameleon_holidays_results .row .trip_desc h7 {
+    font-size: 14px;   
 }
 
 #webkameleon_holidays_results .row .trip_desc a.flight {
@@ -321,6 +328,20 @@
 .trip_desc .attr li.hotel_attr_46 { background-position: 0 -1036px }
 .trip_desc .attr li.hotel_attr_64 { background-position: 0 -552px }
 
+
+.alter_q {
+    position: absolute;
+    font-size: 28px;
+    padding: 10px 20px;
+    background-color:rgba(0,0,0,0.5);
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid #ccc;    
+}
+
+.alter_less {
+    text-decoration: line-through;
+}
 
 @media (max-width:480px) {
     #webkameleon_holidays_form input {

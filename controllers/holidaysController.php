@@ -422,6 +422,8 @@ class holidaysController extends merlinController {
                 
                 //0x68 00 08 08 45 02 20 60
                 //0x78 00 21 00 55 b7 20 38
+                
+                $r['hotel_selected']=isset($cond[0]['hotel']);
                 $result[]=$r;
             }
         }
@@ -445,6 +447,9 @@ class holidaysController extends merlinController {
         $qlen=strlen($q);
         $cond=$this->q2cond($q);
         
+        $more='';
+        $less='';
+        
         if ($this->data('alter')) {
             $wcond=$this->q2cond($this->data('alter'));
             
@@ -457,6 +462,7 @@ class holidaysController extends merlinController {
                            if (isset($cond[1][$what][$code]))
                            {
                                 $q=str_replace($cond[1][$what][$code],'',$q);
+                                $less=$cond[1][$what][$code];
                                 $q=str_replace('  ',' ',trim($q));
                                 continue 2;
                            }
@@ -466,8 +472,10 @@ class holidaysController extends merlinController {
                     foreach ($filters AS $code=>$name) {
                         if ($what=='dep' && isset($config['dep_from'][$code])) {
                             $q.=' '.$config['dep_from'][$code];
+                            $more=$config['dep_from'][$code];
                         } else {
                             $q.=' '.$name;
+                            $more=$name;
                         }
                     }
                     
@@ -475,7 +483,7 @@ class holidaysController extends merlinController {
             }
         }
         
-        if (strlen($q)!=$qlen) return $this->status($q,true,'q');
+        if (strlen($q)!=$qlen) return $this->status(['q'=>$q,'more'=>$more,'less'=>$less],true,'q');
         
         return $this->status('',true,'q');
     }

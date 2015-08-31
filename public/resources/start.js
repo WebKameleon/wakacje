@@ -67,7 +67,7 @@ function post_lazyload() {
 
 
     
-    $$('#webkameleon_holidays_results a.q').click(function(){
+    $$('#webkameleon_holidays_results a.q').click(function(event){
         
         
         var txt=$$('#webkameleon_holidays_form').serialize();
@@ -78,18 +78,69 @@ function post_lazyload() {
         }
         txt+='&alter='+encodeURIComponent(value);
         
+        var x=event.pageX;
+        var y=event.pageY - 32;
 
         $$.get(holidays_url+'holidays/query?'+txt,function(data){
-            if (typeof(data.q)=='string' && data.q.length) {
-                $$('#webkameleon_holidays_form input[name="q"]').val(data.q);
-                lazyload_grid_reload();
+            if (typeof(data.q.q)=='string' && data.q.q.length) {
+                
+                
+                var alter='';
+                var clas='alter_q';
+                if(data.q.more.length>0) {
+                    alter=data.q.more;
+                    clas+=' alter_more';
+                }
+                if(data.q.less.length>0) {
+                    alter=data.q.less;
+                    clas+=' alter_less';
+                }
+                
+                x-=alter.length*8;
+                var style='left: '+x+'; top: '+y+';';
+                if (alter.length>0)
+                {
+                    $$("body").append('<div style="'+style+'" class="'+clas+'">'+alter+'</div>');
+                
+                    setTimeout(function () {
+                        var position=$$('#webkameleon_holidays_form input[name="q"]').position();
+                        var newStyle={
+                            'left': position.left,
+                            'top': position.top+31,
+                            'font-size': '14px'
+                        };
+                        
+                        var animationTime=2000;
+                        
+                        $$(".alter_q").animate(newStyle,animationTime,function() {
+                            $$(".alter_q").fadeOut(600,function() {
+                                $$(".alter_q").remove();
+                            });
+                            $$('#webkameleon_holidays_form input[name="q"]').val(data.q.q);
+                            lazyload_grid_reload();                          
+                        });
+                        
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, animationTime);
+                    },500);
+                }
+                else
+                {
+                    $$('#webkameleon_holidays_form input[name="q"]').val(data.q.q);
+                    lazyload_grid_reload();                    
+                }
+                
+                
+                
+
             }
         });
         
     
     });
 
-    $$('#webkameleon_holidays_results .holiday_photo h3 i').click(function(){
+    $$('#webkameleon_holidays_results .holiday_photo').click(function(){
         var rel=$$(this).attr('rel');
         
         $$.get(holidays_url+'holidays/offer/'+rel,function(data) {
