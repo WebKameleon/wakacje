@@ -4,7 +4,7 @@ function replace_input_value(val)
 {
     var serachPattern='#webkameleon_holidays_form input[name="q"]';
     
-    var position=$$(serachPattern).position();
+    var position=$$(serachPattern).offset();
     var width=$$(serachPattern).width();
     $$('body').append('<div style="width: '+(width-30)+'; top:'+(position.top+35)+' ; left:'+position.left+'" class="webkameleon_holidays_form_input_courtine">'+$$(serachPattern).val()+'</div>');
     
@@ -122,10 +122,10 @@ function post_lazyload() {
                     $$("body").append('<div style="'+style+'" class="'+clas+'">'+alter+'</div>');
                 
                     setTimeout(function () {
-                        var position=$$('#webkameleon_holidays_form input[name="q"]').position();
+                        var position=$$('#webkameleon_holidays_form input[name="q"]').offset();
                         var newStyle={
                             'left': position.left,
-                            'top': position.top+31,
+                            'top': position.top,
                             'font-size': '14px'
                         };
                         

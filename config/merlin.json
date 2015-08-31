@@ -150,7 +150,7 @@
        "40": "kominek",
        "41": "kuchnia",
        "42": "grill",
-       "43": "prywatny basen",
+       "43": "basen",
        "44": "przyjazny gejom",
        "45": "",
        "46": "SPA",
@@ -175,7 +175,7 @@
     },
     
     "attr": {
-        "1,2": ["zimowe","zima","wypożyczalnia"],
+        "2": ["zimowe","zima","wypożyczalnia"],
         "3": ["centrum"],
         "4": ["noc","nocne","nocny","nocna"],
         "5": ["klima","klimatyzacja","klimatyzowany","klimatyzowane"],
