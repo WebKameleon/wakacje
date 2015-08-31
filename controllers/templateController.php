@@ -59,7 +59,7 @@ class templateController extends merlinController {
     
     protected function countries()
     {
-        $regions=$this->merlin->getRegions('F');
+        $regions=$this->merlin->getRegions('F',null,$this->data('debug')?false:true);
         
         $countries=[];
         foreach($regions AS $r)
@@ -204,11 +204,9 @@ class templateController extends merlinController {
     
     public function get_placeholder()
     {
-        $regions=$this->merlin->getRegions('F');
-        $country=$this->countries()[0];
-        
-        
-        return $this->status('np. '.$country.' '.$this->airport().' '.$this->next_month());
+        $countries=$this->countries();
+           
+        return $this->status('np. '.$countries[0].' '.$this->airport().' '.$this->next_month());
     }
     
     

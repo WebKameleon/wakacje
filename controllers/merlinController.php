@@ -16,6 +16,11 @@ class merlinController extends Controller {
     
     protected function getConfig()
     {
+        $token='config.'.Bootstrap::$main->getConfig('site');
+        
+        $config=Tools::memcache($token);
+        if ($config) return $config;
+        
         $config=json_config(__DIR__.'/../config/merlin.json',false,false);
         
         $config['words']=[];
@@ -100,7 +105,7 @@ class merlinController extends Controller {
     
         $config['far']=$far;
         
-        return $config;
+        return Tools::memcache($token,$config,4*3600);
     }
     
     

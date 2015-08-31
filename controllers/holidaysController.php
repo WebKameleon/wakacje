@@ -157,7 +157,7 @@ class holidaysController extends merlinController {
         
         $q_token='q2cond.'.Bootstrap::$main->getConfig('site').'.'.md5($q);
         $cond=Tools::memcache($q_token);
-        if($cond && !$this->data('debug')) {
+        if ($cond && !$this->data('debug')) {
             $cond['memcache']=true;
             return $cond;
         }
@@ -339,11 +339,14 @@ class holidaysController extends merlinController {
 
     public function get()
     {
+     
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
         $site=Bootstrap::$main->getConfig('site');
         $config=$this->getConfig();
+        Bootstrap::$main->system('cfg');
         
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
+        Bootstrap::$main->system('q2c');
         Bootstrap::$main->session('q',$this->data('q'));
         if (count($cond)) {
             if (!isset($cond[0]['type'])) $cond[0]['type']='F';
@@ -359,6 +362,7 @@ class holidaysController extends merlinController {
         } else {
             $offers=['result'=>[],'count'=>0];
         }
+        Bootstrap::$main->system('mds');
         
         
         $opt['next_offset']=$opt['offset']+$opt['limit'];

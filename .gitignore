@@ -1,4 +1,3 @@
 media
-config/wakacje.webkameleon.com.json
-config/pudel.webkameleon.com.json
 config/*
+appengine/tmp

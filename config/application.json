@@ -1,5 +1,7 @@
 {
-    
+    "db.dsn":"mysql:unix_socket=/cloudsql/wakacje:wakacje;charset=utf8;dbname=wakacje",
+    "db.user":"wakacje",
+    "db.pass":"wakacje",
     
     "maxmind.user_id":"96262",
     "maxmind.license_key":"teNhCashA88D",

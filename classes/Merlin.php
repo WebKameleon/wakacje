@@ -95,8 +95,6 @@ class Merlin
     protected function post_xml(&$xml,$type,$subtype='')
     {
 
-
-
         $url=$this->getUrl($type);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -125,12 +123,13 @@ class Merlin
 
         $ret=$this->_xml2arr($response);
         $this->debug($ret,'mds XML object '.$type.$subtype);
+        Bootstrap::$main->system($type);
         return $ret;
     }
     
     protected function _xml2arr($response)
     {
-        $ret=simplexml_load_string($response);
+        $ret=@simplexml_load_string($response);
         $ret=json_decode(json_encode($ret),true);
         
         return $ret;
@@ -586,7 +585,8 @@ class Merlin
         if ($op=='ECC1') $op='ECCO';
         if ($op=='ECT1') $op='ECTR';
         
-        $ret=$this->session($token);
+        
+        $ret=Tools::memcache($token);
         if ($ret) return $ret;
         
         $url='http://data2.merlinx.pl/index.php?login='.$this->user.'&password='.$this->pass.'&tourOp='.$op.'&htlCode='.$htlCode;
@@ -605,11 +605,13 @@ class Merlin
         if (isset($hotel['hotelData']['texts']['text']))
             $ret['desc']=$hotel['hotelData']['texts']['text'];
         
-        return $this->session($token,$ret);
+        Bootstrap::$main->system($token);
+        return Tools::memcache($token,$ret,2*3600);
     }
     
     public function convertOffers($offers,$path='ofr')
     {
+        Bootstrap::$main->system('strt-'.$path);
     
         $ret=[];
         if (isset($offers['count']))
@@ -652,18 +654,10 @@ class Merlin
             $ret['result'][]=$rec;
             
         }
-        
+
+        Bootstrap::$main->system('cnv-'.$path);        
         return $ret;        
 
-        $a=$this->getAttribute($offer->obj,'xAttributes');
-
-        /*
-        for ($e=1;$e<70;$e++)
-        {
-            if ( ($a+0) & pow(2,$e-1) ) $r['m_atrybuty'][]=$this->operator->atrybut("m_$e",'M');
-        }
-        */
-        
 
     }
 
@@ -680,26 +674,6 @@ class Merlin
     }
 
     
-    protected function unzip($f)
-    {
-        $zip = new ZipArchive;
-        $file=tempnam (sys_get_temp_dir(),'merlin');
-        file_put_contents($file,file_get_contents($f));
-        $zip->open($file);
-        $csv=explode("\n",$zip->getFromIndex(0));
-        $zip->close();
-        $h=explode('";"',substr($csv[0],1,strlen($csv[0])-2));
-        $result=array();
-        for($i=1;$i<count($csv);$i++)
-        {
-            $line=explode('";"',substr($csv[$i],1,strlen($csv[$i])-2));
-            $rec=array();
-            foreach($line AS $k=>$v) if (strlen(trim($v))) $rec[$h[$k]]=$v;
-            if (count($rec)) $result[]=$rec;
-        }
-        
-        return $result;
-    }
     
     public function getRegions($type=null,$limits=null,$cache=true,$all=false)
     {
@@ -717,23 +691,16 @@ class Merlin
         $r=$this->session($token);
         if ($r && $cache) return $r;
         
+        $r=Tools::memcache($token);
+        if ($r && $cache) return $r;
+        
+        
         $xml=$this->request('regions',$cond);
 
         $regions=$this->post_xml($xml,'regions');
         
+        $rgns=json_decode(file_get_contents(__DIR__.'/../merlin/regions_utf8.json'),true);
         
-        $rg=Tools::saveRoot('merlin/regions.json');
-        
-        if ( !file_exists($rg) ||  filemtime($rg)<time()-24*3600)
-        {
-            $rgns=$this->unzip('http://www.merlinx.pl/mdsws/regions_utf8.zip');
-            file_put_contents($rg,json_encode($rgns));
-        }
-        else
-        {
-            $rgns=json_decode(file_get_contents($rg),true);
-        }
-
         $result=(array)$regions;
         $wynik=array();
         if (isset($result['reg'])) foreach ($result['reg'] AS $r)
@@ -759,7 +726,7 @@ class Merlin
             $wynik[]=$rec;
         }
         
-        return $this->session($token,$wynik);
+        return Tools::memcache($token,$this->session($token,$wynik),2*3600);
 
     }
 
@@ -859,8 +826,8 @@ class Merlin
         if ($offset)  $cond['limit_from']=$offset+1;
         
 
-            
-        $hotels = $this->post_xml($this->request('groups',$cond),'groups');
+        $grp=$this->request('groups',$cond);
+        $hotels = $this->post_xml($grp,'groups');
         $hotels = $this->convertOffers($hotels,'grp');
 
 
