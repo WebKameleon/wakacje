@@ -1,9 +1,26 @@
 
+
+function replace_input_value(val)
+{
+    var serachPattern='#webkameleon_holidays_form input[name="q"]';
+    
+    var position=$$(serachPattern).position();
+    var width=$$(serachPattern).width();
+    $$('body').append('<div style="width: '+(width-30)+'; top:'+(position.top+35)+' ; left:'+position.left+'" class="webkameleon_holidays_form_input_courtine">'+$$(serachPattern).val()+'</div>');
+    
+    $$(serachPattern).val(val);
+    
+    $$('.webkameleon_holidays_form_input_courtine').fadeOut(1000,function() {
+        $$('.webkameleon_holidays_form_input_courtine').remove();
+    });
+    
+}
+
 lazyload_grid('webkameleon_holidays_form','webkameleon_holidays_template','webkameleon_holidays_results',15,holidays_url+'holidays',true,false);
 $$('#webkameleon_holidays_form a').click(lazyload_grid_reload);
 
 $$.get(holidays_url+'template/placeholder',function(data) {
-    $$('#webkameleon_holidays_form input').attr('placeholder',data.template).focus();
+    $$('#webkameleon_holidays_form input[name="q"]').attr('placeholder',data.template).focus();
 });
 
 
@@ -29,17 +46,19 @@ var getUrlParameter = function getUrlParameter(sParam,url) {
 
 var q=getUrlParameter('q');
 if (typeof(q) != 'undefined') {
-    $$('#webkameleon_holidays_form input[name="q"]').val(q.replace(/\+/g,' '));
+    replace_input_value(q.replace(/\+/g,' '));
     setTimeout(function() {
         $$('#webkameleon_holidays_form a').trigger('click');
-    },500);
+    },600);
     
 } else {
     $$.get(holidays_url+'holidays/q',function(data){
-        $$('#webkameleon_holidays_form input[name="q"]').val(data.q);
+        replace_input_value(data.q);
         if (typeof(data.q)=='string' && data.q.length) $$('#webkameleon_holidays_form a').trigger('click');
     });
 }
+
+
 
 
 
@@ -116,7 +135,7 @@ function post_lazyload() {
                             $$(".alter_q").fadeOut(600,function() {
                                 $$(".alter_q").remove();
                             });
-                            $$('#webkameleon_holidays_form input[name="q"]').val(data.q.q);
+                            replace_input_value(data.q.q);
                             lazyload_grid_reload();                          
                         });
                         
@@ -127,7 +146,7 @@ function post_lazyload() {
                 }
                 else
                 {
-                    $$('#webkameleon_holidays_form input[name="q"]').val(data.q.q);
+                    replace_input_value('');
                     lazyload_grid_reload();                    
                 }
                 
@@ -220,7 +239,7 @@ function webkameleon_holidays_helpmodal_click()
         setTimeout(webkameleon_holidays_helpmodal_click,200);
     } else {
         $$('#webkameleon_holidays_helpmodal .modal-body .example').click(function() {
-            $$('#webkameleon_holidays_form input[name="q"]').val($$(this).text());
+            replace_input_value($$(this).text());
             $$("#webkameleon_holidays_helpmodal").modal('hide');
             $$('#webkameleon_holidays_form a').trigger('click');
         });        

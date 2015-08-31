@@ -32,6 +32,17 @@
     border: 1px solid #ccc;
 }
 
+.webkameleon_holidays_form_input_courtine {
+    font-family: Tahoma,Geneva,sans-serif;
+    font-size: 14px;    
+    position: absolute;
+    background-color: #fff;
+    padding: 0.5em 1.5em 0.5em 1em;
+    margin-left: 1px;
+    height: 30px;
+    overflow: hidden;
+}
+
 #webkameleon_holidays_form a {
     border-color: #e11211;
     border-bottom-color: #d80d0e;
@@ -343,6 +354,7 @@
     text-decoration: line-through;
 }
 
+
 @media (max-width:480px) {
     #webkameleon_holidays_form input {
         width: 75%;
@@ -352,6 +364,9 @@
         font-size: 12px;
     }
 
+    .alter_q {
+        font-size: 20px;
+    }
 }
 
 @media (max-width:640px) {
@@ -360,5 +375,9 @@
     }
     #webkameleon_holidays_form a {
         width: 20%;
-    }    
+    }
+    
+    .alter_q {
+        font-size: 24px;
+    }
 }
