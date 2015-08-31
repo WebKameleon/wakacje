@@ -143,7 +143,7 @@ function post_lazyload() {
                         $('html, body').animate({
                             scrollTop: 0
                         }, animationTime);
-                    },50000);
+                    },500);
                 }
                 else
                 {
