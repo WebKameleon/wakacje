@@ -289,7 +289,8 @@
     width: 20px;
     height: 20px;
     margin-right: 3px;
-    
+    line-height: 20px;
+    margin-bottom: 0;
 }
 .trip_desc .attr li a {
     width: 20px;
