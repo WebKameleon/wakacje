@@ -236,6 +236,18 @@
     margin-bottom: 0;
 }
 
+#webkameleon_holidays_hotelmodal .modal-body {
+    padding-top: 5px;
+}
+
+#webkameleon_holidays_hotelmodal .modal-body #tabs li a{
+    font-size: 14px;
+}
+
+#webkameleon_holidays_hotelmodal .modal-header {
+    border-bottom: 0;
+}
+
 #webkameleon_holidays_hotel_carousel .carousel-indicators {
     bottom: auto;
     left: auto;
@@ -273,6 +285,20 @@
 
 #webkameleon_holidays_helpmodal {
     z-index: 100000;
+}
+
+#webkameleon_holidays_hotelmodal #desc_desc {
+    height: 300px;
+    overflow: auto;
+}
+
+#webkameleon_holidays_hotelmodal #desc_desc h4 {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#webkameleon_holidays_hotelmodal #desc_desc p {
+    font-size: 12px;
 }
 
 .trip_desc .attr {

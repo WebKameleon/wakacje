@@ -10,7 +10,7 @@ function replace_input_value(val)
     
     $$(serachPattern).val(val);
     
-    $$('.webkameleon_holidays_form_input_courtine').fadeOut(1000,function() {
+    $$('.webkameleon_holidays_form_input_courtine').fadeOut(1500,function() {
         $$('.webkameleon_holidays_form_input_courtine').remove();
     });
     
@@ -100,7 +100,7 @@ function post_lazyload() {
         var x=event.pageX;
         var y=event.pageY - 32;
 
-        console.log(x+' x '+y);
+
         $$.get(holidays_url+'holidays/query?'+txt,function(data){
             if (typeof(data.q.q)=='string' && data.q.q.length) {
                 
@@ -174,15 +174,15 @@ function post_lazyload() {
             
                 
                 var min=inners.length;
-                if (desc.length<min) min=desc.length;
+                if (photos.length<min) min=photos.length;
                 
                 for (i=0;i<min;i++)
                 {
                     $$(indicators[i]).css('display','inline-block');
                     $$(inners[i]).removeAttr('style');
-                    $$(inners[i]).find('img').attr('src',photos[i%photos.length]);
-                    $$(inners[i]).find('h3').text(desc[i].subject);
-                    $$(inners[i]).find('p').html(desc[i].content);
+                    $$(inners[i]).find('img').attr('src',photos[i]);
+                    //$$(inners[i]).find('h3').text(desc[i].subject);
+                    //$$(inners[i]).find('p').html(desc[i].content);
                     $$(inners[i]).addClass('item');
                     
                 }
@@ -196,6 +196,17 @@ function post_lazyload() {
                 
                 $$('#webkameleon_holidays_hotelmodal h4.modal-title').html(data.holidays.obj.name+' '+data.holidays.stars);
                 $$('#webkameleon_holidays_hotelmodal h5.modal-country').html(data.holidays.obj.country+', '+data.holidays.obj.region);
+                
+                
+                
+                var html='';
+                
+                for (i=0;i<desc.length;i++)
+                {
+                    html+='<h4>'+desc[i].subject+'</h4>';
+                    html+='<p>'+desc[i].content+'</p>';
+                }
+                $$('#webkameleon_holidays_hotelmodal #desc_desc').html(html);
                 
                 var text=$$('#webkameleon_holidays_hotelmodal .btn-primary').attr('text')+data.holidays.dep_from+', '+data.holidays.startDate.DDD+' '+data.holidays.startDate.D+' '+data.holidays.startDate.MMM;
                 $$('#webkameleon_holidays_hotelmodal .btn-primary').text(text).click(function() {

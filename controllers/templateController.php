@@ -20,8 +20,8 @@ class templateController extends merlinController {
                 </div>
                 <div class="trip_desc col-md-6">
                     <h4>
-                        <a class="q">[obj_country]</a> &raquo; <a class="q">[obj_region]</a>
-                        | [trp_duration] dni
+                        <a class="q">[obj_country]</a>, <a class="q">[obj_region]</a>
+                        &raquo; [trp_duration] dni
                     </h4>
                     <h5>
                         [startDate_D] [startDate_MMM], [startDate_DDD]:
@@ -127,8 +127,8 @@ class templateController extends merlinController {
                 <div class="item item-tpl inactive">
                     <img src="http://placehold.it/1280x500" alt="" class="img-responsive"/>
                     <div class="carousel-caption">
-                        <h3>Tytuł</h3>
-                        <p>opis</p>
+                        <h3></h3>
+                        <p></p>
                     </div>
                 </div>  ';
                 
@@ -149,15 +149,32 @@ class templateController extends merlinController {
                         </div>
                         <div class="modal-body">
                         
-                            <div id="webkameleon_holidays_hotel_carousel" class="carousel slide">
+                            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                                <li class="active"><a href="#desc_photos" data-toggle="tab">Galeria zdjęć</a></li>
+                                <li><a href="#desc_desc" data-toggle="tab">Opis</a></li>
+                            </ul>
+                            <div id="my-tab-content" class="tab-content">
                             
-                                <ol class="carousel-indicators">
-                                    '.$indicators.'
-                                </ol>                            
-                                <div class="carousel-inner">
-                                    '.$slides.'
+                                <div class="tab-pane active" id="desc_photos">
+                                    <div id="webkameleon_holidays_hotel_carousel" class="carousel slide">
+                                    
+                                        <ol class="carousel-indicators">
+                                            '.$indicators.'
+                                        </ol>                            
+                                        <div class="carousel-inner">
+                                            '.$slides.'
+                                        </div>
+                                    </div>                                    
+                                   
                                 </div>
-                            </div>                        
+                                
+                                <div class="tab-pane" id="desc_desc">
+
+                                </div>                            
+                            
+
+                            
+                            </div>
                         
                          </div>
                         <div class="modal-footer">
