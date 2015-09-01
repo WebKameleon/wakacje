@@ -365,49 +365,20 @@ class holidaysController extends merlinController {
         return $this->status(Bootstrap::$main->session('total'),true,'total');
     }
     
-    public function get()
+    
+    protected function results(&$cond,$limit,$offset,&$config,$rowattr=[])
     {
-        $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
-        $opt['totalPrice']=Bootstrap::$main->session('total');
-        $site=Bootstrap::$main->getConfig('site');
-        $config=$this->getConfig();
-        Bootstrap::$main->system('cfg');
+        $offers=isset($cond[0]['hotel']) ?
+            $this->merlin->getOffers($cond[0],'date,duration,dep,price',$limit,$offset)
+            :
+            $this->merlin->getGrouped($cond[0],'',$limit,$offset);
         
-        $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
-        Bootstrap::$main->system('q2c');
-        Bootstrap::$main->session('q',$this->data('q'));
-        if (count($cond)) {
-            if (!isset($cond[0]['type'])) $cond[0]['type']='F';
-            if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
-            
-            $cond[0]['total']=$opt['totalPrice']?true:false;
-            
-            $offers=isset($cond[0]['hotel']) ?
-                $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
-                :
-                $this->merlin->getGrouped($cond[0],'',$opt['limit'],$opt['offset']);
-            
-            if (!isset($cond['memcache'])) @Tools::log('query-'.$site,['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
-            
-        } else {
-            $offers=['result'=>[],'count'=>0];
-        }
-        Bootstrap::$main->system('mds');
-        
-        
-        $opt['next_offset']=$opt['offset']+$opt['limit'];
-        
-        $opt['results']='Wyniki: ';
-        if (isset($offers['count'])) {
-            if ($offers['count']>=1000) $opt['results'].='ponad 1000';
-            else $opt['results'].=$offers['count'];
-        }
-        //mydie($this->merlin->debug);
-        
+          
         $result=[];
         foreach ($offers['result'] AS $ofr)
         {
             if (isset($ofr['obj']['info']['photos']) || isset($ofr['obj']['info']['thumb'])) {
+                
                 $r=[];
                 
                 $r['photo']=$ofr['obj']['info']['thumb'];
@@ -436,12 +407,12 @@ class holidaysController extends merlinController {
                 
                 $r['adt'] = isset($cond[0]['adt']) ? $cond[0]['adt'] : 2;
                 $r['chd'] = isset($cond[0]['chd']) ? $cond[0]['chd'] : 0;
+                $r['inf'] = isset($cond[0]['inf']) ? $cond[0]['inf'] : 0;
                 
-                $r['total']=$opt['totalPrice'];
                 
                 Bootstrap::$main->session('adt',$r['adt']);
                 Bootstrap::$main->session('chd',$r['chd']);
-                
+                Bootstrap::$main->session('inf',$r['inf']);
                 
                 $r['attr']=[];
                 $attr=$r['obj_xAttributes']+0;
@@ -455,13 +426,88 @@ class holidaysController extends merlinController {
                                             ];
                 }
                 
-                //0x68 00 08 08 45 02 20 60
-                //0x78 00 21 00 55 b7 20 38
+                
                 
                 $r['hotel_selected']=isset($cond[0]['hotel']);
+                
+                $r=array_merge($r,$rowattr);
+                
                 $result[]=$r;
             }
         }
+    
+        return [
+            'offers'=>$offers,
+            'result'=>$result
+        ];
+    }
+    
+    public function get()
+    {
+        $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
+        $opt['totalPrice']=Bootstrap::$main->session('total');
+        $site=Bootstrap::$main->getConfig('site');
+        $config=$this->getConfig();
+        Bootstrap::$main->system('cfg');
+        
+        $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
+        Bootstrap::$main->system('q2c');
+        Bootstrap::$main->session('q',$this->data('q'));
+        if (count($cond)) {
+            if (!isset($cond[0]['type'])) $cond[0]['type']='F';
+            if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
+            
+            $cond[0]['total']=$opt['totalPrice']?true:false;
+            $rowattr=[];
+            $rowattr['total']=$opt['totalPrice'];
+            
+            $results=$this->results($cond,$opt['limit'],$opt['offset'],$config,$rowattr);
+            
+            $offers=$results['offers'];
+            $result=$results['result'];
+            
+            $offers2=$offers;
+            $opt['next_offset']=$opt['offset']+$opt['limit'];
+
+            $limit=$opt['limit'];
+            $security=20;
+            while(count($offers2['result'])==$limit && count($result)<$opt['limit'])
+            {
+                $offset=$opt['next_offset'];
+                $limit=$opt['limit']-count($result);
+                $opt['next_offset']+=$limit;
+               
+                
+                $results=$this->results($cond,$limit,$offset,$config,$rowattr);
+                if (count($results['result'])) $result=array_merge($result,$results['result']);
+                $offers2=$results['offers'];
+            
+                if (!$security--) break;
+            }
+            
+            
+            
+            if (!isset($cond['memcache'])) @Tools::log('query-'.$site,['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
+      
+            
+            
+        } else {
+            $offers=['result'=>[],'count'=>0];
+            $result=[];
+            $opt['next_offset']=$opt['offset'];
+        }
+        Bootstrap::$main->system('mds');
+        
+        
+        $opt['results']='Wyniki: ';
+        
+        if (isset($offers['count'])) {
+            if ($offers['count']>=1000) $opt['results'].='ponad 1000';
+            else $opt['results'].=$offers['count'];
+        }
+      
+          
+        
         
         
         if ($this->data('debug')) {
