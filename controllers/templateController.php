@@ -92,7 +92,7 @@ class templateController extends merlinController {
                         <div class="modal-body">
                             <p class="example">'.$countries[$i++%$cc].' '.$this->airport(0).' lub '.$this->airport(1).'</p>
                             <p class="example">'.$countries[$i++%$cc].' '.$this->next_month().' 4-8 dni</p>
-                            <p class="example">jutro 2 osoby i 2 dzieci</p>
+                            <p class="example">jutro 2 osoby, 2 dzieci i niemowlę</p>
                             <p class="example">'.$this->airport(2).' od 1500 do 2000 na 7 dni</p>
                             <p class="example">'.$countries[$i++%$cc].' 15-18 '.$this->next_month(1,3).'</p>
                             <p class="example">'.$countries[$i++%$cc].' lub '.$countries[$i++%$cc].' od 3 '.$this->next_month(1,2).' do 25 '.$this->next_month(1,2).'</p>
