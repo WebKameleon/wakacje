@@ -22,7 +22,7 @@ function replace_input_value(val)
 lazyload_grid('webkameleon_holidays_form','webkameleon_holidays_template','webkameleon_holidays_results',0,holidays_url+'holidays',true,false);
 $$('#webkameleon_holidays_form a').click(lazyload_grid_reload);
 
-$$.get(holidays_url+'template/placeholder',function(data) {
+$$get(holidays_url+'template/placeholder',function(data) {
     $$('#webkameleon_holidays_form input[name="q"]').attr('placeholder',data.template).focus();
 });
 
@@ -55,10 +55,18 @@ if (typeof(q) != 'undefined') {
     },600);
     
 } else {
-    $$.get(holidays_url+'holidays/q',function(data){
+    
+    $$get(holidays_url+'holidays/q',function(data){
         replace_input_value(data.q);
-        if (typeof(data.q)=='string' && data.q.length) $$('#webkameleon_holidays_form a').trigger('click');
+        if (typeof(data.q)=='string' && data.q.length)
+        {
+            setTimeout(function() {
+                $$('#webkameleon_holidays_form a').trigger('click');
+            },600);
+            
+        }
     });
+
 }
 
 
@@ -102,7 +110,7 @@ function post_lazyload() {
         var y=event.pageY - 32;
 
 
-        $$.get(holidays_url+'holidays/query?'+txt,function(data){
+        $$get(holidays_url+'holidays/query?'+txt,function(data){
             if (typeof(data.q.q)=='string' && data.q.q.length) {
                 
                 
@@ -164,7 +172,7 @@ function post_lazyload() {
     $$('#webkameleon_holidays_results .holiday_photo').click(function(){
         var rel=$$(this).attr('rel');
         
-        $$.get(holidays_url+'holidays/offer/'+rel,function(data) {
+        $$get(holidays_url+'holidays/offer/'+rel,function(data) {
             //console.log(data);
             
             if (typeof(data.holidays.obj.info.photos)!='undefined') {
@@ -236,7 +244,7 @@ function post_lazyload() {
     $$('.lazyload_grid_results ul li').click(function() {
         var url=holidays_url+'holidays/total/'+$$(this).attr('rel');
         
-        $$.get(url,function() {
+        $$get(url,function() {
             lazyload_grid_reload();
         });
     });

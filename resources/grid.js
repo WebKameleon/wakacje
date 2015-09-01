@@ -83,7 +83,7 @@ function lazyload_grid_load()
     var d = new Date();
     var url=lazyload_grid_ajax+'?offset='+lazyload_grid_offset+'&'+txt;
     
-    $$.get(url,function (r) {
+    $$get(url,function (r) {
         lazyload_grid_log(r);
         $$('.lazyload_grid_scroll_to_wait').remove();
         
