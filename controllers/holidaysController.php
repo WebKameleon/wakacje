@@ -96,6 +96,21 @@ class holidaysController extends merlinController {
             case 'dziecmi':
                 return ['field'=>'chd','number'=>2];
 
+            case 'niemowlę':
+            case 'niemowle':    
+            case 'niemowlak':
+            case 'niemowlakiem':
+            case 'infant':
+            case 'infantem':
+            case 'infantów':
+            case 'infantow':
+            case 'infanty':
+            case 'niemowlaki':
+            case 'niemowlaków':
+            case 'niemowlakow':
+                return ['field'=>'inf','number'=>1];
+
+                
         
             case 'singli':
             case 'single':
@@ -244,12 +259,19 @@ class holidaysController extends merlinController {
                     case 'chd':
                     case 'duration':
                     case 'adt':
+                    case 'inf':
                         if (!$number && isset($c['number'])) $number=$c['number'];
                         if ($number) {
                             $val=$number;
                             if ($number1) $val.=':'.$number1;
                             $this->update_cond($cond,$field,$val,$phraze_responsible,$phrazes_responsible);
                         }
+                        if ($field=='chd') {
+                            $age=[];
+                            for ($a=1;$a<=$number;$a++) $age[]=$a*3;
+                            $cond['age']=implode(',',$age);
+                        }
+                        
                         break;
                     
                     case 'hotel':
@@ -337,10 +359,16 @@ class holidaysController extends merlinController {
         return $this->status(Bootstrap::$main->session('q'),true,'q');
     }
 
+    public function get_total()
+    {
+        Bootstrap::$main->session('total',$this->id);
+        return $this->status(Bootstrap::$main->session('total'),true,'total');
+    }
+    
     public function get()
     {
-     
         $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
+        $opt['totalPrice']=Bootstrap::$main->session('total');
         $site=Bootstrap::$main->getConfig('site');
         $config=$this->getConfig();
         Bootstrap::$main->system('cfg');
@@ -351,6 +379,8 @@ class holidaysController extends merlinController {
         if (count($cond)) {
             if (!isset($cond[0]['type'])) $cond[0]['type']='F';
             if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
+            
+            $cond[0]['total']=$opt['totalPrice']?true:false;
             
             $offers=isset($cond[0]['hotel']) ?
                 $this->merlin->getOffers($cond[0],'date,duration,dep,price',$opt['limit'],$opt['offset'])
@@ -407,6 +437,7 @@ class holidaysController extends merlinController {
                 $r['adt'] = isset($cond[0]['adt']) ? $cond[0]['adt'] : 2;
                 $r['chd'] = isset($cond[0]['chd']) ? $cond[0]['chd'] : 0;
                 
+                $r['total']=$opt['totalPrice'];
                 
                 Bootstrap::$main->session('adt',$r['adt']);
                 Bootstrap::$main->session('chd',$r['chd']);

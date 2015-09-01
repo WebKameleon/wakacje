@@ -19,7 +19,7 @@ function replace_input_value(val)
     
 }
 
-lazyload_grid('webkameleon_holidays_form','webkameleon_holidays_template','webkameleon_holidays_results',15,holidays_url+'holidays',true,false);
+lazyload_grid('webkameleon_holidays_form','webkameleon_holidays_template','webkameleon_holidays_results',0,holidays_url+'holidays',true,false);
 $$('#webkameleon_holidays_form a').click(lazyload_grid_reload);
 
 $$.get(holidays_url+'template/placeholder',function(data) {
@@ -60,8 +60,6 @@ if (typeof(q) != 'undefined') {
         if (typeof(data.q)=='string' && data.q.length) $$('#webkameleon_holidays_form a').trigger('click');
     });
 }
-
-
 
 
 
@@ -234,6 +232,14 @@ function post_lazyload() {
         return false;
     });
 
+    
+    $$('.lazyload_grid_results ul li').click(function() {
+        var url=holidays_url+'holidays/total/'+$$(this).attr('rel');
+        
+        $$.get(url,function() {
+            lazyload_grid_reload();
+        });
+    });
 
 };
 

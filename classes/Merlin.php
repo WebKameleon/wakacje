@@ -75,7 +75,7 @@ class Merlin
     
     protected function getUrl($type)
     {
-        $urls = array('http://mdsws.merlinx.pl/','http://mdswsb.merlinx.pl/');
+        $urls = array('http://mdswsb.merlinx.pl/');
         $random=rand(0,count($urls)-1);
         
         if ($this->_ver==2 || empty($this->section_map[$type])) return $urls[$random].'V2.3.1/';
@@ -372,6 +372,15 @@ class Merlin
         {
             $cond['par_chd']= $offer['chd'];
         }
+        if (isset($offer['inf']) )
+        {
+            $cond['par_inf']= $offer['inf'];
+        }
+        
+        if (isset($offer['age']) )
+        {
+            $cond['par_chdAge']= $offer['age'];
+        }
         
         if (isset($offer['max_price'])) $cond['maxPrice']=$offer['max_price'];
         if (isset($offer['min_price'])) $cond['minPrice']=$offer['min_price'];
@@ -466,6 +475,8 @@ class Merlin
         
         if (isset($offer['type']) && $offer['type']) $cond['ofr_type']=$this->type_convert($offer['type']);
 
+        if (isset($offer['total']) && $offer['total']) $cond['totalPrice']=true;
+        
         return $cond;
     }
     

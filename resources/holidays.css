@@ -72,7 +72,21 @@
     color: #909090;
 }
 
+.lazyload_grid_results ul{
+    float: right;
+    margin: 0;
+}
 
+.lazyload_grid_results ul li{
+    list-style: none;
+    display: inline-block;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.lazyload_grid_results ul li.active {
+    font-weight: bold;
+}
 
 #webkameleon_holidays_results .row {
 

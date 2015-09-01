@@ -81,7 +81,7 @@ function lazyload_grid_load()
     lazyload_grid_footerlog(dbg);
     
     var d = new Date();
-    var url=lazyload_grid_ajax+'?limit='+lazyload_grid_limit+'&offset='+lazyload_grid_offset+'&'+txt;
+    var url=lazyload_grid_ajax+'?offset='+lazyload_grid_offset+'&'+txt;
     
     $$.get(url,function (r) {
         lazyload_grid_log(r);
@@ -92,7 +92,9 @@ function lazyload_grid_load()
         
         if (lazyload_grid_offset==0) {
             html2=r.options.results+' ('+r.x_system.total_time+' s)';
-            html2='<div class="row lazyload_grid_results">'+html2+'</div>';
+    
+            var ul='<ul><li rel="0" class="'+(!r.options.totalPrice || r.options.totalPrice==0?'active':'')+'">Ceny za osobę</li><li rel="1" class="'+(r.options.totalPrice==1?'active':'')+'">Ceny łączne</li></ul>';
+            html2='<div class="row lazyload_grid_results">'+ul+html2+'</div>';
             $$(html2).appendTo('#'+lazyload_grid_results).fadeIn(200);
         }
         data=r.data;

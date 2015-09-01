@@ -45,7 +45,7 @@ class templateController extends merlinController {
                 <div class="holiday_price col-md-3">
                     <h5>
                         <a href="'.$config['merlin.reservation'].'" target="'.$config['merlin.reservation_target'].'">
-                            [price] [operCurr]/os.
+                            [price] [operCurr] [if:total]za wszystkich[endif:total][if:!total]za osobę[endif:!total]
                             <span>REZERWUJ TERAZ &raquo;</span>
                         </a>
                     </h5>
