@@ -23,7 +23,7 @@
     "merlin.reservation": "https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt]&reservation%5Bchildren%5D=[chd]",
     "merlin.reservation_target": "_blank",
     
-    "merlin.search.limit":7,
+    "merlin.search.limit":8,
     
     "merlin.cheap": 1200,
     "merlin.far.price": 2500,
