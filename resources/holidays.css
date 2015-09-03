@@ -305,6 +305,11 @@
     overflow: auto;
 }
 
+#webkameleon_holidays_hotelmodal #desc_map #modal_map {
+    height: 300px;
+    width: 100%;
+}
+
 #webkameleon_holidays_hotelmodal #desc_desc h4 {
     font-size: 14px;
     font-weight: bold;

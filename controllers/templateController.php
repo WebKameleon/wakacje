@@ -152,6 +152,7 @@ class templateController extends merlinController {
                             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                                 <li class="active"><a href="#desc_photos" data-toggle="tab">Galeria zdjęć</a></li>
                                 <li><a href="#desc_desc" data-toggle="tab">Opis</a></li>
+                                <li><a href="#desc_map" data-toggle="tab" id="map_tab">Mapa</a></li>
                             </ul>
                             <div id="my-tab-content" class="tab-content">
                             
@@ -172,7 +173,9 @@ class templateController extends merlinController {
 
                                 </div>                            
                             
-
+                                <div class="tab-pane" id="desc_map">
+                                    <div id="modal_map"></div>
+                                </div> 
                             
                             </div>
                         

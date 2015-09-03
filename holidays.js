@@ -86,6 +86,9 @@ function holidays_jquery_loaded() {
                     $$("#webkameleon_holidays_hotelmodal .carousel-inner div.item-tpl").first().addClass('active');
                     $$("#webkameleon_holidays_hotelmodal .carousel-indicators li").first().addClass('active');
                 });
+                
+                $$.getScript('//maps.googleapis.com/maps/api/js?libraries=places&v=3.exp&sensor=false&callback=initmap');
+  
             });
         }    
  
@@ -96,14 +99,19 @@ function holidays_jquery_loaded() {
  
     });
     
-    
-    
-  
-
-
- 
  
 }
+
+
+
+function initmap()
+{
+    
+}
+
+
+
+
 
 if (typeof $ != "undefined") {
     old_jquery=jQuery;

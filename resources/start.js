@@ -1,4 +1,4 @@
-
+var wk_map,wk_marker;
 
 function replace_input_value(val)
 {
@@ -227,9 +227,49 @@ function post_lazyload() {
                     location.href=url;
                 });
                 
+                
+                
+                if (data.holidays.obj.xLat!=0 && data.holidays.obj.xLong!=0) {
+                    $$('#webkameleon_holidays_hotelmodal #map_tab').show();
+                    
+                    if (typeof(wk_map)!='undefined')
+                    {
+                        wk_map.setCenter(new google.maps.LatLng(data.holidays.obj.xLat, data.holidays.obj.xLong));
+                        wk_marker.setPosition( new google.maps.LatLng( data.holidays.obj.xLat, data.holidays.obj.xLong ) );
+                    }
+                    
+                } else {
+                    
+                    $$('#webkameleon_holidays_hotelmodal #map_tab').hide();
+                }
+                
+                $$('#map_tab').click(function(){
+                    
+                    if (typeof(wk_map)=='undefined') {
+                        var mapOptions = {
+                            zoom: 14,
+                            minzoom: 1,
+                            mapTypeControl: true,
+                            zoomControl: true,
+                            scaleControl: true,
+                            streetViewControl: true,          
+                            center: new google.maps.LatLng(1,1)
+                        }
+                        
+                        wk_map = new google.maps.Map(document.getElementById('modal_map'),mapOptions);
+                        wk_marker = new google.maps.Marker({
+                                position: mapOptions.center,
+                                map: wk_map
+                        }); 
+                    }
+
+    
+                    wk_map.setCenter(new google.maps.LatLng(data.holidays.obj.xLat, data.holidays.obj.xLong));
+                    wk_marker.setPosition( new google.maps.LatLng( data.holidays.obj.xLat, data.holidays.obj.xLong ) );
+                    
+                });
+                
                 $$("#webkameleon_holidays_hotelmodal").modal('show');
-                
-                
             }
 
             

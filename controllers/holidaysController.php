@@ -386,7 +386,7 @@ class holidaysController extends merlinController {
                 if (isset($ofr['obj']['info']['photos']) && count($ofr['obj']['info']['photos']))
                 {
                     $r['photo'] = $ofr['obj']['info']['photos'][0];
-                    if (isset($cond[0]['hotel'])) $r['photo'] = $ofr['obj']['info']['photos'][(count($result)+$opt['offset'])%count($ofr['obj']['info']['photos'])];
+                    if (isset($cond[0]['hotel'])) $r['photo'] = $ofr['obj']['info']['photos'][(count($result)+$offset)%count($ofr['obj']['info']['photos'])];
                 }
                 
                 foreach($ofr AS $k=>$v)
