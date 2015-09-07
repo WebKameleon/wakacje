@@ -54,58 +54,9 @@
         
         "i "," i"
     ],
-  
-    "service": {
-        "4,7": ["wyżywienia","wyzywienia"],
-        "3": ["śniadanie","śniadania","sniadanie","sniadania"],
-        "1": ["inclusive","incluziw","incl"],
-        "6": ["pełne","posiłki"],
-        "2": ["obiadokolacje"],
-        "5": ["żarcie","zarcie"],
-        "8": ["lunch"]
-    },
-  
-    "dest": {
-        "2598_3075":["rpa"],
-        "15_55,15_176,15_50,15_93":["kanary","kanaryjskie"],
-        "3629_2731,3629_3075,3629_2732,3629_7276": ["usa"]
-    },
-    
-    
-    "dep": {
-        "WMI":["wmi","modlin","modlina","warszawa - modlin"],
-        "WAW":["waw","okęcie","okęcia"],
-        "WAW,WMI":["warszawa","warszawy"],
-        "POZ":["poz","poznań","poznan","poznania"],
-        "SXF,BER": ["ber","sxf","berlin","berlina"],
-        "BZG": ["bzg","bydgoszcz","bydgoszczy"],
-        "GDN": ["gdn","gdańsk","gdansk","gdańska","gdanska"],
-        "KTW": ["ktw","katowic","katowice"],
-        "KRK": ["krk","krakow","kraków","krakowa"],
-        "LUZ": ["luz","lublin","lublina"],
-        "RZE": ["rze","rzeszowa","rzeszow","rzeszów"],
-        "SZZ": ["szz","szczecin","szczecina"],
-        "WRO": ["wro","wrocław","wroclaw","wrocławia","wroclawia"],
-        "IEG": ["ieg","zielona góra","zielona","zielonej"],
-        "LCJ": ["lcj","lodzi","łodzi","łódź","lodz","lodź","łodz"]
-        
-    },
-    
-    "month": {
-        "01": ["styczeń","styczen","stycznia","styczniu"],
-        "02": ["luty","lutego","lutym"],
-        "03": ["marzec","marca","marcu"],
-        "04": ["kwiecień","kwiecien","kwietnia","kwietniu"],
-        "05": ["maj","maja","maju"],
-        "06": ["czerwiec","czerwca","czerwcu"],
-        "07": ["lipiec","lipca","lipcu"],
-        "08": ["sierpień","sierpien","sierpnia","sierpniu"],
-        "09": ["wrzesień","wrzesien","września","wrześniu","wrzesnia","wrzesniu"],
-        "10": ["październik","pazdziernik","października","październiku","pazdziernika","pazdzierniku"],
-        "11": ["listopad","listopada","listopadzie"],
-        "12": ["grudzień","grudzien","grudnia","grudniu"]
-    },
-    
+
+
+
     "attr_name": {
        "0": "",
        "1": "zimowa wypożyczalnia",
@@ -174,49 +125,175 @@
        "64": "Oferta dla seniorów"    
     },
     
-    "attr": {
-        "2": ["zimowe","zima","wypożyczalnia"],
-        "3": ["centrum"],
-        "4": ["noc","nocne","nocny","nocna"],
-        "5": ["klima","klimatyzacja","klimatyzowany","klimatyzowane"],
-        "6": ["internet","wifi"],
-        "8": ["żagle","zagle","żeglarstwo","zeglarstwo","żeglowanie","zeglowanie"],
-        "9": ["niepełnosprawni","niepełnosprawnych","niepelnosprawni","niepelnosprawnych"],
-        "10":["windsurfing","surfing","kite","kitesurfing"],
-        "11":["nordic","walking"],
-        "12":["jeździectwo","jezdziectwo","konie","kon","koń"],
-        "13":["nurek","nurkowanie"],
-        "14":["wodny","wodne"],
-        "15":["minigolf"],
-        "16":["golf"],
-        "17":["tenis"],
-        "18":["sport","sportowy"],
-        "19":["animacje"],
-        "20":["lotnisko","lotniska"],
-        "21":["zjeżdżalnie","zjeżdżalnia","zjezdzalnie","zjezdzalnia"],
-        "23":["rowery","rower"],
-        "24":["pływalnia","kryta","kryty"],
-        "26":["plaża","plaży"],
-        "27":["fitness","gimastyczna","siłownia","silownia"],
-        "28":["klub"],
-        "29":["rodzin","rodzina","rodziny"],
-        "30":["miasto","miasta"],
-        "31":["morze","morzem","morza"],
-        "32":["narty"],
-        "36":["paszport","paszportu"],
-        "38":["stok","stoku"],
-        "39":["parking"],
-        "40":["kominek"],
-        "41":["kuchnia"],
-        "42":["grill"],
-        "43":["basen","baseny"],
-        "44":["gej","gejów","gejow","gay","gays","geje","homo","homoseksualiści","homoseksualisci","lesbijki","lesby","lesbijka"],
-        "46":["wellness","spa"],
-        "47":["pielgrzymka","pielgrzymki"],
-        "64":["xsenior","xseniorzy","xseniora","xseniorów","xseniorow"]
-        
-    }
-    
+    "dest": {
+        "2598_3075":["rpa"],
+        "15_55,15_176,15_50,15_93":["kanary","kanaryjskie"],
+        "3629_2731,3629_3075,3629_2732,3629_7276": ["usa"]
+    },
+  
+    "dict": {
 
+        "service": {
+            "4,7": {"words": ["wyżywienia","wyzywienia"]},
+            "3": {"words": ["śniadanie","śniadania","sniadanie","sniadania"]},
+            "1": {"words": ["inclusive","incluziw","incl"]},
+            "6": {"words": ["pełne","posiłki"]},
+            "2": {"words": ["obiadokolacje"]},
+            "5": {"words": ["żarcie","zarcie"]},
+            "8": {"words": ["lunch"]}
+        },
+        
+        "dep": {
+            "WMI":{"words": ["wmi","modlin","modlina","warszawa - modlin"]},
+            "WAW":{"words": ["waw","okęcie","okęcia"]},
+            "WAW,WMI":{"words": ["warszawa","warszawy"]},
+            "POZ":{"words": ["poz","poznań","poznan","poznania"]},
+            "SXF,BER": {"words": ["ber","sxf","berlin","berlina"]},
+            "BZG": {"words": ["bzg","bydgoszcz","bydgoszczy"]},
+            "GDN": {"words": ["gdn","gdańsk","gdansk","gdańska","gdanska"]},
+            "KTW": {"words": ["ktw","katowic","katowice"]},
+            "KRK": {"words": ["krk","krakow","kraków","krakowa"]},
+            "LUZ": {"words": ["luz","lublin","lublina"]},
+            "RZE": {"words": ["rze","rzeszowa","rzeszow","rzeszów"]},
+            "SZZ": {"words": ["szz","szczecin","szczecina"]},
+            "WRO": {"words": ["wro","wrocław","wroclaw","wrocławia","wroclawia"]},
+            "IEG": {"words": ["ieg","zielona góra","zielona","zielonej","zielonej góry"]},
+            "LCJ": {"words": ["lcj","lodzi","łodzi","łódź","lodz","lodź","łodz"]}
+        },
+        
+        "month": {
+            "01": {"words": ["styczeń","styczen","stycznia","styczniu"]},
+            "02": {"words": ["luty","lutego","lutym"]},
+            "03": {"words": ["marzec","marca","marcu"]},
+            "04": {"words": ["kwiecień","kwiecien","kwietnia","kwietniu"]},
+            "05": {"words": ["maj","maja","maju"]},
+            "06": {"words": ["czerwiec","czerwca","czerwcu"]},
+            "07": {"words": ["lipiec","lipca","lipcu"]},
+            "08": {"words": ["sierpień","sierpien","sierpnia","sierpniu"]},
+            "09": {"words": ["wrzesień","wrzesien","września","wrześniu","wrzesnia","wrzesniu"]},
+            "10": {"words": ["październik","pazdziernik","października","październiku","pazdziernika","pazdzierniku"]},
+            "11": {"words": ["listopad","listopada","listopadzie"]},
+            "12": {"words": ["grudzień","grudzien","grudnia","grudniu"]}
+        },
+        
+        
+        
+        "attr": {
+            "2": {"words": ["zimowe","zima","wypożyczalnia"]},
+            "3": {"words": ["centrum"]},
+            "4": {"words": ["noc","nocne","nocny","nocna"]},
+            "5": {"words": ["klima","klimatyzacja","klimatyzowany","klimatyzowane"]},
+            "6": {"words": ["internet","wifi"]},
+            "8": {"words": ["żagle","zagle","żeglarstwo","zeglarstwo","żeglowanie","zeglowanie"]},
+            "9": {"words": ["niepełnosprawni","niepełnosprawnych","niepelnosprawni","niepelnosprawnych"]},
+            "10":{"words": ["windsurfing","surfing","kite","kitesurfing"]},
+            "11":{"words": ["nordic","walking"]},
+            "12":{"words": ["jeździectwo","jezdziectwo","konie","kon","koń"]},
+            "13":{"words": ["nurek","nurkowanie"]},
+            "14":{"words": ["wodny","wodne"]},
+            "15":{"words": ["minigolf"]},
+            "16":{"words": ["golf"]},
+            "17":{"words": ["tenis"]},
+            "18":{"words": ["sport","sportowy"]},
+            "19":{"words": ["animacje"]},
+            "20":{"words": ["lotnisko","lotniska"]},
+            "21":{"words": ["zjeżdżalnie","zjeżdżalnia","zjezdzalnie","zjezdzalnia"]},
+            "23":{"words": ["rowery","rower"]},
+            "24":{"words": ["pływalnia","kryta","kryty"]},
+            "26":{"words": ["plaża","plaży"]},
+            "27":{"words": ["fitness","gimastyczna","siłownia","silownia"]},
+            "28":{"words": ["klub"]},
+            "29":{"words": ["rodzin","rodzina","rodziny"]},
+            "30":{"words": ["miasto","miasta"]},
+            "31":{"words": ["morze","morzem","morza"]},
+            "32":{"words": ["narty"]},
+            "35":{"words": ["daleko","dalekie","daleka","egzotyka","egzotyczne","egzotycznie"]},
+            "36":{"words": ["paszport","paszportu"]},
+            "38":{"words": ["stok","stoku"]},
+            "39":{"words": ["parking"]},
+            "40":{"words": ["kominek"]},
+            "41":{"words": ["kuchnia"]},
+            "42":{"words": ["grill"]},
+            "43":{"words": ["basen","baseny"]},
+            "44":{"words": ["gej","gejów","gejow","gay","gays","geje","homo","homoseksualiści","homoseksualisci","lesbijki","lesby","lesbijka"]},
+            "46":{"words": ["wellness","spa"]},
+            "47":{"words": ["pielgrzymka","pielgrzymki"]},
+            "64":{"words": ["xsenior","xseniorzy","xseniora","xseniorów","xseniorow"]}
+            
+        },
+        
+        "date": {
+            "today": {
+                "words":["dzisiaj","dziś","dzis"],
+                "evalue": "date('Y-m-d')"
+            },
+            "tommorow": {
+                "words":["jutro"],
+                "evalue": "date('Y-m-d',time()+24*3600)"
+            },
+            "aftertommorow": {
+                "words":["pojutrze"],
+                "evalue": "date('Y-m-d',time()+2*24*3600)"
+            },
+            "lastminute": {
+                "words":["last","minute","lastminute"],
+                "evalue": "date('Y-m-d').':'.date('Y-m-d',time()+Bootstrap::$main->getConfig('lastminute.days')*24*3600)"
+            }
+        },
+        
+        "extended": {
+            "1" : {"words":["jeden"],"name":"number"},
+            "2" : {"words":["dwa"],"name":"number"},
+            "3" : {"words":["trzy"],"name":"number"},
+            "cheap": {
+                "words": ["tanio","taniego","tanie"],
+                "evalue": "Bootstrap::$main->getConfig('merlin.cheap')",
+                "name":"number"
+            },
+            
+            "10" : {"words":["za","przyszłym","przyszły","przyszlym","przyszly"],"name":"in"},
+            "11" : {"words":["od","min","minimium","powyżej","powyzej","po"],"name":"from"},
+            "12" : {"words":["do","max","maks","maksimum","poniżej","ponizej","przed"],"name":"to"},
+            
+            "weeks": {
+                "words": ["tydzień","tydzien","tygodnie","tygodni","tygodniu"],
+                "name": "field"
+            },
+            "duration": {
+                "words": ["dni","dzień"],
+                "name": "field"
+            },
+            "adt": {
+                "words": ["osoby","osób","osob","osoba","dorośli","dorosłych","doroslych","dorosli"],
+                "name": "field"
+            },
+            "adt1": {
+                "words": ["singli","single","singla","singiel"],
+                "number": 1,
+                "name": "field",
+                "value": "adt"
+            },            
+            "chd1": {
+                "words": ["dziecko","dzieckiem"],
+                "number": 1,
+                "name": "field",
+                "value": "chd"
+            },
+            "chd2": {
+                "words": ["dzieci","dziećmi","dziecmi"],
+                "number": 2,
+                "name": "field",
+                "value": "chd"
+            },
+            "inf": {
+                "words": ["niemowlę","niemowle","niemowlak","niemowlakiem","infant","infantem","infantów","infantow","infanty","niemowlaki","niemowlaków","niemowlakow"],
+                "number": 1,
+                "name": "field"
+            }            
+            
+            
+        }
     
+    }
+  
 }

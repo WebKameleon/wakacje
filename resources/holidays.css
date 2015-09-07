@@ -72,6 +72,16 @@
     color: #909090;
 }
 
+.lazyload_grid_results h2 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 3px;
+}
+.lazyload_grid_results h2 i {
+    text-decoration: line-through;
+    font-style: normal;
+}
+
 .lazyload_grid_results ul{
     float: right;
     margin: 0;

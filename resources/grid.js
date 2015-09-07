@@ -92,6 +92,9 @@ function lazyload_grid_load()
         
         if (lazyload_grid_offset==0) {
             html2=r.options.results+' ('+r.x_system.total_time+' s)';
+            if (typeof(r.options.change)!='undefined' && r.options.change.length) {
+                html2='<h2>'+r.options.change+'</h2>'+html2;
+            }
     
             var ul='<ul><li rel="0" class="'+(!r.options.totalPrice || r.options.totalPrice==0?'active':'')+'">Ceny za osobę</li><li rel="1" class="'+(r.options.totalPrice==1?'active':'')+'">Ceny łączne</li></ul>';
             html2='<div class="row lazyload_grid_results">'+ul+html2+'</div>';

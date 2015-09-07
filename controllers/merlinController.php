@@ -19,18 +19,36 @@ class merlinController extends Controller {
         $token='config.'.Bootstrap::$main->getConfig('site');
         
         $config=Tools::memcache($token);
-        if ($config) return $config;
+        if ($config && !$this->data('debug')) return $config;
         
         $config=json_config(__DIR__.'/../config/merlin.json',false,false);
         
         $config['words']=[];
+        $config['words-with-space']=[];
         
-        foreach (['dep','month','attr','service'] AS $field) {
-            foreach ($config[$field] AS $code=>$dep)
+        $extended=['number'];
+        foreach ($config['dict'] AS $field=>$fields) {
+            foreach ($fields AS $code=>$values)
             {
-                foreach($dep AS $d) $config['words'][$d]=['field'=>$field,'value'=>$code];
+                foreach($values['words'] AS $d) {
+                    $w=[];
+                    if ($field!='extended') $w['field']=$field;
+                    foreach($extended AS $f) if (isset($values[$f])) $w[$f]=$values[$f];
+                    $value='value';
+                    if (isset($values['name'])) $value=$values['name'];
+                    
+                    if (isset($values['evalue'])) $w[$value]='~'.$values['evalue'];
+                    elseif (isset($values['value'])) $w[$value]=$values['value'];
+                    elseif (!in_array($field,$extended)) $w[$value]=$code;
+                    
+                    $config['words'][$d]=$w;
+                }
             }
         }
+        
+        unset($config['dict']);
+        
+        //mydie($config['words']);
         
         $reg=$this->merlin->getRegions('F',null,$this->data('debug')?false:true,true);
    
@@ -98,12 +116,16 @@ class merlinController extends Controller {
             }
         }        
         
+        
         foreach($dest AS $w=>$r)
         {
             if (!isset($config['words'][$w])) $config['words'][$w]=$r;
         }
     
         $config['far']=$far;
+        
+        foreach(array_keys($config['words']) AS $word) if (strstr($word,' ')) $config['words-with-space'][]=$word; 
+        
         
         return Tools::memcache($token,$config,4*3600);
     }
@@ -122,5 +144,7 @@ class merlinController extends Controller {
                         ) * pi() * 12756.274 / 360 ;
 
     }
+    
+
     
 }

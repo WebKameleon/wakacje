@@ -3,137 +3,39 @@ class holidaysController extends merlinController {
     
     
     
-    protected function word2cond($word)
+    protected function word2cond($word,$levenstein=0)
     {
         $config=$this->getConfig();
         $conf=Bootstrap::$main->getConfig();
         
         if (substr($word,0,6)=='hotel:') {
             return ['field'=>'hotel','value'=>substr($word,6)];
-        }  
-        
-        if (isset($config['words'][$word])) return $config['words'][$word];
-        if (preg_match('/[0-9\-]+/',$word)) return ['number'=>$word];
-        
-        switch ($word)
-        {
-            case 'jeden':
-                return ['number'=>1];
-            
-            case 'dwa':
-                return ['number'=>2];
-            
-            case 'trzy':
-                return ['number'=>3];            
-            
-            case 'za':
-            case 'przyszłym':
-            case 'przyszły':
-            case 'przyszlym':
-            case 'przyszly':                
-                return ['in'=>1];
-            
-            case 'od':
-            case 'min':
-            case 'minimium':
-            case 'powyżej':
-            case 'powyzej':    
-            case 'po':    
-                return ['from'=>1];
-
-            case 'do':
-            case 'max':
-            case 'maks':
-            case 'maksimum':
-            case 'poniżej':
-            case 'ponizej':                 
-            case 'przed':    
-                return ['to'=>1];
-            
-            case 'dzisiaj':
-            case 'dziś':
-                return ['field'=>'date','value'=>date('Y-m-d')];
-
-            case 'last':
-            case 'minute':
-            case 'lastminute':
-                $conf=Bootstrap::$main->getConfig();
-                return ['field'=>'date','value'=>date('Y-m-d').':'.date('Y-m-d',time()+$conf['lastminute.days']*24*3600)];
-                
-            case 'jutro':
-                return ['field'=>'date','value'=>date('Y-m-d',time()+24*3600)];
-
-            case 'pojutrze':
-                return ['field'=>'date','value'=>date('Y-m-d',time()+2*24*3600)];
-            
-            case 'tydzień':
-            case 'tydzien':
-            case 'tygodnie':
-            case 'tygodni':
-            case 'tygodniu':
-                return ['field'=>'weeks'];
-            
-            case 'dni':
-            case 'dzień':
-                return ['field'=>'duration'];
-            
-            case 'osoby':
-            case 'osób':
-            case 'osob':
-            case 'osoba':
-            case 'dorośli':
-            case 'dorosłych':
-            case 'doroslych':
-            case 'dorosli':
-                return ['field'=>'adt'];
-
-            case 'dziecko':
-            case 'dzieckiem':
-                return ['field'=>'chd','number'=>1];
-                
-            case 'dzieci':
-            case 'dziećmi':
-            case 'dziecmi':
-                return ['field'=>'chd','number'=>2];
-
-            case 'niemowlę':
-            case 'niemowle':    
-            case 'niemowlak':
-            case 'niemowlakiem':
-            case 'infant':
-            case 'infantem':
-            case 'infantów':
-            case 'infantow':
-            case 'infanty':
-            case 'niemowlaki':
-            case 'niemowlaków':
-            case 'niemowlakow':
-                return ['field'=>'inf','number'=>1];
-
-                
-        
-            case 'singli':
-            case 'single':
-            case 'singiel':
-                return ['field'=>'adt','number'=>1];
-                
-        
-            case 'tanie':
-            case 'tanio':
-            case 'taniego':    
-                return ['number'=>$conf['merlin.cheap']];
-            
-            case 'daleko':
-            case 'dalekie':
-            case 'dalekia':
-            case 'egzotyka':
-            case 'egzotyczne':
-            case 'egzotycznie':
-                return ['field'=>'dest', 'value'=>implode(',',$config['far'])];
         }
         
- 
-
+        if (preg_match('/[0-9\-]+/',$word)) return ['number'=>$word];
+            
+        if ($levenstein==0 && isset($config['words'][$word])) return $config['words'][$word];
+        
+        if ($levenstein>0)
+        {
+            $word=Tools::str_to_url($word);
+            $lev=[];
+            foreach(array_keys($config['words']) AS $w) {
+                $lev[$w]=levenshtein($w,$word);
+            }
+            asort($lev);
+            if (current($lev) <= $levenstein) {
+                $ak=array_keys($lev);
+                $ret=$config['words'][$ak[0]];
+                $ret['word']=$ak[0];
+                $ret['levenstein']=$lev[$ak[0]];
+                return $ret;
+            }
+            
+            
+        }
+        
+        return null;
     }
     
     protected function lastDayOfMonth($m)
@@ -163,12 +65,19 @@ class holidaysController extends merlinController {
     protected function q2cond($q)
     {
         $config=$this->getConfig();
-        
-        $q=str_replace(['+',',',';'],' ',$q);
+        $q=str_replace(['+',',',';','~'],' ',$q);
+        $q=str_replace(["'"],'"',$q);
         $q=preg_replace('/\s+/',' ',trim($q));
+        
+        while (preg_match('/"[^"]* [^"]*"/',$q) ) $q=preg_replace('/"([^" ]*) ([^"]*)"/','"\\1~\\2"',$q);
+        $q=str_replace('"','',$q);
+        
+        foreach ($config['words-with-space'] AS $wws) $q=str_replace($wws,str_replace(' ','~',$wws),$q);
+        
         if (!$q) return [];
         $userq=explode(' ',$q);
         $q=mb_strtolower($q,'utf-8');
+        $changed=$q;
         
         $q_token='q2cond.'.Bootstrap::$main->getConfig('site').'.'.md5($q);
         $cond=Tools::memcache($q_token);
@@ -176,7 +85,7 @@ class holidaysController extends merlinController {
             $cond['memcache']=true;
             return $cond;
         }
-        
+    
         $cond=[];
         $in=$from=$to=$number=$number1=0;
         $phraze_responsible=[];
@@ -185,9 +94,24 @@ class holidaysController extends merlinController {
     
         foreach(explode(' ',$q) AS $word_index=>$w)
         {
+            $w=str_replace('~',' ',$w);
             $phraze_responsible[]=$userq[$word_index];
             
             $c=$this->word2cond($w);
+            
+            if (!$c && strlen($w)>3) {
+                $c=$this->word2cond($w,2);
+                if ($c['levenstein']==2) $changed=str_replace($w,$c['word'],$changed);
+            }
+            
+            foreach(['value','number'] AS $f) {
+                if (isset($c[$f]) && strlen($c[$f]) && $c[$f][0]=='~')
+                {
+                    $cv=substr($c[$f],1);
+                    eval("\$cv = $cv;");
+                    $c[$f]=$cv;
+                }
+            }
             
             if (isset($c['in'])) {
                 $in=1;
@@ -349,7 +273,7 @@ class holidaysController extends merlinController {
             }
         }
         
-        return Tools::memcache($q_token,[$cond,$phrazes_responsible,$unknown]);
+        return Tools::memcache($q_token,[$cond,$phrazes_responsible,$unknown,$changed==$q?'':str_replace('~',' ',$changed)]);
             
 
     }
@@ -506,8 +430,17 @@ class holidaysController extends merlinController {
             else $opt['results'].=$offers['count'];
         }
       
-          
         
+        $opt['change'] = isset($cond[3]) && strlen($cond[3]) ? $cond[3] : '';
+        
+        if (isset($cond[2]) && is_array($cond[2])) foreach($cond[2] AS $unknown)
+        {
+            if (strstr($opt['change'],$unknown)) $opt['change']=str_replace($unknown,"<i>$unknown</i>",$opt['change']); 
+            else {
+                if (strlen($opt['change'])) $opt['change'].=' ';
+                $opt['change'].="<i>$unknown</i>";
+            }
+        }
         
         
         if ($this->data('debug')) {
