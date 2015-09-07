@@ -857,19 +857,15 @@ class Merlin
         
         foreach ($a AS $at)
         {
-            //if (is_integer($at))
-            $pow=$at==64?-9223372036854775808:pow(2,$at-1);
-            
-            $xAttr+=$pow;
+            $xAttr+=pow(2,$at-1);
             //elseif (strlen($at)) $xCity[]=$at;
         }
 
-        if ($xAttr>0) $cond['obj_xAttributes']=$xAttr;
-        else $cond['obj_xAttributes']=sprintf('0x%x',$xAttr);
         
+        $cond['obj_xAttributes']=sprintf('%d',$xAttr);
         
         if (count($xCity)) $cond['obj_xCityFts']=implode('|',$xCity);
-
+        
         $cond['obj_xAttributesCount']=count($a);
         return $cond;
     }
