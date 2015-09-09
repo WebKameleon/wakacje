@@ -124,26 +124,44 @@ class merlinController extends Controller {
     
         $config['far']=$far;
         
-        /*
-        $hotels=$this->merlin->getFilters([],'obj_xCode',$this->data('debug')?false:true);
         
-        foreach($hotels AS $hotel) {
-            $hotel=str_replace(['+',',',';','~','(',')','"'],' ',$hotel);
-            $hotel=str_replace(["'"],'"',$hotel);
-            $hotel=preg_replace('/\s+/',' ',trim($hotel));
-            $hotel=mb_strtolower($hotel,'utf-8');
+        if ($this->data('debug')) {
+            $hotels=$this->merlin->getFilters(['ofr_type'=>'F'],'obj_xCode',$this->data('debug')?false:true);
             
-            foreach(explode(' ',$hotel) AS $h) {
-                $h=Tools::str_to_url($h);
-                if (strlen($h)<4) continue;
-                if (isset($config['words'][$h])) continue;
+            $words=array_keys($config['words']);
+            $hotel_map=[];
+            
+            foreach($hotels AS $hotel) {
+                $hotel=str_replace(['+',',',';','~','(',')','"'],' ',$hotel);
+                $hotel=str_replace(["'"],'"',$hotel);
+                $hotel=preg_replace('/\s+/',' ',trim($hotel));
+                $hotel=mb_strtolower($hotel,'utf-8');
                 
-                $config['words'][$h] = ['field'=>'fts','value'=>$h];
+                foreach(explode(' ',$hotel) AS $h) {
+                    $h=Tools::str_to_url($h);
+                    if (strlen($h)<4) continue;
+                    if (isset($config['words'][$h])) continue;
+                    if (isset($hotel_map[$h])) continue;
+                    
+                    $lev=false;
+                    foreach($words AS $w)
+                    {
+                        if (levenshtein($h,$w)<=2) {
+                            $lev=true;
+                            break;
+                        }
+                    }
+                    if ($lev) continue;  
+                    $hotel_map[$h] = ['field'=>'ftsName','value'=>$h];
+                }
             }
+            
+            
+            $config['hotels']=$hotel_map;
+        
         }
        
-        mydie($config['words'],count($config['words']));
-        */
+        //mydie($config,count($config['words']));
        
         foreach(array_keys($config['words']) AS $word) if (strstr($word,' ')) $config['words-with-space'][]=$word; 
         

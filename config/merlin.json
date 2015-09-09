@@ -55,6 +55,9 @@
         "i "," i"
     ],
 
+    "shit_word": [
+        "wczasy","wakacje","hotel"  
+    ],
 
 
     "attr_name": {

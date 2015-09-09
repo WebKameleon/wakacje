@@ -469,6 +469,8 @@ class Merlin
 
         if (isset($offer['total']) && $offer['total']) $cond['totalPrice']=true;
         
+        if (isset($offer['hotelName']) && $offer['hotelName']) $cond['obj_codeNameFts']=$offer['hotelName'];
+        
         return $cond;
     }
     

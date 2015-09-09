@@ -2,7 +2,6 @@
 class holidaysController extends merlinController {
     
     
-    
     protected function word2cond($word,$levenstein=0)
     {
         $w_token='w2cond.'.$levenstein.'.'.Bootstrap::$main->getConfig('site').'.'.md5($word);
@@ -12,7 +11,7 @@ class holidaysController extends merlinController {
         $config=$this->getConfig();
         $conf=Bootstrap::$main->getConfig();
         
-        
+        if (in_array($word,$config['shit_word'])) return false;   
 
         
         if (substr($word,0,6)=='hotel:') {
@@ -20,18 +19,25 @@ class holidaysController extends merlinController {
         }
         
         if (preg_match('/[0-9\-]+/',$word)) return Tools::memcache($w_token,['number'=>$word]);
-            
-        if ($levenstein==0 && isset($config['words'][$word])) return Tools::memcache($w_token,$config['words'][$word]);
+        
+        if ($levenstein==0)
+        {
+            if (isset($config['words'][$word])) return Tools::memcache($w_token,$config['words'][$word]);
+        }
+        
         
         if ($levenstein>0)
         {
             $word=Tools::str_to_url($word);
             $lev=[];
             foreach(array_keys($config['words']) AS $w) {
-                $lev[$w]=levenshtein($w,$word);
+                $l=levenshtein($w,$word);
+                if ($l<=$levenstein) $lev[$w]=$l;
+                
             }
-            asort($lev);
-            if (current($lev) <= $levenstein) {
+            
+            if (count($lev)) {
+                asort($lev);
                 $ak=array_keys($lev);
                 $ret=$config['words'][$ak[0]];
                 $ret['word']=$ak[0];
@@ -39,8 +45,11 @@ class holidaysController extends merlinController {
                 return Tools::memcache($w_token,$ret);
             }
             
+        
+            if (isset($config['hotels'][$word])) return Tools::memcache($w_token,$config['hotels'][$word]);
             
         }
+        
         
         return null;
     }
@@ -214,6 +223,10 @@ class holidaysController extends merlinController {
                     case 'date':
                         $this->update_cond($cond,'from',$c['value'],$phraze_responsible,$phrazes_responsible);
                         $cond['fromto']=$c['value'];
+                        break;
+                    
+                    case 'ftsName':
+                        $this->update_cond($cond,'hotelName',$c['value'],$phraze_responsible,$phrazes_responsible);
                         break;
                     
                     case 'month':
