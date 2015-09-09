@@ -124,6 +124,27 @@ class merlinController extends Controller {
     
         $config['far']=$far;
         
+        /*
+        $hotels=$this->merlin->getFilters([],'obj_xCode',$this->data('debug')?false:true);
+        
+        foreach($hotels AS $hotel) {
+            $hotel=str_replace(['+',',',';','~','(',')','"'],' ',$hotel);
+            $hotel=str_replace(["'"],'"',$hotel);
+            $hotel=preg_replace('/\s+/',' ',trim($hotel));
+            $hotel=mb_strtolower($hotel,'utf-8');
+            
+            foreach(explode(' ',$hotel) AS $h) {
+                $h=Tools::str_to_url($h);
+                if (strlen($h)<4) continue;
+                if (isset($config['words'][$h])) continue;
+                
+                $config['words'][$h] = ['field'=>'fts','value'=>$h];
+            }
+        }
+       
+        mydie($config['words'],count($config['words']));
+        */
+       
         foreach(array_keys($config['words']) AS $word) if (strstr($word,' ')) $config['words-with-space'][]=$word; 
         
         

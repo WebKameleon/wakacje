@@ -30,10 +30,8 @@ class Merlin
                                 'exthotelsdetailsV1'=>'ARI,AHI'
     );
     protected $section_map;
-                               
-                      
+
     private $operator_code;
-    private $filters;
     private $hotels;
     public $debug=[];
     
@@ -118,11 +116,14 @@ class Merlin
             $this->debug($debug_string,'mds XML - ERROR - empty resp');
             return false;
         }
+        
+        //$this->debug($debug_string.'<hr size="1">'.htmlspecialchars($response),'mds XML '.$type.$subtype);
 
-        $this->debug($debug_string.'<hr size="1">'.htmlspecialchars($response),'mds XML '.$type.$subtype);
-
+        $this->debug($debug_string);
+        
+        
         $ret=$this->_xml2arr($response);
-        $this->debug($ret,'mds XML object '.$type.$subtype);
+        //$this->debug($ret,'mds XML object '.$type.$subtype);
         Bootstrap::$main->system($type);
         return $ret;
     }
@@ -130,9 +131,8 @@ class Merlin
     protected function _xml2arr($response)
     {
         $ret=@simplexml_load_string($response);
-        $ret=json_decode(json_encode($ret),true);
-        
-        return $ret;
+        return json_decode(json_encode($ret),true);
+ 
     }
 
     
@@ -253,40 +253,33 @@ class Merlin
         return implode(',',$result);
     }
 
-    public function getFilters($cond=array(),$what='*')
+    public function getFilters($cond=array(),$what='*',$cache=true)
     {
+        
         if ($this->operator_code) $cond['ofr_tourOp']=$this->operator_code;
     
         $cond['filters']='obj_xServiceId,trp_depName,trp_durationM,ofr_type,ofr_tourOp,trp_depCode';
-
         if (!isset($cond['trp_retDate'])) $cond['trp_retDate']=date('Ymd',time()+365*24*3600);
-
+        if ($what=='obj_xCode') $cond['filters']='obj_xCode,obj_xServiceId';
         if (isset($cond['obj_code']) || isset($cond['obj_xCode']) ) $cond['filters'].=',obj_room';
-
-        if (isset($cond['ofr_type']) && $cond['ofr_type']=='NF,OW') $cond['filters']='trp_depName,trp_depDate';
-
-        $md5=md5(serialize($cond));
-
-
-        if (!isset($this->filters[$md5]))
-        {
-            $this->filters[$md5]=$this->session('filters.'.$md5);
-        }
         
-
-        if (!$this->filters[$md5])
+        $md5=md5(serialize($cond));
+        $token='filters.'.$md5;
+        
+        $filters=null;
+        if ($cache) $filters=Tools::memcache($token);
+       
+        if (!$filters)
         {
             $xml=$this->request('filters',$cond);
-            $this->filters[$md5]=$this->post_xml($xml,'filters');
-            if (isset($this->filters[$md5]['fdef'])) $this->session('filters.'.$md5,$this->filters[$md5]);
-
+            $filters=$this->post_xml($xml,'filters');
+            if (isset($filters['fdef'])) Tools::memcache($token,$filters,3*3600);
         }
+               
 
         $result=array();
 
-        
-        
-        foreach($this->filters[$md5]['fdef'] AS $fdef)
+        foreach($filters['fdef'] AS $fdef)
         {
             if (isset($fdef['@attributes']['id']) && $fdef['@attributes']['id']==$what)
             {
@@ -311,8 +304,7 @@ class Merlin
                 }
             }
         }
-        
-
+            
         return $result;
     }
     

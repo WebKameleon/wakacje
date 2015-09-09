@@ -5,16 +5,23 @@ class holidaysController extends merlinController {
     
     protected function word2cond($word,$levenstein=0)
     {
+        $w_token='w2cond.'.$levenstein.'.'.Bootstrap::$main->getConfig('site').'.'.md5($word);
+        $ret=Tools::memcache($w_token);
+        if ($ret && !$this->data('debug')) return $ret;
+        
         $config=$this->getConfig();
         $conf=Bootstrap::$main->getConfig();
+        
+        
+
         
         if (substr($word,0,6)=='hotel:') {
             return ['field'=>'hotel','value'=>substr($word,6)];
         }
         
-        if (preg_match('/[0-9\-]+/',$word)) return ['number'=>$word];
+        if (preg_match('/[0-9\-]+/',$word)) return Tools::memcache($w_token,['number'=>$word]);
             
-        if ($levenstein==0 && isset($config['words'][$word])) return $config['words'][$word];
+        if ($levenstein==0 && isset($config['words'][$word])) return Tools::memcache($w_token,$config['words'][$word]);
         
         if ($levenstein>0)
         {
@@ -29,7 +36,7 @@ class holidaysController extends merlinController {
                 $ret=$config['words'][$ak[0]];
                 $ret['word']=$ak[0];
                 $ret['levenstein']=$lev[$ak[0]];
-                return $ret;
+                return Tools::memcache($w_token,$ret);
             }
             
             
