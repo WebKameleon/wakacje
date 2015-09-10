@@ -611,7 +611,7 @@ class Merlin
             $ret['desc']=$hotel['hotelData']['texts']['text'];
         
         Bootstrap::$main->system($token);
-        return Tools::memcache($token,$ret,2*3600);
+        return Tools::memcache($token,$ret,24*3600);
     }
     
     public function convertOffers($offers,$path='ofr')

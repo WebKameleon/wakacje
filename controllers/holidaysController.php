@@ -22,7 +22,10 @@ class holidaysController extends merlinController {
         
         if ($levenstein==0)
         {
-            if (isset($config['words'][$word])) return Tools::memcache($w_token,$config['words'][$word]);
+            if (isset($config['words'][$word])) {
+                Bootstrap::$main->system('exact:'.$word);
+                return Tools::memcache($w_token,$config['words'][$word]);
+            }
         }
         
         
@@ -42,12 +45,15 @@ class holidaysController extends merlinController {
                 $ret=$config['words'][$ak[0]];
                 $ret['word']=$ak[0];
                 $ret['levenstein']=$lev[$ak[0]];
+                Bootstrap::$main->system('near:'.$word);
                 return Tools::memcache($w_token,$ret);
             }
             
         
-            if (isset($config['hotels'][$word])) return Tools::memcache($w_token,$config['hotels'][$word]);
-            
+            if (isset($config['hotels'][$word])) {
+                Bootstrap::$main->system('exact-hotel:'.$word);
+                return Tools::memcache($w_token,$config['hotels'][$word]);
+            }
         }
         
         
@@ -115,10 +121,12 @@ class holidaysController extends merlinController {
             
             $c=$this->word2cond($w);
             
-            if (!$c && strlen($w)>3) {
+            if (is_null($c) && strlen($w)>3) {
                 $c=$this->word2cond($w,2);
-                if ($c['levenstein']==2) $changed=str_replace($w,$c['word'],$changed);
+                if (isset($c['levenstein']) && $c['levenstein']==2) $changed=str_replace($w,$c['word'],$changed);
             }
+            
+            if ($c===false) continue;
             
             foreach(['value','number'] AS $f) {
                 if (isset($c[$f]) && strlen($c[$f]) && $c[$f][0]=='~')
