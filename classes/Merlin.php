@@ -1,7 +1,5 @@
 <?php
 
-
-
 // http://docu.mdsws.merlinx.pl
 // http://docu.mdsws.merlinx.pl/data:fields:names:obj_xattributes uzytkownik ecco:3CC0
 // http://docu.mdsws.merlinx.pl/data:fields:names:filters
@@ -117,13 +115,13 @@ class Merlin
             return false;
         }
         
-        //$this->debug($debug_string.'<hr size="1">'.htmlspecialchars($response),'mds XML '.$type.$subtype);
+        $this->debug($debug_string.'<hr size="1">'.htmlspecialchars($response),'mds XML '.$type.$subtype);
 
-        $this->debug($debug_string);
+        //$this->debug($debug_string);
         
         
         $ret=$this->_xml2arr($response);
-        //$this->debug($ret,'mds XML object '.$type.$subtype);
+        $this->debug($ret,'mds XML object '.$type.$subtype);
         Bootstrap::$main->system($type);
         return $ret;
     }
@@ -592,10 +590,16 @@ class Merlin
         
         
         $ret=Tools::memcache($token);
-        if ($ret) return $ret;
+        if (is_array($ret)) return $ret;
         
         $url='http://data2.merlinx.pl/index.php?login='.$this->user.'&password='.$this->pass.'&tourOp='.$op.'&htlCode='.$htlCode;
-        $response=file_get_contents($url);
+        //$response=file_get_contents($url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        $response=curl_exec($ch);
+        curl_close($ch); 
+        
         $hotel=$this->_xml2arr($response);
 
         $this->debug($hotel,'Hotel info: '.$htlCode);

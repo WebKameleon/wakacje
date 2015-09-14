@@ -366,6 +366,7 @@ class holidaysController extends merlinController {
                 Bootstrap::$main->session('chd',$r['chd']);
                 Bootstrap::$main->session('inf',$r['inf']);
                 
+                if (!isset($r['obj_xAttributes'])) $r['obj_xAttributes']=0;
                 $r['attr']=[];
                 $attr=$r['obj_xAttributes']+0;
                 for ($x=0;$x<64;$x++) {
