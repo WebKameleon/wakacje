@@ -12,12 +12,6 @@
     "image_size": 1140,
     "thumb_size": 250,
     
-    "merlin.login3":"12444",
-    "merlin.pass3":"VYOB",
- 
-    "merlin.login":"13072",
-    "merlin.pass":"fly2",
-    
     "merlin.tourOp": "",
     
     "merlin.reservation": "https://fly.pl/rezerwacja/?reservation%5Bid%5D=[id]&reservation%5Badults%5D=[adt]&reservation%5Bchildren%5D=[chd]",
