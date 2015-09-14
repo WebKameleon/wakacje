@@ -44,7 +44,7 @@
 		if (in_array("$f\n",$exclude)) continue;
 	
 	
-        $cmd="cp -HRp $dir/$f $dest";
+        $cmd="cp -LRp $dir/$f $dest";
         $files[]=$f;
         system($cmd);
         
