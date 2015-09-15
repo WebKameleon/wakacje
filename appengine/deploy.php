@@ -64,7 +64,7 @@
     $yaml.=file_get_contents(__DIR__.'/app.yaml.post');
 
     file_put_contents("$dest/app.yaml",$yaml);
-    //file_put_contents("$dest/cron.yaml",$cron);
+    file_put_contents("$dest/cron.yaml",$cron);
     file_put_contents("$dest/php.ini",$ini);
 
     system('sh '.__DIR__.'/remove.sh');
