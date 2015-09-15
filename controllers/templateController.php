@@ -215,8 +215,10 @@ class templateController extends merlinController {
     
     protected function airport($i=0)
     {
+        $token='depCodes-'.Bootstrap::$main->getConfig('site');
+        $codes=Tools::memcache($token);
+        if (!$codes) $codes=Tools::memcache($token,$this->merlin->getFilters(['ofr_type'=>'F'],'trp_depCode'));
         
-        $codes=$this->merlin->getFilters([],'trp_depCode');
         
         $config=$this->getConfig();
         $geo=Tools::geoip();

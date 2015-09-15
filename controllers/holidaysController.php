@@ -93,12 +93,15 @@ class holidaysController extends merlinController {
         
         while (preg_match('/"[^"]* [^"]*"/',$q) ) $q=preg_replace('/"([^" ]*) ([^"]*)"/','"\\1~\\2"',$q);
         $q=str_replace('"','',$q);
-        
-        foreach ($config['words-with-space'] AS $wws) $q=str_replace($wws,str_replace(' ','~',$wws),$q);
-        
+
         if (!$q) return [];
         $userq=explode(' ',$q);
         $q=mb_strtolower($q,'utf-8');
+        
+        
+        foreach ($config['words-with-space'] AS $wws) $q=str_replace($wws,str_replace(' ','~',$wws),$q);
+        
+        //mydie($config['words-with-space'],$q);
         $changed=$q;
         
         $q_token='q2cond.'.Bootstrap::$main->getConfig('site').'.'.md5($q);

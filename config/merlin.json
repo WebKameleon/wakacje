@@ -15,7 +15,9 @@
         "WRO": "51.1041654,16.8809331",
         "IEG": "52.1370259,15.7776451",
         "LCJ": "51.7197051,19.3908091",
-        "WAW": "52.1672369,20.9678911"        
+        "WAW": "52.1672369,20.9678911",
+        "VNO": "54.6380366,25.2865583",
+        "PRG": "50.101791,14.2631811"
     },
     
     "dep_from": {
@@ -32,7 +34,9 @@
         "SZZ": "ze Szczecina",
         "WRO": "z Wrocławia",
         "IEG": "z Zielonej Góry",
+        "VNO": "z Wilna",
         "LCJ": "z Łodzi",
+        "PRG": "z Pragi",
         "WAW,WMI": "z Warszawy",
         "WAW":"z Warszawy"
     },
@@ -149,6 +153,8 @@
         "dep": {
             "WMI":{"words": ["wmi","modlin","modlina","warszawa - modlin"]},
             "WAW":{"words": ["waw","okęcie","okęcia"]},
+            "PRG":{"words": ["prg","praga","pragi"]},
+            "VNO":{"words": ["vno","wilno","wilna"]},
             "WAW,WMI":{"words": ["warszawa","warszawy"]},
             "POZ":{"words": ["poz","poznań","poznan","poznania"]},
             "SXF,BER": {"words": ["ber","sxf","berlin","berlina"]},
@@ -160,7 +166,7 @@
             "RZE": {"words": ["rze","rzeszowa","rzeszow","rzeszów"]},
             "SZZ": {"words": ["szz","szczecin","szczecina"]},
             "WRO": {"words": ["wro","wrocław","wroclaw","wrocławia","wroclawia"]},
-            "IEG": {"words": ["ieg","zielona góra","zielona","zielonej","zielonej góry"]},
+            "IEG": {"words": ["ieg","zielona góra","zielona","zielonej","zielonej góry","zielonej gory"]},
             "LCJ": {"words": ["lcj","lodzi","łodzi","łódź","lodz","lodź","łodz"]}
         },
         
