@@ -165,7 +165,7 @@ class merlinController extends Controller {
        
         foreach(array_keys($config['words']) AS $word) if (strstr($word,' ')) $config['words-with-space'][]=$word; 
         
-        
+        Tools::log('get-config',[$token]);
         return Tools::memcache($token,$config,4*3600);
     }
     
