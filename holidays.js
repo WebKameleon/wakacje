@@ -3,6 +3,9 @@ var holidays_url;
 
 var old_jquery=null,old_dolar=null,$$;
 
+
+
+
 function $$get(url,fun)
 {
     return $$.ajax({
@@ -16,6 +19,7 @@ function $$get(url,fun)
 
 function holidays_jquery_loaded() {
     $$=$;
+        
 
     $$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
       if ( options.dataType == 'script' || originalOptions.dataType == 'script' ) {
@@ -62,11 +66,8 @@ function holidays_jquery_loaded() {
 
     
     $$.getScript("//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js", function() {
-        $$=$.noConflict(true);
-        if (old_dolar!=null) $=old_dolar;
-        if (old_jquery!=null) jQuery=old_jquery;    
  
- 
+  
         var hotelFound=$$('#webkameleon_holidays_hotelmodal');
         if (hotelFound.length==0) {
             $$get(holidays_url+'template/hotel',function(html) {
@@ -93,6 +94,11 @@ function holidays_jquery_loaded() {
         }    
  
         $$.getScript(holidays_url+'resources/grid.js', function () {
+            
+            $$=$.noConflict(true);
+            if (old_dolar!=null) $=old_dolar;
+            if (old_jquery!=null) jQuery=old_jquery;
+            
             $$.getScript(holidays_url+'resources/start.js');
         });
         
