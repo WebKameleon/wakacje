@@ -4,7 +4,6 @@ class merlinController extends Controller {
     
     
     protected $merlin;
-    protected $star='🌠';
     
     
     public function init()

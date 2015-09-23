@@ -26,5 +26,7 @@
     
     "site":"all",
     
+    "star":"⭐",
+    
     "admin.ids": [1]  
 }

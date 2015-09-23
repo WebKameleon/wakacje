@@ -11,7 +11,7 @@ class holidaysController extends merlinController {
         $config=$this->getConfig();
         $conf=Bootstrap::$main->getConfig();
         
-        if (in_array($word,$config['shit_word'])) return false;   
+        if (in_array($word,$config['shit_word']) || in_array($word,$config['dest_shit'])) return false;   
 
         
         if (substr($word,0,6)=='hotel:') {
@@ -346,7 +346,10 @@ class holidaysController extends merlinController {
                 
                 foreach($ofr AS $k=>$v)
                 {
-                    if (!is_array($v)) $r[$k]=$v;
+                    if (!is_array($v))
+                    {
+                        $r[$k]=$v;
+                    }
                     else foreach($v AS $kk=>$vv) {
                         if (!is_array($vv)) $r[$k.'_'.$kk]=$vv;
                     }
@@ -358,7 +361,7 @@ class holidaysController extends merlinController {
                         $r[$k]=mb_strtolower($r[$k],'utf-8');
                 
                 $r['stars']='';
-                for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].=$this->star;
+                for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].=Bootstrap::$main->getConfig('star');
                 
                 $r['adt'] = isset($cond[0]['adt']) ? $cond[0]['adt'] : 2;
                 $r['chd'] = isset($cond[0]['chd']) ? $cond[0]['chd'] : 0;
@@ -540,7 +543,7 @@ class holidaysController extends merlinController {
         $offer=$this->merlin->getOfferOnToken($this->id);
         
         $offer['stars']='';
-        if (isset($offer['obj']['category'])) for($i=0;$i<$offer['obj']['category'];$i+=10) $offer['stars'].=$this->star;
+        if (isset($offer['obj']['category'])) for($i=0;$i<$offer['obj']['category'];$i+=10) $offer['stars'].=Bootstrap::$main->getConfig('star');
         
         if (isset($offer['obj']['info']['desc'])) {
             $desc=$offer['obj']['info']['desc'];
