@@ -3,18 +3,6 @@ cron:
   url: /holidays?q=atlantyk&debug=1
   schedule: every 2 hours
   
-- description: cache for Spain
-  url: /holidays?q=hiszpania
-  schedule: every 12 hours
-  
-- description: cache for Egipt
-  url: /holidays?q=egipt
-  schedule: every 12 hours
-  
-- description: cache for Turkey
-  url: /holidays?q=turcja
-  schedule: every 12 hours
-  
-- description: cache for Greece
-  url: /holidays?q=grecja
-  schedule: every 12 hours  
+- description: cache for hotels fly
+  url: /holidays?q=atlantyk&debug=1&_site=fly
+  schedule: every 2 hours
