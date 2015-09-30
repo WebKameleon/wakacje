@@ -112,9 +112,16 @@ function post_lazyload(row) {
         var hotel=$$(this).attr('rel');
         var img=$$(this);
         
+        /*
+        if(img.height()>img_height) {
+            var margin=Math.round((img.height()-img_height)/2);
+            img.css('margin-top','-'+margin+'px');
+        }
+        */
+        
         $$get(holidays_url+'holidays/hotel/'+hotel,function(data){
             if (typeof(data.hotel.thumb)!='undefined') {
-                img.hide().attr('src',data.hotel.thumb).load(function(){
+                img.hide().css('margin-top','0').attr('src',data.hotel.thumb).load(function(){
                     if(img.height()>img_height) {
                         var margin=Math.round((img.height()-img_height)/2);
                         img.css('margin-top','-'+margin+'px');
@@ -126,7 +133,6 @@ function post_lazyload(row) {
         });
         
         
-        //img.load();
     });
     
     row.find('a.q').each(function(){
