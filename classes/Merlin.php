@@ -473,7 +473,7 @@ class Merlin
     }
     
     
-    public function getOffers($offer=[],$order='',$limit=10,$offset=0,$token='',$search4otherDates=false)
+    public function getOffers($offer=[],$order='',$limit=10,$offset=0,$token='',$desc=true)
     {
         $cond=$this->offer2cond($offer);
         $cond['calc_found']=1000;
@@ -496,36 +496,8 @@ class Merlin
 
         $xml_response = $this->post_xml($xml2,$type);
 
-        if (!strlen($token) && $xml_response['count']==0 && !strlen($token) && $limit>5 && $search4otherDates)
-        {
-            $cond2=$cond;
-            unset($cond2['trp_depDate']);
 
-            $cond2['order_by']='trp_depDate';
-            $cond2['limit_count']=1;
-            $cond2['limit_from']=1;
-
-            $xml2=$this->request('offers',$cond2);
-            $ofrs = $this->post_xml($xml2,$type);
-            $ofr=$this->convertOffers($ofrs);
-            if (isset($ofr[0]['o_data']))
-            {
-                $cond['trp_depDate']=date('Ymd',strtotime($ofr[0]['o_data']));
-
-                if (isset($offer['o_data_przylotu_pow']))
-                {
-                    $diff=round((strtotime($offer['o_data_przylotu_pow'])-strtotime($offer['o_data_wylotu']))/(24*3600));
-                    if ($diff>0) $cond['trp_depDate'].=':'.date('Ymd',strtotime($ofr[0]['o_data'])+24*3600*$diff);
-                }
-
-                $xml2=$this->request('offers',$cond);
-                $xml_response = $this->post_xml($xml2,'offers','2');
-
-            }
-        }
-
-
-        return $this->convertOffers($xml_response);
+        return $this->convertOffers($xml_response,'ofr',$desc);
 
     }
     
@@ -618,7 +590,7 @@ class Merlin
         return Tools::memcache($token,$ret,24*3600);
     }
     
-    public function convertOffers($offers,$path='ofr')
+    public function convertOffers($offers,$path='ofr',$desc=true)
     {
         Bootstrap::$main->system('strt-'.$path);
     
@@ -648,7 +620,7 @@ class Merlin
             
             if (isset($rec['obj']['xAttributes']) && $rec['obj']['xAttributes']) $rec['obj']['attributes']=$this->xAttr2array($rec['obj']['xAttributes']);
 
-            $rec['obj']['info']=$this->hotelInfo($rec['tourOp'],$rec['obj']['code']);   
+            if ($desc) $rec['obj']['info']=$this->hotelInfo($rec['tourOp'],$rec['obj']['code']);   
             
             $rec['startDate']['YYYYMMDD']=$this->merlinDate($rec['trp']['depDate']);
             $start=strtotime($rec['startDate']['YYYYMMDD']);
@@ -819,7 +791,7 @@ class Merlin
 
    
     
-    public function getGrouped($params,$order='',$limit=10,$offset=0)
+    public function getGrouped($params,$order='',$limit=10,$offset=0,$desc=true)
     {
         $cond=$this->offer2cond($params);
         $cond['calc_found']=1000;
@@ -837,7 +809,7 @@ class Merlin
 
         $grp=$this->request('groups',$cond);
         $hotels = $this->post_xml($grp,'groups');
-        $hotels = $this->convertOffers($hotels,'grp');
+        $hotels = $this->convertOffers($hotels,'grp',$desc);
 
 
 

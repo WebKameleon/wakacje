@@ -1,3 +1,6 @@
 [submodule "backend"]
 	path = backend
 	url = https://github.com/podstawski/backend
+[submodule "resources/lazygrid"]
+	path = resources/lazygrid
+	url = https://github.com/podstawski/lazygrid.git
