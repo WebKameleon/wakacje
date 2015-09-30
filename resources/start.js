@@ -104,15 +104,29 @@ if (typeof(q) != 'undefined') {
 
 
 function post_lazyload(row) {
+    
+    
     var img_height=150;
     row.find('.holiday_photo img').each (function() {
+        
+        var hotel=$$(this).attr('rel');
         var img=$$(this);
-        img.load(function(){
-            if(img.height()>img_height) {
-                var margin=Math.round((img.height()-img_height)/2);
-                img.css('margin-top','-'+margin+'px');
+        
+        $$get(holidays_url+'holidays/hotel/'+hotel,function(data){
+            if (typeof(data.hotel.thumb)!='undefined') {
+                img.hide().attr('src',data.hotel.thumb).load(function(){
+                    if(img.height()>img_height) {
+                        var margin=Math.round((img.height()-img_height)/2);
+                        img.css('margin-top','-'+margin+'px');
+                        img.fadeIn(1000);
+                    }
+                });
             }
+            
         });
+        
+        
+        //img.load();
     });
     
     row.find('a.q').each(function(){

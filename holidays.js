@@ -19,7 +19,7 @@ function $$get(url,fun)
 
 function holidays_jquery_loaded() {
     $$=$;
-        
+    
 
     $$.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
       if ( options.dataType == 'script' || originalOptions.dataType == 'script' ) {
@@ -93,7 +93,7 @@ function holidays_jquery_loaded() {
             });
         }    
  
-        $$.getScript(holidays_url+'resources/grid.js', function () {
+        $$.getScript(holidays_url+'resources/lazygrid/grid.js', function () {
             
             $$=$.noConflict(true);
             if (old_dolar!=null) $=old_dolar;
@@ -119,10 +119,14 @@ function initmap()
 
 
 
-if (typeof $ != "undefined") {
-    old_jquery=jQuery;
+if (typeof($) != "undefined") {
     old_dolar=$;
 }
+
+if (typeof(jQuery) != "undefined") {
+    old_jquery=jQuery;
+}
+
 
 var script = document.createElement("script");
 script.type = "text/javascript";

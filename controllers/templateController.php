@@ -9,7 +9,7 @@ class templateController extends merlinController {
                 <div class="holiday_photo col-md-3" rel="[id]">
                     <div>
                         <a title="[obj_name]">
-                        <img src="[photo]" class="img-responsive"/>
+                        <img src="[photo]" class="img-responsive" rel="[tourOp]:[obj_code]"/>
                         <h3>
                             <b title="[obj_name]">[obj_name]</b>
                             <span class="stars" title="kategoria">[stars]</span>

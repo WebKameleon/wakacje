@@ -324,18 +324,20 @@ class holidaysController extends merlinController {
     protected function results(&$cond,$limit,$offset,&$config,$rowattr=[])
     {
         $offers=isset($cond[0]['hotel']) ?
-            $this->merlin->getOffers($cond[0],'date,duration,dep,price',$limit,$offset)
+            $this->merlin->getOffers($cond[0],'date,duration,dep,price',$limit,$offset,'',false)
             :
-            $this->merlin->getGrouped($cond[0],'',$limit,$offset);
+            $this->merlin->getGrouped($cond[0],'',$limit,$offset,false);
         
           
         $result=[];
         foreach ($offers['result'] AS $ofr)
         {
-            if (isset($ofr['obj']['info']['photos']) || isset($ofr['obj']['info']['thumb'])) {
+            if (true || isset($ofr['obj']['info']['photos']) || isset($ofr['obj']['info']['thumb'])) {
                 
                 $r=[];
                 
+                $r['photo']='//'.$_SERVER['HTTP_HOST'].Bootstrap::$main->getRoot().'img/nophoto.png';
+                /*
                 $r['photo']=$ofr['obj']['info']['thumb'];
                 
                 if (isset($ofr['obj']['info']['photos']) && count($ofr['obj']['info']['photos']))
@@ -343,6 +345,7 @@ class holidaysController extends merlinController {
                     $r['photo'] = $ofr['obj']['info']['photos'][0];
                     if (isset($cond[0]['hotel'])) $r['photo'] = $ofr['obj']['info']['photos'][(count($result)+$offset)%count($ofr['obj']['info']['photos'])];
                 }
+                */
                 
                 foreach($ofr AS $k=>$v)
                 {
@@ -587,4 +590,16 @@ class holidaysController extends merlinController {
         return $this->status($offer);
     }
     
+    
+    public function get_hotel()
+    {
+        $id=explode(':',$this->id);
+        if (count($id)!=2) return $this->status(null,false);
+        
+        $hotel=$this->merlin->hotelInfo($id[0],$id[1]);
+        if (isset($hotel['photos']) && is_array($hotel['photos']) && count($hotel['photos']))
+        $hotel['thumb']=$hotel['photos'][0];
+        
+        return $this->status($hotel,true,'hotel');
+    }
 }
