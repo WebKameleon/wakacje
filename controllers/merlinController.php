@@ -127,6 +127,7 @@ class merlinController extends Controller {
         if ($this->data('debug')==1) {
             $hotels=$this->merlin->getFilters(['ofr_type'=>'F'],'obj_xCode',$this->data('debug')?false:true);
             
+            Tools::log('hotels-'.$token,$hotels);
             $words=array_keys($config['words']);
             $hotel_map=[];
             

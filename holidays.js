@@ -2,7 +2,7 @@ var holidays_script=document.currentScript;
 var holidays_url;
 
 var old_jquery=null,old_dolar=null,$$;
-
+var may_start=false;
 
 
 
@@ -15,6 +15,23 @@ function $$get(url,fun)
             },
             success: fun
     });
+}
+
+function webkamleon_holidays_start()
+{
+    var templateFound=$$('#webkameleon_holidays_template');
+    if (templateFound.length==0)
+    {
+        setTimeout(webkamleon_holidays_start,200);
+        return;
+    }
+    
+    $$=$.noConflict(true);
+    if (old_dolar!=null) $=old_dolar;
+    if (old_jquery!=null) jQuery=old_jquery;
+    
+    $$.getScript(holidays_url+'resources/start.js');    
+    
 }
 
 function holidays_jquery_loaded() {
@@ -93,20 +110,15 @@ function holidays_jquery_loaded() {
             });
         }    
  
-        $$.getScript(holidays_url+'resources/lazygrid/grid.js', function () {
-            
-            $$=$.noConflict(true);
-            if (old_dolar!=null) $=old_dolar;
-            if (old_jquery!=null) jQuery=old_jquery;
-            
-            $$.getScript(holidays_url+'resources/start.js');
-        });
+        $$.getScript(holidays_url+'resources/lazygrid/grid.js', webkamleon_holidays_start);
         
  
     });
     
  
 }
+
+
 
 
 

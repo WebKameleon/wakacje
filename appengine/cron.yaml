@@ -3,6 +3,6 @@ cron:
   url: /holidays?q=atlantyk&debug=1
   schedule: every 2 hours
   
-- description: cache for hotels fly
+- description: cache for fly
   url: /holidays?q=atlantyk&debug=1&_site=fly
-  schedule: every 2 hours
+  schedule: every 3 hours
