@@ -80,7 +80,13 @@ var getUrlParameter = function getUrlParameter(sParam,url) {
 
 
 var q=getUrlParameter('q');
-if (typeof(q) != 'undefined') {
+
+if (typeof(master_q) != 'undefined') {
+    replace_input_value(master_q);
+    setTimeout(function() {
+        $$('#webkameleon_holidays_form a').trigger('click');
+    },600);
+} else if (typeof(q) != 'undefined') {
     replace_input_value(q.replace(/\+/g,' '));
     setTimeout(function() {
         $$('#webkameleon_holidays_form a').trigger('click');

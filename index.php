@@ -1,24 +1,86 @@
 <?php
 
-$_SERVER['backend_start']=microtime(true);
-include __DIR__.'/backend/include/all.php';
-allow_origin(['webkameleon.com','ecco','fly']);
-autoload([__DIR__.'/classes',__DIR__.'/controllers']);
-$config=json_config(__DIR__.'/config/application.json');
-$method=http_method();
+    $_SERVER['backend_start']=microtime(true);
+    include __DIR__.'/backend/include/all.php';
+    autoload([__DIR__.'/classes',__DIR__.'/controllers']);
+    $config=json_config(__DIR__.'/config/application.json');
+    $bootstrap = new Bootstrap($config);
 
-
-if ( in_array( strtolower( ini_get( 'magic_quotes_gpc' ) ), array( '1', 'on' ) ) )
-{
-    $_POST = array_map( 'stripslashes', $_POST );
-    $_GET = array_map( 'stripslashes', $_GET );
-    $_COOKIE = array_map( 'stripslashes', $_COOKIE );
+    $root=$bootstrap->getRoot();
     
-    ini_set('magic_quotes_gpc', 0);
-}
+    $uri=$_SERVER['REQUEST_URI'];
+    if ($pos=strpos($uri,'?')) $uri=substr($uri,0,$pos);
+    $uri=substr($uri,strlen($root));
+    $q=trim(str_replace(['-','/',"'"],' ',$uri));
+    
+    
+    
+?><html lang="pl">
+<head>
+    <meta charset="utf-8"/>
+    <title>Szukaj wakacji <?php echo $q;?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="<?php echo $root;?>resources/demo.css"/>
+</head>
+<body>
 
-ini_set('display_errors',1);
-$bootstrap = new Bootstrap($config);
+<div style="overflow: hidden" id="webkameleon-top-demo">
+<img src="<?php echo $root;?>img/beach-xs.jpg" alt="Wakacje" class="bkgimg hidden-lg hidden-md" style="display: none"/>
+<video class="bkgimg hidden-xs hidden-sm" autoplay loop video-list >
+    <source src="<?php echo $root;?>img/beach-loop.mp4" type="video/mp4; codecs=avc1.42E01E,mp4a.40.2"/>
+    <source src="<?php echo $root;?>img/beach-loop.ogv" type="video/ogg"/>
+</video>
+</div>
 
-$result=$bootstrap->run(strtolower($method));
+<?php if ($q): ?>
+<script>
+    var master_q = '<?php echo $q;?>';
+</script>
+<?php endif; ?>
 
+<script async src="<?php echo $root;?>holidays.js"></script>
+
+<span id="scroll-top">
+    <a class="scrollup" style="display: inline;"><i class="icomoon-arrow-up"></i></a>
+</span>
+
+<div class="container-fluid" id="webkameleon_holidays_results"></div>
+
+
+
+</body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+    $('.bkgimg').fadeIn(500);
+    
+    function bkgimg_animation()
+    {
+        var top=parseInt($('#webkameleon_holidays_form').css('top'));
+        var newTop=30;
+        if (top!=newTop) {
+            var m=top-newTop;
+            $('#webkameleon_holidays_form').css('top',newTop+'px');
+            $('.bkgimg').css('margin-top','-'+m+'px');
+            $('#webkameleon-top-demo').height('140px');
+        }
+        return false;        
+    }
+    
+    function webkameleon_demo_form()
+    {
+        var helpFound=$('#webkameleon_holidays_form');
+        if (helpFound.length==0) {
+            setTimeout(webkameleon_demo_form,200);
+        } else {
+            $('#webkameleon_holidays_form').submit(bkgimg_animation);
+            $('#webkameleon_holidays_form a').click(bkgimg_animation);      
+        }
+    }
+    webkameleon_demo_form();
+    
+
+</script>
+</html>

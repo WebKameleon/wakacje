@@ -4,4 +4,6 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
+RewriteRule ^holidays.*$ backend.php [NC,L]
+RewriteRule ^template.*$ backend.php [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
