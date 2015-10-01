@@ -11,10 +11,6 @@ handlers:
 - url: /favicon.ico
   static_files: favicon.ico
   upload: favicon.ico
-
-- url: /
-  static_files: index.html
-  upload: index.html
   
 - url: /holidays.js
   static_files: holidays.js
@@ -26,6 +22,6 @@ handlers:
 - url: /resources
   static_dir: resources
 
-- url: /maga_zakodowany_sajtmap.xml
+- url: /maga_sajtmap.xml
   script: sitemap.php
 

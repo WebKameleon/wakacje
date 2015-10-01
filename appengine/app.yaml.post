@@ -1,4 +1,10 @@
 
+- url: /holidays.*
+  script: backend.php
+
+- url: /template.*
+  script: backend.php
+
 - url: /.*
   script: index.php
 
