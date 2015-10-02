@@ -41,6 +41,26 @@
         "WAW":"z Warszawy"
     },
     
+    "dep_name": {
+        "WMI": "Modlin",
+        "POZ": "Poznań",
+        "SXF": "Berlin",
+        "BER": "Berlin",
+        "BZG": "Bydgoszcz",
+        "GDN": "Gdańsk",
+        "KTW": "Katowice",
+        "KRK": "Kraków",
+        "LUZ": "Lublina",
+        "RZE": "Rzeszów",
+        "SZZ": "Szczecin",
+        "WRO": "Wrocław",
+        "IEG": "Zielonea Góra",
+        "VNO": "Wilno",
+        "LCJ": "Łodź",
+        "PRG": "Praga",
+        "WAW":"Warszawa"
+    },
+    
     "dest_shit": [
         "niskie","gran","wysokie","dolny","ziemia","wyc.","zatoka","- la mancha","wybrzeże morza",
         "czeskie","costa de la","piaski","costa del","riwiera","- costa almeria","i nowa",

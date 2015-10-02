@@ -98,6 +98,11 @@
     font-weight: bold;
 }
 
+#webkameleon_holidays_results .row i {
+    font-style: normal;
+    color: #9c0c0c;
+}
+
 #webkameleon_holidays_results .row {
 
 }

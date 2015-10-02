@@ -323,6 +323,8 @@ class holidaysController extends merlinController {
     
     protected function results(&$cond,$limit,$offset,&$config,$rowattr=[])
     {
+    
+        
         $offers=isset($cond[0]['hotel']) ?
             $this->merlin->getOffers($cond[0],'date,duration,dep,price',$limit,$offset,'',false)
             :
@@ -393,6 +395,46 @@ class holidaysController extends merlinController {
                 $r['hotel_selected']=isset($cond[0]['hotel']);
                 
                 $r=array_merge($r,$rowattr);
+                
+                
+                foreach ($cond[1] AS $what=>$values) {
+                    foreach($values AS $key=>$name) {
+                        switch ($what) {
+                            case 'dep':
+                                $r['trp_depName']=@preg_replace('~('.$config['dep_name'][$key].')~i','<i>\\1</i>',$r['trp_depName']);
+                                break;
+                            
+                            case 'dest':
+                                foreach(explode(' ',$name) AS $n)
+                                {
+                                    $r['obj_region']=@preg_replace('~('.$n.')~i','<i>\\1</i>',$r['obj_region']);
+                                    $r['obj_country']=@preg_replace('~('.$n.')~i','<i>\\1</i>',$r['obj_country']);
+                                }
+                                break;
+                            
+                            case 'from':
+                            case 'to':
+                                $r['startDate_D']='<i>'.$r['startDate_D'].'</i>';
+                                $r['startDate_MMM']='<i>'.$r['startDate_MMM'].'</i>';
+                                break;
+                            
+                            case 'service':
+                                $r['obj_serviceDesc']='<i>'.$r['obj_serviceDesc'].'</i>';
+                                break;
+                            
+                            case 'hotelName':
+                                $r['obj_name']=@preg_replace('~('.$name.')~i','<i>\\1</i>',$r['obj_name']);
+                                break;
+                            
+                            case 'max_price':
+                            case 'min_price':
+                                $r['price']='<i>'.$r['price'].'</i>';
+                                break;
+                                
+                        }
+                    }
+                }
+                
                 
                 $result[]=$r;
             }
@@ -577,6 +619,9 @@ class holidaysController extends merlinController {
             $offer['dep_from']=$config['dep_from'][$offer['trp']['depCode']];
             $offer['adt']=Bootstrap::$main->session('adt');
             $offer['chd']=Bootstrap::$main->session('chd');
+            
+            
+            
             
             //mydie($offer['obj']['info']);
         }
