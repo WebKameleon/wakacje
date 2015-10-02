@@ -98,7 +98,9 @@
     font-weight: bold;
 }
 
-#webkameleon_holidays_results .row i {
+#webkameleon_holidays_results .trip_desc i,
+#webkameleon_holidays_results .holiday_price i
+{
     font-style: normal;
     color: #9c0c0c;
 }
