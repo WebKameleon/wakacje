@@ -23,6 +23,9 @@ $$('#webkameleon_holidays_results').lazygrid({
     template: $$('#webkameleon_holidays_template').html(),
     url: holidays_url+'holidays',
     form: $$('#webkameleon_holidays_form'),
+    zeroresults: function (opt) {
+        return '<div class="row lazyload_grid_results">'+opt.options.results+' ('+opt.system.total_time+' s)'+'</div>';
+    },
     eachrow: function(row,i,opt) {
         if (i==0) {
             var html2=opt.options.results+' ('+opt.system.total_time+' s)';
