@@ -4,5 +4,5 @@ cron:
   schedule: every 2 hours
   
 - description: cache for fly
-  url: /holidays?q=atlantyk&debug=1&_site=fly
-  schedule: every 3 hours
+  url: /holidays?q=atlantyk&debug=1&_site=szukaj.fly.pl
+  schedule: every 2 hours
