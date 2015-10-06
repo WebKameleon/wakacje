@@ -323,14 +323,13 @@ class holidaysController extends merlinController {
     
     protected function results(&$cond,$limit,$offset,&$config,$rowattr=[])
     {
-    
         
         $offers=isset($cond[0]['hotel']) ?
             $this->merlin->getOffers($cond[0],'date,duration,dep,price',$limit,$offset,'',false)
             :
             $this->merlin->getGrouped($cond[0],'',$limit,$offset,false);
         
-          
+        
         $result=[];
         foreach ($offers['result'] AS $ofr)
         {
@@ -446,9 +445,9 @@ class holidaysController extends merlinController {
         ];
     }
     
-    public function get()
+    public function get($limit=0)
     {
-        $opt=$this->nav_array(Bootstrap::$main->getConfig('merlin.search.limit'));
+        $opt=$this->nav_array($limit?:Bootstrap::$main->getConfig('merlin.search.limit'));
         $opt['totalPrice']=Bootstrap::$main->session('total');
         $site=Bootstrap::$main->getConfig('site');
         $config=$this->getConfig();
@@ -457,6 +456,7 @@ class holidaysController extends merlinController {
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
         Bootstrap::$main->system('q2c');
         Bootstrap::$main->session('q',$this->data('q'));
+        
         if (count($cond)) {
             if (!isset($cond[0]['type'])) $cond[0]['type']='F';
             if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
@@ -646,5 +646,32 @@ class holidaysController extends merlinController {
         $hotel['thumb']=$hotel['photos'][0];
         
         return $this->status($hotel,true,'hotel');
+    }
+    
+    public function get_map()
+    {
+        $config=$this->getConfig();
+        $result=[];
+        foreach ($config['dep_from'] AS $code=>$name)
+        {
+            $name=Tools::str_to_url($name);
+            if (isset($result[$name])) continue;
+            
+            $result[$name]=[];
+            $regions=$this->merlin->getRegions('F',['trp_depCode'=>$code]);
+            foreach ($regions AS $reg) {
+                if (isset($reg['country']) && $reg['country'])
+                    $result[$name][Tools::str_to_url(ucwords(strtolower($reg['country'])))]=true;
+                if (isset($reg['region']) && $reg['region'])
+                {
+                    $reg['region']=str_replace(['wyc. ','Wyc. ','WYC. '],'Wycieczki ',$reg['region']);
+                    $result[$name][Tools::str_to_url(ucwords(strtolower($reg['region'])))]=true;
+                }
+            }
+            
+            
+        }
+        Tools::save('map.json',json_encode($result));
+        return true;
     }
 }

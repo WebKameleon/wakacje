@@ -1,8 +1,8 @@
 <?php
 class templateController extends merlinController {
-    public function get() {
+    public function get($die=true) {    
         $config=Bootstrap::$main->getConfig();
-        
+    
         $html='
         <div id="webkameleon_holidays_template" style="display:none">
             <div style="display:none" class="row">
@@ -54,7 +54,8 @@ class templateController extends merlinController {
             </div>
         </div>';
         
-        die ($html);
+        if ($die) die ($html);
+        return $html;
     }
     
     protected function countries()

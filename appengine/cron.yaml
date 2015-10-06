@@ -1,8 +1,12 @@
 cron:
 - description: cache for hotels
   url: /holidays?q=atlantyk&debug=1
-  schedule: every 2 hours
+  schedule: every 3 hours
   
 - description: cache for fly
   url: /holidays?q=atlantyk&debug=1&_site=szukaj.fly.pl
-  schedule: every 2 hours
+  schedule: every 3 hours
+
+- description: sitemap for fly
+  url: /holidays/map?_site=szukaj.fly.pl
+  schedule: every 12 hours
