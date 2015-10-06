@@ -14,6 +14,10 @@
     $q=trim(str_replace(['-','/',"'"],' ',$uri));
     
     $google_part='';
+    if ( (!$q && isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']),'google')))
+    {
+        $google_part='<h1>Znajdź wymarzone wakacje. Bez trudnych formularzy. Po prostu wpisz, co Cię interesuje.</h1>'."\n";
+    }
     if ( ($q && isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']),'google')))
     {
         $google_part='<h1>'.$q.'</h1>'."\n";
