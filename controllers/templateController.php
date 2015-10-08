@@ -58,7 +58,7 @@ class templateController extends merlinController {
         return $html;
     }
     
-    protected function countries()
+    public function countries()
     {
         $regions=$this->merlin->getRegions('F',null,$this->data('debug')?false:true);
         

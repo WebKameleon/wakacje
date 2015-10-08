@@ -14,42 +14,62 @@
     $q=trim(str_replace(['-','/',"'"],' ',$uri));
     
     $google_part='';
-    if ( (!$q && isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']),'google')))
+
+    if ( isset($_GET['_google']) || ( isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']),'google')))
     {
-        $google_part='<h1>Znajdź wymarzone wakacje. Bez trudnych formularzy. Po prostu wpisz, co Cię interesuje.</h1>'."\n";
-    }
-    if ( ($q && isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']),'google')))
-    {
-        $google_part='<h1>'.$q.'</h1>'."\n";
-        
-        ini_set('display_errors',true);
-        
-        $template=new templateController();
-        $template->init();
-        $holidays=new holidaysController(0,['q'=>$q]);
-        $holidays->init();
-        
-        $tmpl=$template->get(false);
-        
-        $tmpl=preg_replace('~\[if:[^\]]+\]~','',$tmpl);
-        $tmpl=preg_replace('~\[endif:[^\]]+\]~','',$tmpl);
-        $tmpl=preg_replace('~\[loop:[^\]]+\]~','',$tmpl);
-        $tmpl=preg_replace('~\[endloop:[^\]]+\]~','',$tmpl);
-        $tmpl=str_replace('style="display:none"','',$tmpl);
-        
-        $result=$holidays->get(10);
-        
-        foreach ($result['data'] AS $rec)
-        {
-            $row=$tmpl;
-            foreach($rec AS $k=>$v) {
-                if (is_array($v)) continue;
-                $row=str_replace("[$k]",$v,$row);
+        if ($q) {
+            $google_part='<h1>'.$q.'</h1>'."\n";
+            
+            
+            $template=new templateController();
+            $template->init();
+            $holidays=new holidaysController(0,['q'=>$q]);
+            $holidays->init();
+            
+            $tmpl=$template->get(false);
+            
+            $tmpl=preg_replace('~\[if:[^\]]+\]~','',$tmpl);
+            $tmpl=preg_replace('~\[endif:[^\]]+\]~','',$tmpl);
+            $tmpl=preg_replace('~\[loop:[^\]]+\]~','',$tmpl);
+            $tmpl=preg_replace('~\[endloop:[^\]]+\]~','',$tmpl);
+            $tmpl=str_replace('style="display:none"','',$tmpl);
+            
+            $result=$holidays->get(10);
+            
+            foreach ($result['data'] AS $rec)
+            {
+                $row=$tmpl;
+                foreach($rec AS $k=>$v) {
+                    if (is_array($v)) continue;
+                    $row=str_replace("[$k]",$v,$row);
+                }
+                $google_part.=$row;
             }
-            $google_part.=$row;
+        
+        } else {
+            $google_part='<h1>Znajdź wymarzone wakacje. Bez trudnych formularzy. Po prostu wpisz, co Cię interesuje.</h1>'."\n";
+        
+            $template=new templateController();
+            $template->init();
+            $countries=$template->countries();
+            $google_part.='<ul>';
+            
+            $countries=array_merge($countries,['Majorka','Wyspy Kanaryjskie','Kreta','Kos']);
+            sort($countries);
+            foreach($countries AS $country)
+            {
+                $country=str_replace('Republika Południowej Afryki','RPA',$country);
+                $country=str_replace('Trynidad I Tobago','Trynidad i Tobago',$country);
+                
+                $google_part.='<li>';
+                $google_part.='<a href="'.Tools::str_to_url($country).'">';
+                $google_part.=$country;
+                $google_part.='</a></li>';
+                
+            }
+            $google_part.='</ul>';
+        
         }
-        
-        
         
     }
     
