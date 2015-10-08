@@ -155,6 +155,8 @@ class holidaysController extends merlinController {
                 continue;
             }
             
+            $found=false;
+            
             if (isset($c['number']) && !isset($c['field'])) {
                 
                 $c['number']=explode('-',$c['number']);
@@ -176,19 +178,23 @@ class holidaysController extends merlinController {
             
                         $cond['max_price']=$c['number'][1];
                     }
-                    
+                    $found=true;
                     $this->update_cond($cond,$field,$c['number'][0],$phraze_responsible,$phrazes_responsible);
                 }
                 
                 if ($c['number'][0]>=500 && !$from && !$to )
                 {
                     if (!$c['number'][1]) {
-                        $cond['max_price']=$c['number'][0];
+                        $this->update_cond($cond,'max_price',$c['number'][0],$phraze_responsible,$phrazes_responsible);
+                        //$cond['max_price']=$c['number'][0];
                     }
                     else {
                         $cond['min_price']=$c['number'][0];
                         $cond['max_price']=$c['number'][1];
+                        $this->update_cond($cond,'max_price',$c['number'][1],$phraze_responsible,$phrazes_responsible);
+                        
                     }
+                    $found=true;
                 }                
                 
                 if ($c['number'][0]<=31) {
@@ -300,7 +306,7 @@ class holidaysController extends merlinController {
                 
                 
             } elseif (strlen($w)>3) {
-                if (!in_array($w,$config['dest_shit'])) $unknown[]=$w;
+                if (!in_array($w,$config['dest_shit']) && !$found) $unknown[]=$w;
             }
         }
         
@@ -406,6 +412,7 @@ class holidaysController extends merlinController {
                             case 'dest':
                                 foreach(explode(' ',$name) AS $n)
                                 {
+                                    if (strlen($n)<4) continue;
                                     $r['obj_region']=@preg_replace('~('.$n.')~i','<i>\\1</i>',$r['obj_region']);
                                     $r['obj_country']=@preg_replace('~('.$n.')~i','<i>\\1</i>',$r['obj_country']);
                                 }
@@ -456,8 +463,19 @@ class holidaysController extends merlinController {
         $cond=$this->data('q')?$this->q2cond($this->data('q')):[];
         Bootstrap::$main->system('q2c');
         Bootstrap::$main->session('q',$this->data('q'));
+      
+        $social_url='http://'.$_SERVER['HTTP_HOST'].'/';
+        $social_text='';
         
         if (count($cond)) {
+            
+            if (isset($cond[1]))
+            {
+                foreach($cond[1] AS $arr) foreach ($arr AS $ar) {
+                    $social_url.=str_replace(' ','-',$ar).'/';
+                    $social_text.=$ar.' ';
+                }
+            }
             if (!isset($cond[0]['type'])) $cond[0]['type']='F';
             if (!isset($cond[0]['adt'])) $cond[0]['adt']=2;
             
@@ -501,7 +519,13 @@ class holidaysController extends merlinController {
             $opt['next_offset']=$opt['offset'];
         }
         Bootstrap::$main->system('mds');
+
         
+        $social_subject=trim(str_replace('{q}',trim($social_text),Bootstrap::$main->getConfig('mail.subject')));
+        
+        
+        $opt['f']='https://www.facebook.com/sharer/sharer.php?t='.urlencode($social_subject).'&u='.urlencode($social_url);
+        $opt['m']='mailto:?subject='.urlencode($social_subject).'&body='.urlencode($social_url);        
         
         $opt['results']='Wyniki: ';
         
@@ -674,4 +698,6 @@ class holidaysController extends merlinController {
         Tools::save('map.json',json_encode($result));
         return true;
     }
+    
+    
 }

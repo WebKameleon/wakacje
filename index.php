@@ -11,9 +11,11 @@
     $uri=$_SERVER['REQUEST_URI'];
     if ($pos=strpos($uri,'?')) $uri=substr($uri,0,$pos);
     $uri=substr($uri,strlen($root));
-    $q=trim(str_replace(['-','/',"'"],' ',$uri));
+    $q=urldecode(trim(str_replace(['-','/',"'"],' ',$uri)));
     
     $google_part='';
+    $description=$q?str_replace('{q}',$q,$bootstrap->getConfig('page.description')):$bootstrap->getConfig('page.description0');
+    
 
     if ( isset($_GET['_google']) || ( isset($_SERVER['HTTP_USER_AGENT']) && strstr(strtolower($_SERVER['HTTP_USER_AGENT']),'google')))
     {
@@ -47,7 +49,7 @@
             }
         
         } else {
-            $google_part='<h1>Znajdź wymarzone wakacje. Bez trudnych formularzy. Po prostu wpisz, co Cię interesuje.</h1>'."\n";
+            $google_part='<h1></h1>'."\n";
         
             $template=new templateController();
             $template->init();
@@ -73,13 +75,20 @@
         
     }
     
-    
+    $title=$q?str_replace('{q}',$q,Bootstrap::$main->getConfig('page.title')):Bootstrap::$main->getConfig('page.title0');
     
 ?><html lang="pl">
 <head>
     <meta charset="utf-8"/>
-    <title><?php echo $q?"Wakacje $q":"Szukaj wakacji";?></title>
+    <title><?php echo $title;?></title>
+    <meta property="description" content="<?php echo $description;?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<?php echo $title;?>" />
+    <meta property="og:description" content="<?php echo $description;?>" />
+    <meta property="og:image" content="/img/og-wakacje.jpg" />    
+    
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="<?php echo $root;?>resources/demo.css"/>
@@ -126,34 +135,5 @@
 </body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script>
-    $('.bkgimg').fadeIn(500);
-    
-    function bkgimg_animation()
-    {
-        var top=parseInt($('#webkameleon_holidays_form').css('top'));
-        var newTop=30;
-        if (top!=newTop) {
-            var m=top-newTop;
-            $('#webkameleon_holidays_form').css('top',newTop+'px');
-            $('.bkgimg').css('margin-top','-'+m+'px');
-            $('#webkameleon-top-demo').height('140px');
-        }
-        return false;        
-    }
-    
-    function webkameleon_demo_form()
-    {
-        var helpFound=$('#webkameleon_holidays_form');
-        if (helpFound.length==0) {
-            setTimeout(webkameleon_demo_form,200);
-        } else {
-            $('#webkameleon_holidays_form').submit(bkgimg_animation);
-            $('#webkameleon_holidays_form a').click(bkgimg_animation);      
-        }
-    }
-    webkameleon_demo_form();
-    
-
-</script>
+<script src="<?php echo $root;?>/resources/home.js"></script>
 </html>

@@ -26,10 +26,33 @@ body {
 
 #webkameleon_holidays_form .glyphicon {
   top:32px;
+  left: 66%;
 }
 
 #webkameleon_holidays_results {
     margin-top: 20px;
+}
+
+#webkameleon_holidays_form .holiday_social {
+  float: right;
+  width: 32px;
+  position: relative;
+  top: -12px;
+}
+
+#webkameleon_holidays_form .holiday_social a {
+  width: 30px ;
+  height: 30px ;
+  display: block;
+}
+
+#webkameleon_holidays_form .holiday_social a.f {
+  background: url(../img/f.png);
+}
+
+#webkameleon_holidays_form .holiday_social a.m {
+  background: url(../img/m.png);
+  margin-top: 5px;
 }
 
 @media (max-width:1200px) {

@@ -56,7 +56,7 @@ function holidays_jquery_loaded() {
     
     var formFound=$$('#webkameleon_holidays_form');
     if (formFound.length==0) {
-        var form='<form id="webkameleon_holidays_form"><input name="q"/><i class="glyphicon glyphicon-question-sign"></i><a>Szukaj</a></form>';
+        var form='<form id="webkameleon_holidays_form"><input name="q"/><i class="glyphicon glyphicon-question-sign"></i><a class="go">Szukaj</a></form>';
         $$(holidays_script).parent().append(form);
     }
     

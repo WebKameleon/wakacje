@@ -28,5 +28,12 @@
     
     "star":"⭐",
     
+    "page.title0":"Szukaj wakacji",
+    "page.title":"Wakacje {q}",
+    
+    "page.description0":"Znajdź wymarzone wakacje. Bez trudnych formularzy. Po prostu wpisz, co Cię interesuje.",
+    "page.description":"Znalezione wakacje - {q}",
+    "mail.subject":"Znalezione wakacje {q}",
+    
     "admin.ids": [1]  
 }
