@@ -7,4 +7,4 @@ git submodule update --init --recursive
 git pull
 git submodule foreach git pull origin master
 
-#php ./server/admin/migrate/index.php
+php ./migrate/index.php

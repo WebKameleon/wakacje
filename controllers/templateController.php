@@ -44,7 +44,7 @@ class templateController extends merlinController {
                 </div>
                 <div class="holiday_price col-md-3">
                     <h5>
-                        <a href="'.$config['merlin.reservation'].'" target="'.$config['merlin.reservation_target'].'">
+                        <a href="'.Bootstrap::$main->getRoot().'holidays/book/[id]" target="'.$config['merlin.reservation_target'].'">
                             [price] [operCurr] [if:total]za wszystkich[endif:total][if:!total]za osobę[endif:!total]
                             <span>REZERWUJ TERAZ &raquo;</span>
                         </a>
@@ -184,7 +184,7 @@ class templateController extends merlinController {
                         <div class="modal-footer">
                             
                             <button type="button" class="btn btn-default" data-dismiss="modal">zamknij</button>
-                            <button type="button" class="btn btn-primary" text="rezerwuj " rel="'.$config['merlin.reservation'].'">rezerwuj</button>
+                            <button type="button" class="btn btn-primary" text="rezerwuj " rel="'.Bootstrap::$main->getRoot().'holidays/book/[id]">rezerwuj</button>
                         </div>
                     </div>
                 </div>

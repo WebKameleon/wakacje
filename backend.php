@@ -3,7 +3,7 @@
 $_SERVER['backend_start']=microtime(true);
 include __DIR__.'/backend/include/all.php';
 allow_origin(['webkameleon.com','ecco','fly']);
-autoload([__DIR__.'/classes',__DIR__.'/controllers']);
+autoload([__DIR__.'/classes',__DIR__.'/controllers',__DIR__.'/models']);
 $config=json_config(__DIR__.'/config/application.json');
 $method=http_method();
 

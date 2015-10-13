@@ -326,6 +326,37 @@ class holidaysController extends merlinController {
         return $this->status(Bootstrap::$main->session('total'),true,'total');
     }
     
+    protected function flat_offer($ofr)
+    {
+        $r=[];
+
+        if (!is_array($ofr)) return $r;
+        foreach($ofr AS $k=>$v)
+        {
+            if (!is_array($v))
+            {
+                $r[$k]=$v;
+            }
+            else foreach($v AS $kk=>$vv) {
+                if (!is_array($vv)) $r[$k.'_'.$kk]=$vv;
+            }
+            
+        }
+           
+        foreach (['trp_depName','trp_desDesc','obj_serviceDesc','obj_roomDesc'] AS $k)
+            if (isset($r[$k]))
+                $r[$k]=mb_strtolower($r[$k],'utf-8');
+        
+        $r['stars']='';
+        for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].=Bootstrap::$main->getConfig('star');
+                
+        $r['adt']=Bootstrap::$main->session('adt');
+        $r['chd']=Bootstrap::$main->session('chd');
+        $r['inf']=Bootstrap::$main->session('inf');
+                
+        return $r;
+    }
+    
     
     protected function results(&$cond,$limit,$offset,&$config,$rowattr=[])
     {
@@ -341,7 +372,7 @@ class holidaysController extends merlinController {
         {
             if (true || isset($ofr['obj']['info']['photos']) || isset($ofr['obj']['info']['thumb'])) {
                 
-                $r=[];
+                $r=$this->flat_offer($ofr);
                 
                 $r['photo']='//'.$_SERVER['HTTP_HOST'].Bootstrap::$main->getRoot().'img/nophoto.png';
                 /*
@@ -354,24 +385,7 @@ class holidaysController extends merlinController {
                 }
                 */
                 
-                foreach($ofr AS $k=>$v)
-                {
-                    if (!is_array($v))
-                    {
-                        $r[$k]=$v;
-                    }
-                    else foreach($v AS $kk=>$vv) {
-                        if (!is_array($vv)) $r[$k.'_'.$kk]=$vv;
-                    }
-                    
-                }
-                   
-                foreach (['trp_depName','trp_desDesc','obj_serviceDesc','obj_roomDesc'] AS $k)
-                    if (isset($r[$k]))
-                        $r[$k]=mb_strtolower($r[$k],'utf-8');
-                
-                $r['stars']='';
-                for($i=0;$i<$r['obj_category'];$i+=10) $r['stars'].=Bootstrap::$main->getConfig('star');
+
                 
                 $r['adt'] = isset($cond[0]['adt']) ? $cond[0]['adt'] : 2;
                 $r['chd'] = isset($cond[0]['chd']) ? $cond[0]['chd'] : 0;
@@ -382,6 +396,7 @@ class holidaysController extends merlinController {
                 Bootstrap::$main->session('chd',$r['chd']);
                 Bootstrap::$main->session('inf',$r['inf']);
                 
+
                 if (!isset($r['obj_xAttributes'])) $r['obj_xAttributes']=0;
                 $r['attr']=[];
                 $attr=$r['obj_xAttributes']+0;
@@ -394,7 +409,6 @@ class holidaysController extends merlinController {
                                             'active'=>isset($cond[1]['attr'][$x+1])
                                             ];
                 }
-                
                 
                 
                 $r['hotel_selected']=isset($cond[0]['hotel']);
@@ -507,10 +521,25 @@ class holidaysController extends merlinController {
                 if (!$security--) break;
             }
             
+
             
             
-            if (!isset($cond['memcache'])) @Tools::log('query-'.$site,['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
-      
+            if (!isset($cond['memcache']) && !$this->data('debug')) {
+                @Tools::log('query-'.$site,['q'=>$this->data('q'),'count'=>$offers['count'],'cond'=>$cond]);
+            
+                if (isset($cond[2]) && is_array($cond[2]) && count($cond[2])) foreach($cond[2] AS $w)
+                {
+                    $query=new queryModel();
+                    $query->datetime=date('c');
+                    $query->q=$this->data('q');
+                    $query->site=Bootstrap::$main->getConfig('site');
+                    $query->word=$w;
+                    $query->ip=Bootstrap::$main->ip;
+                    $query->save();
+                }
+
+
+            }
             
             
         } else {
@@ -699,5 +728,32 @@ class holidaysController extends merlinController {
         return true;
     }
     
+    
+    public function get_book()
+    {
+    
+        $config=Bootstrap::$main->getConfig();
+        $offer=$this->flat_offer($this->merlin->getOfferOnToken($this->id));
+        
+        if (!count($offer)) die();
+        
+        $url=$config['merlin.reservation'];
+        
+        foreach( $offer AS $k=>$v)
+        {
+            $url=str_replace('['.$k.']',$v,$url);
+        }
+        
+        $book=new reservationModel();
+        $book->datetime=date('c');
+        $book->site=$config['site'];
+        $book->offer=$offer['id'];
+        $book->family=$offer['adt'].' + '.$offer['chd'].' + '.$offer['inf'];
+        $book->ip=Bootstrap::$main->ip;
+        $book->save();
+        
+        Header('Location: '.$url);
+        die();
+    }
     
 }
