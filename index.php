@@ -49,7 +49,7 @@
             }
         
         } else {
-            $google_part='<h1></h1>'."\n";
+            $google_part='<h1>'.$description.'</h1>'."\n";
         
             $template=new templateController();
             $template->init();

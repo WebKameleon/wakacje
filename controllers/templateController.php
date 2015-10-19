@@ -21,7 +21,7 @@ class templateController extends merlinController {
                 <div class="trip_desc col-md-6">
                     <h4>
                         <a class="q">[obj_country]</a>, <a class="q">[obj_region]</a>
-                        &raquo; [trp_duration] dni
+                        ➜ [trp_duration] dni
                     </h4>
                     <h5>
                         [startDate_D] [startDate_MMM], [startDate_DDD]:
@@ -46,7 +46,7 @@ class templateController extends merlinController {
                     <h5>
                         <a href="'.Bootstrap::$main->getRoot().'holidays/book/[id]" target="'.$config['merlin.reservation_target'].'">
                             [price] [operCurr] [if:total]za wszystkich[endif:total][if:!total]za osobę[endif:!total]
-                            <span>REZERWUJ TERAZ &raquo;</span>
+                            <span>REZERWUJ TERAZ ➜</span>
                         </a>
                     </h5>
                     

@@ -480,12 +480,15 @@ class holidaysController extends merlinController {
       
         $social_url='http://'.$_SERVER['HTTP_HOST'].'/';
         $social_text='';
+        $social_words=[];
         
         if (count($cond)) {
             
             if (isset($cond[1]))
             {
                 foreach($cond[1] AS $arr) foreach ($arr AS $ar) {
+                    if (isset($social_words[$ar])) continue;
+                    $social_words[$ar]=true;
                     $social_url.=str_replace(' ','-',$ar).'/';
                     $social_text.=$ar.' ';
                 }
