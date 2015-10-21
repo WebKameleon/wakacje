@@ -78,6 +78,7 @@
 	$cmd="/opt/google/appengine/appcfg.py --no_cookies -e $mail update $dest";
     
 	system('git commit -m deploy '.__DIR__.' 2>/dev/null');
+	system('git commit -m merlin '.__DIR__.'/../merlin 2>/dev/null');
     
 	system('git push origin master');
     system($cmd);
