@@ -21,3 +21,6 @@ handlers:
 - url: /maga_sajtmap.xml
   script: sitemap.php
 
+- url: /testy/.*
+  script: testy/index.php
+
