@@ -75,7 +75,8 @@
     $dir=explode('/',__DIR__);
     file_put_contents(__DIR__.'/log.txt',date('Y-m-d H:i:s')."\n",FILE_APPEND);
     
-	$cmd="/opt/google/appengine/appcfg.py --no_cookies -e $mail update $dest";
+	$cmd="/opt/google/appengine/appcfg.py -e $mail update $dest";
+	#$cmd="/opt/google/appengine/appcfg.py --no_cookies -e $mail update $dest";
     
 	system('git commit -m deploy '.__DIR__.' 2>/dev/null');
 	system('git commit -m merlin '.__DIR__.'/../merlin 2>/dev/null');
